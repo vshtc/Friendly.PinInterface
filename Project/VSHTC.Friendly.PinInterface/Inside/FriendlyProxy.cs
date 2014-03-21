@@ -29,7 +29,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         protected abstract AppVar Invoke(MethodInfo method, object[] args);
 
-        private object ToReturnObject(AppVar returnedAppVal, ParameterInfo parameterInfo)
+        private static object ToReturnObject(AppVar returnedAppVal, ParameterInfo parameterInfo)
         {
             if (parameterInfo.ParameterType == typeof(void))
             {
@@ -49,10 +49,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
         }
 
-        private object WrapChildAppVar(Type type, AppVar ret)
+        private static object WrapChildAppVar(Type type, AppVar ret)
         {
             var friendlyProxyType = typeof (FriendlyProxyInstance<>).MakeGenericType(type);
-            dynamic friendlyProxy = Activator.CreateInstance(friendlyProxyType, new object[] {App, ret});
+            dynamic friendlyProxy = Activator.CreateInstance(friendlyProxyType, new object[] {ret});
             return friendlyProxy.GetTransparentProxy();
         }
     }

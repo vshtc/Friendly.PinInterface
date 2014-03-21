@@ -7,8 +7,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         private readonly AppVar _appVar;
 
-        public FriendlyProxyInstance(AppFriend app, AppVar appVar)
-            : base(app)
+        public FriendlyProxyInstance(AppVar appVar)
+            : base(appVar.App)
         {
             _appVar = appVar;
         }
@@ -16,8 +16,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         protected override AppVar Invoke(MethodInfo method, object[] args)
         {
 
-            if ((method.DeclaringType == typeof(IAppVarOwner) && method.Name == "get_AppVar") ||
-                (method.DeclaringType == typeof(IAppVarSelf) && method.Name == "get_CodeerFriendlyAppVar"))
+            if ((method.DeclaringType == typeof(IAppVarOwner) && method.Name == "get_AppVar"))
             {
                 return _appVar;
             }

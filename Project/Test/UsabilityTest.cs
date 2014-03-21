@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows;
+using Codeer.Friendly;
+using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows;
 using System.Diagnostics;
 using VSHTC.Friendly.PinInterface;
@@ -46,6 +48,24 @@ namespace Test
         {
             var appStatic = _app.Pin<IApplicationStatic>();
             var window = appStatic.Current.MainWindow;
+            window.Title = "TestTitle";
+            Assert.AreEqual("TestTitle", window.Title);
+        }
+
+        [TestMethod]
+        public void AppVarはこんな感じ()
+        {
+            AppVar main = _app.Type<Application>().Current.MainWindow;
+            var window = main.Pin<IWindow>();
+            window.Title = "TestTitle";
+            Assert.AreEqual("TestTitle", window.Title);
+        }
+
+        [TestMethod]
+        public void dynamicとは相性が悪い()
+        {
+            dynamic main = _app.Type<Application>().Current.MainWindow;
+            var window = ((AppVar)main).Pin<IWindow>();
             window.Title = "TestTitle";
             Assert.AreEqual("TestTitle", window.Title);
         }
