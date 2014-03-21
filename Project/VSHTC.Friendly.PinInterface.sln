@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Target", "Target\Target.csproj", "{DAB9BD76-A107-450E-8DC9-1DD8D6439ED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3A900542-0D80-4A40-90FC-E3F22F108838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSHTC.Friendly.PinInterface", "VSHTC.Friendly.PinInterface\VSHTC.Friendly.PinInterface.csproj", "{2D1B0C42-0050-4E70-9567-8925246DFFFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAB9BD76-A107-450E-8DC9-1DD8D6439ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB9BD76-A107-450E-8DC9-1DD8D6439ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB9BD76-A107-450E-8DC9-1DD8D6439ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB9BD76-A107-450E-8DC9-1DD8D6439ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A900542-0D80-4A40-90FC-E3F22F108838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A900542-0D80-4A40-90FC-E3F22F108838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A900542-0D80-4A40-90FC-E3F22F108838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A900542-0D80-4A40-90FC-E3F22F108838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
