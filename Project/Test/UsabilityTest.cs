@@ -27,6 +27,8 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
+        public interface IObject : IAppVarOwner { }
+
         public interface IWindow : IAppVarOwner
         {
             string Title { get; set; }
@@ -100,15 +102,14 @@ namespace Test
             Assert.AreEqual(typeof(IWindow), window.GetType());
         }
 
+        [TestMethod]
         public void DataContextを触ってみる() 
         {
             var appStatic = _app.Pin<IApplicationStatic>();
             var window = appStatic.Current.MainWindow;
             var context = window.DataContext;
-            //var model = (IMainWindowViewModel)context;
             var model = context.Cast<IMainWindowViewModel>();
             model.Name = "Bar";
-            //Assert.AreEqual("Bar", window.UserNameBlock.Text);
         }
     }
 

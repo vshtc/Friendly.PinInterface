@@ -9,14 +9,6 @@ using Codeer.Friendly.Dynamic;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
-    public interface IFriendlyProxy {
-
-    }
-
-    public interface IObject: IFriendlyProxy{
-
-    }
-
     abstract class FriendlyProxy<TInterface> : RealProxy
     {
         public AppFriend App { get; private set; }
