@@ -1,4 +1,5 @@
 ﻿using Codeer.Friendly;
+using System;
 using System.Reflection;
 
 namespace VSHTC.Friendly.PinInterface.Inside
@@ -8,9 +9,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
         private readonly AppVar _appVar;
 
         public FriendlyProxyInstance(AppVar appVar)
-            : base(appVar.App)
+            : base(appVar.App) 
         {
             _appVar = appVar;
+        }
+
+        public AppVar AppVar {
+            get { return _appVar; }
         }
 
         protected override AppVar Invoke(MethodInfo method, object[] args)
