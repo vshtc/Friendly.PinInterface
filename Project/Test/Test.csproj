@@ -67,6 +67,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AppVarParameterTest.cs" />
+    <Compile Include="OutParameterTest.cs" />
+    <Compile Include="ReferenceParameterTest.cs" />
+    <Compile Include="SerializableParameterTest.cs" />
     <Compile Include="UsabilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

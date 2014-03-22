@@ -6,7 +6,6 @@ using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows;
 using System.Diagnostics;
 using VSHTC.Friendly.PinInterface;
-using Codeer.Friendly;
 
 namespace Test
 {
@@ -62,12 +61,29 @@ namespace Test
         }
 
         [TestMethod]
-        public void dynamicとは相性が悪い()
+        public void dynamicではこんな感じ()
         {
             dynamic main = _app.Type<Application>().Current.MainWindow;
-            var window = ((AppVar)main).Pin<IWindow>();
+            var window = InterfaceHelper.Pin<IWindow>(main);
             window.Title = "TestTitle";
             Assert.AreEqual("TestTitle", window.Title);
+        }
+
+        [TestMethod]
+        public void objectのメソッド_GetTypeだけはプロクシしない()
+        {
+            var window = _app.Pin<IApplicationStatic>().Current.MainWindow;
+            var window2 = _app.Pin<IApplicationStatic>().Current.MainWindow;
+
+            //参照先のそれぞれのメソッドを呼び出す。
+            Assert.AreEqual("Target.MainWindow", window.ToString());
+            Assert.IsTrue(window.Equals(window2));
+            Assert.AreEqual((int)window.Dynamic().GetHashCode(), window.GetHashCode());
+
+            //これだけはプロクシしない。
+            //タイプはシリアライズして持ってこれない場合がある。
+            //かつシステム的なメソッドなので、意図せず呼び出される場合がある。
+            Assert.AreEqual(typeof(IWindow), window.GetType());
         }
     }
 }

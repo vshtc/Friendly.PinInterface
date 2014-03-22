@@ -5,7 +5,7 @@ using VSHTC.Friendly.PinInterface.Inside;
 
 namespace VSHTC.Friendly.PinInterface
 {
-    public static class PinInterfaceExtensions
+    public static class InterfaceHelper
     {
         public static TInterface Pin<TInterface>(this AppVar appVar)
         {
