@@ -5,6 +5,7 @@ using Codeer.Friendly.Windows;
 using System.Diagnostics;
 using VSHTC.Friendly.PinInterface;
 using Codeer.Friendly;
+using VSHTC.Friendly.PinInterface.Inside;
 
 namespace Test
 {
@@ -28,6 +29,14 @@ namespace Test
         public interface IWindow : IAppVarOwner
         {
             string Title { get; set; }
+
+            IObject DataContext { get; set; }
+
+            ITextBlock UserNameBlock { get; set; }
+        }
+
+        public interface ITextBlock {
+            string Text { get; set; }
         }
 
         public interface IApplication : IAppVarOwner
@@ -41,6 +50,11 @@ namespace Test
             IApplication Current { get; }
         }
 
+        public interface IMainWindowViewModel {
+            string Name { get; set; }
+        }
+
+
         [TestMethod]
         public void こんな使い勝手でいかかでしょう()
         {
@@ -49,5 +63,18 @@ namespace Test
             window.Title = "TestTitle";
             Assert.AreEqual("TestTitle", window.Title);
         }
+
+        [TestMethod]
+        public void DataContextを触ってみる() {
+            var appStatic = _app.Pin<IApplicationStatic>();
+            var window = appStatic.Current.MainWindow;
+            var context = window.DataContext;
+            //var model = (IMainWindowViewModel)context;
+            var model = context.Cast<IMainWindowViewModel>();
+            model.Name = "Bar";
+            //Assert.AreEqual("Bar", window.UserNameBlock.Text);
+        }
     }
+
+
 }

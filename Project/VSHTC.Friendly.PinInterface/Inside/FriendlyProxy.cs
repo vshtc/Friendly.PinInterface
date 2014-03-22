@@ -6,9 +6,17 @@ using System.Runtime.Remoting.Proxies;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
+    public interface IFriendlyProxy {
+
+    }
+
+    public interface IObject: IFriendlyProxy{
+
+    }
+
     abstract class FriendlyProxy<TInterface> : RealProxy
     {
-        protected AppFriend App { get; private set; }
+        public AppFriend App { get; private set; }
 
         public FriendlyProxy(AppFriend app)
             : base(typeof(TInterface)) 
@@ -55,5 +63,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             dynamic friendlyProxy = Activator.CreateInstance(friendlyProxyType, new object[] {App, ret});
             return friendlyProxy.GetTransparentProxy();
         }
+
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Codeer.Friendly;
+using System;
 using System.Reflection;
 
 namespace VSHTC.Friendly.PinInterface.Inside
@@ -6,6 +7,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
     class FriendlyProxyInstance<TInterface> : FriendlyProxy<TInterface>
     {
         private readonly AppVar _appVar;
+
+        public AppVar AppVar {
+            get { return _appVar; }
+        }
 
         public FriendlyProxyInstance(AppFriend app, AppVar appVar)
             : base(app)
