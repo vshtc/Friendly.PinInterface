@@ -23,10 +23,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             var mm = msg as IMethodMessage;
             var method = (MethodInfo)mm.MethodBase;
+            string invokeName = GetInvokeName(method);
 
             //GetTypeだけは相性が悪い
             //思わぬところで呼び出され、シリアライズできず、クラッシュしてしまう。
-            if ((method.DeclaringType == typeof(object) && method.Name == "GetType"))
+            if ((method.DeclaringType == typeof(object) && invokeName == "GetType"))
             {
                 return new ReturnMessage(typeof(TInterface), null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
@@ -39,7 +40,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             AdjustRefOutArgs(method, mm.Args, out args, out refoutArgsFunc);
 
             //呼び出し
-            var returnedAppVal = Invoke(method, args);
+            var returnedAppVal = Invoke(method.DeclaringType, invokeName, args);
 
             //戻り値とout,refの処理
             object objReturn = ToReturnObject(returnedAppVal, method.ReturnParameter);
@@ -47,7 +48,21 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);
         }
 
-        protected abstract AppVar Invoke(MethodInfo method, object[] args);
+        private string GetInvokeName(MethodInfo method)
+        {
+            string invokeName = method.Name;
+            if (invokeName != "get_Item" && invokeName != "set_Item")
+            {
+                if (invokeName.IndexOf("get_") == 0 ||
+                    invokeName.IndexOf("set_") == 0)
+                {
+                    return invokeName.Substring(4);
+                }
+            }
+            return invokeName;
+        }
+
+        protected abstract AppVar Invoke(Type declaringType, string name, object[] args);
 
         private void CheckDynamicArguments(ParameterInfo[] parameterInfo)
         {

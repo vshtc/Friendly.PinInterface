@@ -18,15 +18,15 @@ namespace VSHTC.Friendly.PinInterface.Inside
             get { return _appVar; }
         }
 
-        protected override AppVar Invoke(MethodInfo method, object[] args)
+        protected override AppVar Invoke(Type declaringType, string name, object[] args)
         {
 
-            if ((method.DeclaringType == typeof(IAppVarOwner) && method.Name == "get_AppVar"))
+            if ((declaringType == typeof(IAppVarOwner) && name == "AppVar"))
             {
                 return _appVar;
             }
 
-            return _appVar[method.Name](args);
+            return _appVar[name](args);
         }
     }
 }

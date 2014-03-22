@@ -111,7 +111,13 @@ namespace Test
             var model = context.Cast<IMainWindowViewModel>();
             model.Name = "Bar";
         }
+
+        [TestMethod]
+        public void Fieldをプロパティーとして取得する()
+        {
+            var appStatic = _app.Pin<IApplicationStatic>();
+            var window = appStatic.Current.MainWindow;
+            Assert.AreEqual("Foo", window.UserNameBlock.Text);
+        }
     }
-
-
 }

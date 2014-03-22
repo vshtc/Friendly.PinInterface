@@ -1,4 +1,5 @@
 ﻿using Codeer.Friendly;
+using System;
 using System.Reflection;
 
 namespace VSHTC.Friendly.PinInterface.Inside
@@ -13,9 +14,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _typeFullName = typeFullName;
         }
 
-        protected override AppVar Invoke(MethodInfo method, object[] args)
+        protected override AppVar Invoke(Type declaringType, string name, object[] args)
         {
-            return App[_typeFullName + "." + method.Name](args);
+            return App[_typeFullName + "." + name](args);
         }
     }
 }
