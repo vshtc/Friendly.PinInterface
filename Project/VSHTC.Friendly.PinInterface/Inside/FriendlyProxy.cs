@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Proxies;
 using System.Runtime.CompilerServices;
 using Codeer.Friendly;
 using Codeer.Friendly.Dynamic;
+using System.Text;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -50,16 +51,33 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         private string GetInvokeName(MethodInfo method)
         {
+            //配列とその他の[]アクセスの差分を吸収する処理
             string invokeName = method.Name;
-            if (invokeName != "get_Item" && invokeName != "set_Item")
+            if (invokeName == "get_Item")
             {
-                if (invokeName.IndexOf("get_") == 0 ||
+                return "[" + GetCommas(method.GetParameters().Length - 1) + "]";
+            }
+            else if (invokeName == "set_Item")
+            {
+                return "[" + GetCommas(method.GetParameters().Length - 2) + "]";
+            }
+            //プロパティーが指し示すものがフィールドである場合の対応
+            else if (invokeName.IndexOf("get_") == 0 ||
                     invokeName.IndexOf("set_") == 0)
-                {
-                    return invokeName.Substring(4);
-                }
+            {
+                return invokeName.Substring(4);
             }
             return invokeName;
+        }
+
+        private string GetCommas(int count)
+        {
+            StringBuilder b = new StringBuilder();
+            for (int i = 0; i < count; i++)
+            {
+                b.Append(",");
+            }
+            return b.ToString();
         }
 
         protected abstract AppVar Invoke(Type declaringType, string name, object[] args);
