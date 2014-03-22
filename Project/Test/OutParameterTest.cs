@@ -117,6 +117,11 @@ namespace Test
             target.Create(5, "X", out data);
             Assert.AreEqual(5, data.A);
             Assert.AreEqual("X", data.B);
+
+            //バッファにデータが入っている場合
+            target.Create(6, "Y", out data);
+            Assert.AreEqual(6, data.A);
+            Assert.AreEqual("Y", data.B);
         }
     }
 }
