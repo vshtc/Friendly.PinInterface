@@ -1,5 +1,6 @@
 ﻿using Codeer.Friendly;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace VSHTC.Friendly.PinInterface.Inside
@@ -14,8 +15,12 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _typeFullName = typeFullName;
         }
 
-        protected override AppVar Invoke(Type declaringType, string name, object[] args)
+        protected override AppVar Invoke(MethodInfo method, string name, object[] args)
         {
+            if (method.GetCustomAttributes(true).Any(e => e.GetType() == typeof(NewAttribute)))
+            {
+                return App.Dim(new NewInfo(_typeFullName, args));
+            }
             return App[_typeFullName + "." + name](args);
         }
     }

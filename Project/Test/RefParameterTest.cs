@@ -58,7 +58,7 @@ namespace Test
             string B { get; set; }
         }
 
-        interface IPos : IAppVarOwner
+        interface IPoint : IAppVarOwner
         {
             double X { get; set; }
             double Y { get; set; }
@@ -72,7 +72,7 @@ namespace Test
             void GetRef(Data data, ref AppVar a, ref AppVar b);
             void ChangeX(ref Point location);
             void ChangeX(ref AppVar location);
-            void ChangeX(ref IPos location);
+            void ChangeX(ref IPoint location);
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace Test
             Assert.AreEqual("Y", data.B);
 
             //構造体
-            IPos pos = InterfaceHelper.Pin<IPos>(_app.Copy(new Point() { X = 1, Y = 2 }));
+            IPoint pos = InterfaceHelper.Pin<IPoint>(_app.Copy(new Point() { X = 1, Y = 2 }));
             target.ChangeX(ref pos);
             Assert.AreEqual(10, pos.X);
             Assert.AreEqual(2, pos.Y);

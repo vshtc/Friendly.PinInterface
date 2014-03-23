@@ -139,5 +139,29 @@ namespace Test
             array[1] = 100;
             Assert.AreEqual(100, array[1]);
         }
+
+
+        interface IPoint : IAppVarOwner
+        {
+            double X { get; set; }
+            double Y { get; set; }
+        }
+
+        [ProxyTraget("System.Windows.Point")]
+        interface IPointStatic
+        {
+            [NewAttribute]
+            IPoint New();
+
+        }
+
+        [TestMethod]
+        public void 生成()
+        {
+            IPoint pos = _app.Pin<IPointStatic>().New();
+            pos.X = 100;
+            Assert.AreEqual(100, pos.X);
+        }
+            
     }
 }

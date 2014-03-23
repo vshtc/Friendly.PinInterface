@@ -41,7 +41,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             AdjustRefOutArgs(method, mm.Args, out args, out refoutArgsFunc);
 
             //åƒÇ—èoÇµ
-            var returnedAppVal = Invoke(method.DeclaringType, invokeName, args);
+            var returnedAppVal = Invoke(method, invokeName, args);
 
             //ñﬂÇËílÇ∆out,refÇÃèàóù
             object objReturn = ToReturnObject(returnedAppVal, method.ReturnParameter);
@@ -80,7 +80,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return b.ToString();
         }
 
-        protected abstract AppVar Invoke(Type declaringType, string name, object[] args);
+        protected abstract AppVar Invoke(MethodInfo method, string name, object[] args);
 
         private void CheckDynamicArguments(ParameterInfo[] parameterInfo)
         {
