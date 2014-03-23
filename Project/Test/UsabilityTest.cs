@@ -40,7 +40,8 @@ namespace Test
             ITextBlock UserNameBlock { get; set; }
         }
 
-        public interface ITextBlock {
+        public interface ITextBlock : IAppVarOwner
+        {
             string Text { get; set; }
         }
 
@@ -55,7 +56,8 @@ namespace Test
             IApplication Current { get; }
         }
 
-        public interface IMainWindowViewModel {
+        public interface IMainWindowViewModel : IAppVarOwner
+        {
             string Name { get; set; }
         }
 
@@ -114,15 +116,14 @@ namespace Test
         }
 
         [TestMethod]
-        public void Fieldをプロパティーとして取得する()
+        public void Fieldもプロパティーとして取得できる()
         {
             var appStatic = _app.Pin<IApplicationStatic>();
             var window = appStatic.Current.MainWindow;
             Assert.AreEqual("Foo", window.UserNameBlock.Text);
         }
 
-
-        public interface IIndexAccess
+        public interface IIndexAccess : IAppVarOwner
         {
             int this[int index] { get; set; }
         }

@@ -55,7 +55,7 @@ namespace Test
             string B { get; set; }
         }
 
-        interface ITarget
+        interface ITarget : IAppVarOwner
         {
             IData Create(int a, string b);
             int GetA(IData data);
@@ -72,6 +72,16 @@ namespace Test
             Assert.AreEqual("X", data.B);
             Assert.AreEqual(5, target.GetA(data));
             Assert.AreEqual("X", target.GetB(data));
+        }
+
+        [TestMethod]
+        public void 既存のFriendlyの操作に引数として渡すことができる()
+        {
+            AppVar v = _app.Type<Target>()();
+            ITarget target = v.Pin<ITarget>();
+            IData data = target.Create(5, "X");
+            Assert.AreEqual(5, (int)target.Dynamic().GetA(data));
+            Assert.AreEqual("X", (string)target.Dynamic().GetB(data));
         }
     }
 }

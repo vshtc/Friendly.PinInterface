@@ -49,21 +49,21 @@ namespace Test
             }
         }
 
-        interface ITarget
+        interface ITarget : IAppVarOwner
         {
             AppVar Create(int a, string b);
             int GetA(AppVar data);
             string GetB(AppVar data);
         }
 
-        interface ITargetDynamic
+        interface ITargetDynamic : IAppVarOwner
         {
             dynamic Create(int a, string b);
             int GetA(AppVar data);
             string GetB(AppVar data);
         }
 
-        interface ITargetDynamicArg
+        interface ITargetDynamicArg : IAppVarOwner
         {
             dynamic Create(int a, string b);
             int GetA(dynamic data);

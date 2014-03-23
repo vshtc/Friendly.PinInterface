@@ -10,7 +10,7 @@ using VSHTC.Friendly.PinInterface;
 namespace Test
 {
     [TestClass]
-    public class OutParameterTest
+    public class RefParameterTest
     {
         WindowsAppFriend _app;
 
@@ -36,16 +36,21 @@ namespace Test
 
         class Target
         {
-            public void Create(int a, string b, out Data data)
+            public void Create(int a, string b, ref Data data)
             {
                 data = new Data() { A = a, B = b };
             }
-            public void GetOut(Data data, out int a, out string b)
+            public void GetRef(Data data, ref int a, ref string b)
             {
                 a = data.A;
                 b = data.B;
             }
+            public void ChangeX(ref Point location)
+            {
+                location.X = 10;
+            }
         }
+
 
         interface IData : IAppVarOwner
         {
@@ -53,42 +58,57 @@ namespace Test
             string B { get; set; }
         }
 
+        interface IPos : IAppVarOwner
+        {
+            double X { get; set; }
+            double Y { get; set; }
+        }
+
         interface ITarget : IAppVarOwner
         {
-            void Create(int a, string b, out Data data);
-            void Create(int a, string b, out IData data);
-            void GetOut(Data data, out int a, out string b);
-            void GetOut(Data data, out AppVar a, out AppVar b);
+            void Create(int a, string b, ref Data data);
+            void Create(int a, string b, ref IData data);
+            void GetRef(Data data, ref int a, ref string b);
+            void GetRef(Data data, ref AppVar a, ref AppVar b);
+            void ChangeX(ref Point location);
+            void ChangeX(ref AppVar location);
+            void ChangeX(ref IPos location);
         }
 
         [TestMethod]
-        public void Outシリアライズ()
+        public void Refシリアライズ()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
-            Data data;
-            target.Create(5, "X", out data);
+            Data data = null;
+            target.Create(5, "X", ref data);
             Assert.AreEqual(5, data.A);
             Assert.AreEqual("X", data.B);
-            int a;
-            string b;
-            target.GetOut(data, out a, out b);
+            int a = 0;
+            string b = null;
+            target.GetRef(data, ref a, ref b);
             Assert.AreEqual(5, a);
             Assert.AreEqual("X", b);
+            Point pos = new Point() { X = 1, Y = 2 };
+
+            //構造体
+            target.ChangeX(ref pos);
+            Assert.AreEqual(10, pos.X);
+            Assert.AreEqual(2, pos.Y);
         }
 
         [TestMethod]
-        public void OutAppVar()
+        public void RefAppVar()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
-            Data data;
-            target.Create(5, "X", out data);
+            Data data = null;
+            target.Create(5, "X", ref data);
 
             {
-                AppVar a;
-                AppVar b;
-                target.GetOut(data, out a, out b);
+                AppVar a = null;
+                AppVar b = null;
+                target.GetRef(data, ref a, ref b);
                 Assert.AreEqual(5, (int)a.Core);
                 Assert.AreEqual("X", (string)b.Core);
             }
@@ -97,26 +117,38 @@ namespace Test
             {
                 AppVar a = _app.Copy(100);
                 AppVar b = _app.Copy("abc");
-                target.GetOut(data, out a, out b);
+                target.GetRef(data, ref a, ref b);
                 Assert.AreEqual(5, (int)a.Core);
                 Assert.AreEqual("X", (string)b.Core);
             }
+
+            //構造体
+            AppVar pos = _app.Copy(new Point() { X = 1, Y = 2 });
+            target.ChangeX(ref pos);
+            Assert.AreEqual(10, (double)pos.Dynamic().X);
+            Assert.AreEqual(2, (double)pos.Dynamic().Y);
         }
 
         [TestMethod]
-        public void OutReference()
+        public void RefReference()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
-            IData data;
-            target.Create(5, "X", out data);
+            IData data = null;
+            target.Create(5, "X", ref data);
             Assert.AreEqual(5, data.A);
             Assert.AreEqual("X", data.B);
 
             //バッファにデータが入っている場合
-            target.Create(6, "Y", out data);
+            target.Create(6, "Y", ref data);
             Assert.AreEqual(6, data.A);
             Assert.AreEqual("Y", data.B);
+
+            //構造体
+            IPos pos = InterfaceHelper.Pin<IPos>(_app.Copy(new Point() { X = 1, Y = 2 }));
+            target.ChangeX(ref pos);
+            Assert.AreEqual(10, pos.X);
+            Assert.AreEqual(2, pos.Y);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Test
             }
         }
 
-        interface ITarget
+        interface ITarget : IAppVarOwner
         {
             Data Create(int a, string b);
             int GetA(Data data);

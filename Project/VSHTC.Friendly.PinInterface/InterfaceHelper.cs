@@ -9,6 +9,7 @@ namespace VSHTC.Friendly.PinInterface
     public static class InterfaceHelper
     {
         public static TInterface Pin<TInterface>(this AppVar appVar)
+             where TInterface : IAppVarOwner
         {
             return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
@@ -39,6 +40,7 @@ namespace VSHTC.Friendly.PinInterface
         }
 
         public static TInterface Cast<TInterface>(this IAppVarOwner source)
+             where TInterface : IAppVarOwner
         {
             return Pin<TInterface>(source.AppVar);
         }

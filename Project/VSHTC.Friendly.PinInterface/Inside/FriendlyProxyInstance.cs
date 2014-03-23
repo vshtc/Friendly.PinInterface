@@ -5,6 +5,7 @@ using System.Reflection;
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     class FriendlyProxyInstance<TInterface> : FriendlyProxy<TInterface>
+        where TInterface : IAppVarOwner
     {
         private readonly AppVar _appVar;
 
