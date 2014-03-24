@@ -2,9 +2,9 @@
 
 namespace VSHTC.Friendly.PinInterface
 {
-    public class ProxyTragetAttribute : Attribute
+    public class TypeAttribute : Attribute
     {
-        public ProxyTragetAttribute(string targetTypeFullName)
+        public TypeAttribute(string targetTypeFullName)
         {
             TargetTypeFullName = targetTypeFullName;
         }

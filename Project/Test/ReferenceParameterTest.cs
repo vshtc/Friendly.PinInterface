@@ -49,13 +49,13 @@ namespace Test
             }
         }
 
-        interface IData : IAppVarOwner
+        interface IData : IInstance
         {
             int A { get; set; }
             string B { get; set; }
         }
 
-        interface ITarget : IAppVarOwner
+        interface ITarget : IInstance
         {
             IData Create(int a, string b);
             int GetA(IData data);

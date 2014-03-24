@@ -5,7 +5,7 @@ using System.Reflection;
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     class FriendlyProxyInstance<TInterface> : FriendlyProxy<TInterface>
-        where TInterface : IAppVarOwner
+        where TInterface : IInstance
     {
         private readonly AppVar _appVar;
 
@@ -19,15 +19,21 @@ namespace VSHTC.Friendly.PinInterface.Inside
             get { return _appVar; }
         }
 
-        protected override AppVar Invoke(MethodInfo method, string name, object[] args)
+        protected override AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo typeInfo)
         {
-
             if ((method.DeclaringType == typeof(IAppVarOwner) && name == "AppVar"))
             {
                 return _appVar;
             }
-
-            return _appVar[name](args);
+            try
+            {
+                return GetFriendlyOperation(_appVar, name, async, typeInfo)(args);
+            }
+            finally
+            {
+                async = null;
+                typeInfo = null;
+            }
         }
     }
 }

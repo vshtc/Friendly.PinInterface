@@ -29,9 +29,9 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-        public interface IObject : IAppVarOwner { }
+        public interface IObject : IInstance { }
 
-        public interface IWindow : IAppVarOwner
+        public interface IWindow : IInstance
         {
             string Title { get; set; }
 
@@ -40,23 +40,23 @@ namespace Test
             ITextBlock UserNameBlock { get; set; }
         }
 
-        public interface ITextBlock : IAppVarOwner
+        public interface ITextBlock : IInstance
         {
             string Text { get; set; }
         }
 
-        public interface IApplication : IAppVarOwner
+        public interface IApplication : IInstance
         {
             IWindow MainWindow { get; set; }
         }
 
-        [ProxyTraget("System.Windows.Application")]
-        public interface IApplicationStatic
+        [Type("System.Windows.Application")]
+        public interface IApplicationStatic : IStatic
         {
             IApplication Current { get; }
         }
 
-        public interface IMainWindowViewModel : IAppVarOwner
+        public interface IMainWindowViewModel : IInstance
         {
             string Name { get; set; }
         }
@@ -123,7 +123,7 @@ namespace Test
             Assert.AreEqual("Foo", window.UserNameBlock.Text);
         }
 
-        public interface IIndexAccess : IAppVarOwner
+        public interface IIndexAccess : IInstance
         {
             int this[int index] { get; set; }
         }
@@ -141,16 +141,16 @@ namespace Test
         }
 
 
-        interface IPoint : IAppVarOwner
+        interface IPoint : IInstance
         {
             double X { get; set; }
             double Y { get; set; }
         }
 
-        [ProxyTraget("System.Windows.Point")]
-        interface IPointStatic
+        [Type("System.Windows.Point")]
+        interface IPointStatic : IStatic
         {
-            [NewAttribute]
+            [New]
             IPoint New();
 
         }

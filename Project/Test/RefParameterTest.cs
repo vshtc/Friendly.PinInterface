@@ -52,19 +52,19 @@ namespace Test
         }
 
 
-        interface IData : IAppVarOwner
+        interface IData : IInstance
         {
             int A { get; set; }
             string B { get; set; }
         }
 
-        interface IPoint : IAppVarOwner
+        interface IPoint : IInstance
         {
             double X { get; set; }
             double Y { get; set; }
         }
 
-        interface ITarget : IAppVarOwner
+        interface ITarget : IInstance
         {
             void Create(int a, string b, ref Data data);
             void Create(int a, string b, ref IData data);

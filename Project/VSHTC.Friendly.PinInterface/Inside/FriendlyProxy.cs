@@ -7,12 +7,16 @@ using System.Runtime.CompilerServices;
 using Codeer.Friendly;
 using Codeer.Friendly.Dynamic;
 using System.Text;
+using System.Collections.Generic;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     abstract class FriendlyProxy<TInterface> : RealProxy
     {
-        public AppFriend App { get; private set; }
+        protected AppFriend App { get; private set; }
+
+        Async _asyncNext;
+        OperationTypeInfo _operationTypeInfoNext;
 
         public FriendlyProxy(AppFriend app)
             : base(typeof(TInterface)) 
@@ -24,24 +28,66 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             var mm = msg as IMethodMessage;
             var method = (MethodInfo)mm.MethodBase;
-            string invokeName = GetInvokeName(method);
 
             //GetTypeだけは相性が悪い
             //思わぬところで呼び出され、シリアライズできず、クラッシュしてしまう。
-            if ((method.DeclaringType == typeof(object) && invokeName == "GetType"))
+            if ((method.DeclaringType == typeof(object) && method.Name == "GetType"))
             {
                 return new ReturnMessage(typeof(TInterface), null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
 
+            //IModifyInvokeの対応
+            if ((method.DeclaringType == typeof(IModifyInvoke) && method.Name == "AsyncNext"))
+            {
+                if (_asyncNext != null)
+                {
+                    throw new NotSupportedException("既に次回呼び出しのAsyncは設定されています。");
+                }
+                _asyncNext = new Async();
+                return new ReturnMessage(_asyncNext, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
+            }
+            if ((method.DeclaringType == typeof(IModifyInvoke) && method.Name == "OperationTypeInfoNext"))
+            {
+                if (_operationTypeInfoNext != null)
+                {
+                    throw new NotSupportedException("既に次回呼び出しのOperationTypeInfoは設定されています。");
+                }
+                _operationTypeInfoNext = (OperationTypeInfo)mm.Args[0];
+                return new ReturnMessage(null, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
+            }
+            Async asyncNext = _asyncNext;
+            OperationTypeInfo operationTypeInfoNext = _operationTypeInfoNext;
+
+            //dynamicの引数はアウト
             CheckDynamicArguments(method.GetParameters());
 
             //out ref対応
             object[] args;
             Func<object>[] refoutArgsFunc;
-            AdjustRefOutArgs(method, mm.Args, out args, out refoutArgsFunc);
+            AdjustRefOutArgs(method, mm.Args, out args, out refoutArgsFunc, ref asyncNext, ref operationTypeInfoNext);
 
-            //呼び出し
-            var returnedAppVal = Invoke(method, invokeName, args);
+
+            //静的な情報でタイプ情報を作れるか
+            //しかし_operationTypeInfoが設定されていれば、それを優先する
+            if (_operationTypeInfoNext == null)
+            {
+            }
+
+
+
+            //呼び出し            
+            string invokeName = GetInvokeName(method);
+            var returnedAppVal = Invoke(method, invokeName, args, ref asyncNext, ref operationTypeInfoNext);
+
+            //nullにされていたらnullを入れる。そうでなければ、次回持越し
+            if (asyncNext == null)
+            {
+                _asyncNext = null;
+            }
+            if (operationTypeInfoNext == null)
+            {
+                _operationTypeInfoNext = null;
+            }
 
             //戻り値とout,refの処理
             object objReturn = ToReturnObject(returnedAppVal, method.ReturnParameter);
@@ -80,7 +126,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return b.ToString();
         }
 
-        protected abstract AppVar Invoke(MethodInfo method, string name, object[] args);
+        protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo info);
 
         private void CheckDynamicArguments(ParameterInfo[] parameterInfo)
         {
@@ -93,9 +139,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
         }
 
-        private void AdjustRefOutArgs(MethodInfo method, object[] src, out object[] args, out  Func<object>[] refoutArgsFunc)
+        private void AdjustRefOutArgs(MethodInfo method, object[] src, out object[] args, out  Func<object>[] refoutArgsFunc, ref Async async, ref OperationTypeInfo typeInfo)
         {
-            args = new object[src.Length];
+            List<object> listArgs = new List<object>();
             refoutArgsFunc = new Func<object>[src.Length];
             var parameters = method.GetParameters();
             for (int i = 0; i < parameters.Length; i++)
@@ -105,16 +151,38 @@ namespace VSHTC.Friendly.PinInterface.Inside
                     object arg;
                     Func<object> refoutFunc;
                     AdjustRefOutArgs(parameters[i].ParameterType.GetElementType(), src[i], out arg, out refoutFunc);
-                    args[i] = arg;
+                    listArgs.Add(arg);
                     refoutArgsFunc[i] = refoutFunc;
                 }
                 else
                 {
-                    args[i] = src[i];
                     object srcObj = src[i];
                     refoutArgsFunc[i] = () => srcObj;
+                    Async checkAsync = srcObj as Async;
+                    if (checkAsync != null)
+                    {
+                        if (async != null)
+                        {
+                            throw new NotSupportedException("今回の呼び出しに対して、既にAsyncは指定されています。");
+                        }
+                        async = checkAsync;
+                        continue;
+                    }
+
+                    OperationTypeInfo checkInfo = srcObj as OperationTypeInfo;
+                    if (checkInfo != null)
+                    {
+                        if (typeInfo != null)
+                        {
+                            throw new NotSupportedException("今回の呼び出しに対して、既にOperationTypeInfoは指定されています。");
+                        }
+                        typeInfo = checkInfo;
+                        continue;
+                    }
+                    listArgs.Add(srcObj);
                 }
             }
+            args = listArgs.ToArray();
         }
 
         private void AdjustRefOutArgs(Type type, object src, out object arg, out Func<object> refoutFunc)
@@ -196,6 +264,22 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return friendlyProxy.GetTransparentProxy();
         }
 
-        
+
+        protected static FriendlyOperation GetFriendlyOperation(dynamic target, string name, Async async, OperationTypeInfo typeInfo)
+        {
+            if (async != null && typeInfo != null)
+            {
+                return target[name, typeInfo, async];
+            }
+            else if (async != null)
+            {
+                return target[name, async];
+            }
+            else if (typeInfo != null)
+            {
+                return target[name, typeInfo];
+            }
+            return target[name];
+        }
     }
 }

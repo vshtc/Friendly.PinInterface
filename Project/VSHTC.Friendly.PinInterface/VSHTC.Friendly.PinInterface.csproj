@@ -48,13 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInstance.cs" />
+    <Compile Include="IModifyInvoke.cs" />
     <Compile Include="Inside\FriendlyProxy.cs" />
     <Compile Include="Inside\FriendlyProxyInstance.cs" />
     <Compile Include="Inside\FriendlyProxyStatic.cs" />
     <Compile Include="InterfaceHelper.cs" />
+    <Compile Include="IStatic.cs" />
     <Compile Include="NewAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyTragetAttribute.cs" />
+    <Compile Include="TypeAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
