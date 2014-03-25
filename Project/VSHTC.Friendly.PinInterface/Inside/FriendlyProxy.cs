@@ -58,22 +58,16 @@ namespace VSHTC.Friendly.PinInterface.Inside
             Async asyncNext = _asyncNext;
             OperationTypeInfo operationTypeInfoNext = _operationTypeInfoNext;
 
-            //dynamicの引数はアウト
-            CheckDynamicArguments(method.GetParameters());
-
             //out ref対応
             object[] args;
             Func<object>[] refoutArgsFunc;
             AdjustRefOutArgs(method, mm.Args, out args, out refoutArgsFunc, ref asyncNext, ref operationTypeInfoNext);
-
 
             //静的な情報でタイプ情報を作れるか
             //しかし_operationTypeInfoが設定されていれば、それを優先する
             if (_operationTypeInfoNext == null)
             {
             }
-
-
 
             //呼び出し            
             string invokeName = GetInvokeName(method);
@@ -128,17 +122,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo info);
 
-        private void CheckDynamicArguments(ParameterInfo[] parameterInfo)
-        {
-            foreach (var element in parameterInfo)
-            {
-                if (element.GetCustomAttributes(false).Any(e=>e.GetType() == typeof(DynamicAttribute)))
-                {
-                    throw new NotSupportedException("さすがに引数dynamicはやめて");
-                }
-            }
-        }
-
         private void AdjustRefOutArgs(MethodInfo method, object[] src, out object[] args, out  Func<object>[] refoutArgsFunc, ref Async async, ref OperationTypeInfo typeInfo)
         {
             List<object> listArgs = new List<object>();
@@ -187,6 +170,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         private void AdjustRefOutArgs(Type type, object src, out object arg, out Func<object> refoutFunc)
         {
+            //@@@ IInstanceか？
+
+            //@@@dynamic対応
+
             if (type.IsInterface)
             {
                 if (src == null)

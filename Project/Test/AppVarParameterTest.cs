@@ -94,20 +94,12 @@ namespace Test
         }
 
         [TestMethod]
-        public void dynamicを引数につかうことはできない()
+        public void dynamicを引数につかう()
         {
             AppVar v = _app.Type<Target>()();
             ITargetDynamicArg target = v.Pin<ITargetDynamicArg>();
             dynamic data = target.Create(5, "X");
-            try
-            {
-                target.GetA(data);
-                Assert.Fail();
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("さすがに引数dynamicはやめて", e.Message);
-            }
+            Assert.AreEqual(5, (int)data.A);
         }
     }
 }
