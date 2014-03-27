@@ -69,9 +69,7 @@ namespace Test
             void Create(int a, string b, ref Data data);
             void Create(int a, string b, ref IData data);
             void GetRef(Data data, ref int a, ref string b);
-            void GetRef(Data data, ref AppVar a, ref AppVar b);
             void ChangeX(ref Point location);
-            void ChangeX(ref AppVar location);
             void ChangeX(ref IPoint location);
         }
 
@@ -96,39 +94,7 @@ namespace Test
             Assert.AreEqual(10, pos.X);
             Assert.AreEqual(2, pos.Y);
         }
-
-        [TestMethod]
-        public void RefAppVar()
-        {
-            AppVar v = _app.Type<Target>()();
-            ITarget target = v.Pin<ITarget>();
-            Data data = null;
-            target.Create(5, "X", ref data);
-
-            {
-                AppVar a = null;
-                AppVar b = null;
-                target.GetRef(data, ref a, ref b);
-                Assert.AreEqual(5, (int)a.Core);
-                Assert.AreEqual("X", (string)b.Core);
-            }
-
-            //もともと入っている場合
-            {
-                AppVar a = _app.Copy(100);
-                AppVar b = _app.Copy("abc");
-                target.GetRef(data, ref a, ref b);
-                Assert.AreEqual(5, (int)a.Core);
-                Assert.AreEqual("X", (string)b.Core);
-            }
-
-            //構造体
-            AppVar pos = _app.Copy(new Point() { X = 1, Y = 2 });
-            target.ChangeX(ref pos);
-            Assert.AreEqual(10, (double)pos.Dynamic().X);
-            Assert.AreEqual(2, (double)pos.Dynamic().Y);
-        }
-
+        
         [TestMethod]
         public void RefReference()
         {

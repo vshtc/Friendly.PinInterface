@@ -55,9 +55,8 @@
     <Compile Include="Inside\FriendlyProxyStatic.cs" />
     <Compile Include="InterfaceHelper.cs" />
     <Compile Include="IStatic.cs" />
-    <Compile Include="NewAttribute.cs" />
+    <Compile Include="ConstructorAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

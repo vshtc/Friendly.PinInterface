@@ -58,7 +58,6 @@ namespace Test
             void Create(int a, string b, out Data data);
             void Create(int a, string b, out IData data);
             void GetOut(Data data, out int a, out string b);
-            void GetOut(Data data, out AppVar a, out AppVar b);
         }
 
         [TestMethod]
@@ -75,32 +74,6 @@ namespace Test
             target.GetOut(data, out a, out b);
             Assert.AreEqual(5, a);
             Assert.AreEqual("X", b);
-        }
-
-        [TestMethod]
-        public void OutAppVar()
-        {
-            AppVar v = _app.Type<Target>()();
-            ITarget target = v.Pin<ITarget>();
-            Data data;
-            target.Create(5, "X", out data);
-
-            {
-                AppVar a;
-                AppVar b;
-                target.GetOut(data, out a, out b);
-                Assert.AreEqual(5, (int)a.Core);
-                Assert.AreEqual("X", (string)b.Core);
-            }
-
-            //もともと入っている場合
-            {
-                AppVar a = _app.Copy(100);
-                AppVar b = _app.Copy("abc");
-                target.GetOut(data, out a, out b);
-                Assert.AreEqual(5, (int)a.Core);
-                Assert.AreEqual("X", (string)b.Core);
-            }
         }
 
         [TestMethod]

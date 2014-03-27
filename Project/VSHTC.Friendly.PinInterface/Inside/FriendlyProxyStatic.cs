@@ -20,7 +20,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             try
             {
-                if (method.GetCustomAttributes(true).Any(e => e.GetType() == typeof(NewAttribute)))
+                if (method.GetCustomAttributes(true).Any(e => e.GetType() == typeof(ConstructorAttribute)))
                 {
                     if (async != null)
                     {

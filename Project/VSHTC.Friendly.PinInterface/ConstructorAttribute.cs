@@ -2,5 +2,5 @@
 
 namespace VSHTC.Friendly.PinInterface
 {
-    public class NewAttribute : Attribute { }
+    public class ConstructorAttribute : Attribute { }
 }

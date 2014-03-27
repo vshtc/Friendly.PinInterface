@@ -14,17 +14,6 @@ namespace VSHTC.Friendly.PinInterface
             return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
 
-        public static TInterface Pin<TInterface>(this AppFriend app)
-        where TInterface : IStatic
-        {
-            var attributes = typeof(TInterface).GetCustomAttributes(false).Where(o => o is TypeAttribute).Select(o => (TypeAttribute)o).ToArray();
-            if (attributes.Length != 1)
-            {
-                throw new NotSupportedException("staticの場合は対象のタイプを明示してください");
-            }
-            return Pin<TInterface>(app, attributes[0].TargetTypeFullName);
-        }
-
         public static TInterface Pin<TInterface, TTarget>(this AppFriend app)
         where TInterface : IStatic
         {

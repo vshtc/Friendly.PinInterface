@@ -50,7 +50,6 @@ namespace Test
             IWindow MainWindow { get; set; }
         }
 
-        [Type("System.Windows.Application")]
         public interface IApplicationStatic : IStatic
         {
             IApplication Current { get; }
@@ -64,7 +63,7 @@ namespace Test
         [TestMethod]
         public void こんな使い勝手でいかかでしょう()
         {
-            var appStatic = _app.Pin<IApplicationStatic>();
+            var appStatic = _app.Pin<IApplicationStatic, Application>();
             var window = appStatic.Current.MainWindow;
             window.Title = "TestTitle";
             Assert.AreEqual("TestTitle", window.Title);
@@ -91,8 +90,8 @@ namespace Test
         [TestMethod]
         public void objectのメソッド_GetTypeだけはプロクシしない()
         {
-            var window = _app.Pin<IApplicationStatic>().Current.MainWindow;
-            var window2 = _app.Pin<IApplicationStatic>().Current.MainWindow;
+            var window = _app.Pin<IApplicationStatic, Application>().Current.MainWindow;
+            var window2 = _app.Pin<IApplicationStatic, Application>().Current.MainWindow;
 
             //参照先のそれぞれのメソッドを呼び出す。
             Assert.AreEqual("Target.MainWindow", window.ToString());
@@ -108,7 +107,7 @@ namespace Test
         [TestMethod]
         public void DataContextを触ってみる() 
         {
-            var appStatic = _app.Pin<IApplicationStatic>();
+            var appStatic = _app.Pin<IApplicationStatic, Application>();
             var window = appStatic.Current.MainWindow;
             var context = window.DataContext;
             var model = context.Cast<IMainWindowViewModel>();
@@ -118,7 +117,7 @@ namespace Test
         [TestMethod]
         public void Fieldもプロパティーとして取得できる()
         {
-            var appStatic = _app.Pin<IApplicationStatic>();
+            var appStatic = _app.Pin<IApplicationStatic, Application>();
             var window = appStatic.Current.MainWindow;
             Assert.AreEqual("Foo", window.UserNameBlock.Text);
         }
@@ -147,10 +146,9 @@ namespace Test
             double Y { get; set; }
         }
 
-        [Type("System.Windows.Point")]
         interface IPointStatic : IStatic
         {
-            [New]
+            [Constructor]
             IPoint New();
 
         }
@@ -158,7 +156,7 @@ namespace Test
         [TestMethod]
         public void 生成()
         {
-            IPoint pos = _app.Pin<IPointStatic>().New();
+            IPoint pos = _app.Pin<IPointStatic, Point>().New();
             pos.X = 100;
             Assert.AreEqual(100, pos.X);
         }
