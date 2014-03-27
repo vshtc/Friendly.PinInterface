@@ -48,14 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseInterfaces\IAppFriendFunctions.cs" />
+    <Compile Include="BaseInterfaces\IAppVarFunctions.cs" />
+    <Compile Include="BaseInterfaces\IModifyAsync.cs" />
+    <Compile Include="BaseInterfaces\IModifyOperationTypeInfo.cs" />
+    <Compile Include="IConstructor.cs" />
     <Compile Include="IInstance.cs" />
-    <Compile Include="IModifyInvoke.cs" />
     <Compile Include="Inside\FriendlyProxy.cs" />
     <Compile Include="Inside\FriendlyProxyInstance.cs" />
     <Compile Include="Inside\FriendlyProxyStatic.cs" />
     <Compile Include="InterfaceHelper.cs" />
     <Compile Include="IStatic.cs" />
-    <Compile Include="ConstructorAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

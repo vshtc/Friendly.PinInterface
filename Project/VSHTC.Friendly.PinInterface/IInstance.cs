@@ -1,9 +1,10 @@
 ﻿using Codeer.Friendly;
+using VSHTC.Friendly.PinInterface.BaseInterfaces;
 
 namespace VSHTC.Friendly.PinInterface
 {
     /// <summary>
-    /// インスタンスのインターフェイス
+    /// インスタンスのインターフェイスです。
     /// </summary>
-    public interface IInstance : IModifyInvoke, IAppVarOwner { }
+    public interface IInstance : IModifyAsync, IAppVarOwner { }
 }

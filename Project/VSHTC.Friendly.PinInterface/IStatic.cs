@@ -1,7 +1,9 @@
-﻿namespace VSHTC.Friendly.PinInterface
+﻿using VSHTC.Friendly.PinInterface.BaseInterfaces;
+
+namespace VSHTC.Friendly.PinInterface
 {
     /// <summary>
-    /// staticなインターフェイス
+    /// staticインターフェイスです。
     /// </summary>
-    public interface IStatic : IModifyInvoke { }
+    public interface IStatic : IAppFriendFunctions, IModifyOperationTypeInfo, IModifyAsync { }
 }

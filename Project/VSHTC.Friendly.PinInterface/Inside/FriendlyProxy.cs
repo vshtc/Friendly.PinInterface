@@ -8,6 +8,7 @@ using Codeer.Friendly;
 using Codeer.Friendly.Dynamic;
 using System.Text;
 using System.Collections.Generic;
+using VSHTC.Friendly.PinInterface.BaseInterfaces;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -37,7 +38,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
 
             //IModifyInvoke‚Ì‘Î‰ž
-            if ((method.DeclaringType == typeof(IModifyInvoke) && method.Name == "AsyncNext"))
+            if ((method.DeclaringType == typeof(IModifyAsync) && method.Name == "AsyncNext"))
             {
                 if (_asyncNext != null)
                 {
@@ -46,7 +47,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 _asyncNext = new Async();
                 return new ReturnMessage(_asyncNext, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
-            if ((method.DeclaringType == typeof(IModifyInvoke) && method.Name == "OperationTypeInfoNext"))
+            if ((method.DeclaringType == typeof(IModifyOperationTypeInfo) && method.Name == "OperationTypeInfoNext"))
             {
                 if (_operationTypeInfoNext != null)
                 {

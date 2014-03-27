@@ -146,9 +146,8 @@ namespace Test
             double Y { get; set; }
         }
 
-        interface IPointStatic : IStatic
+        interface IPointStatic : IConstructor
         {
-            [Constructor]
             IPoint New();
 
         }

@@ -20,16 +20,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             try
             {
-                if (method.GetCustomAttributes(true).Any(e => e.GetType() == typeof(ConstructorAttribute)))
-                {
-                    if (async != null)
-                    {
-                        throw new NotSupportedException("オブジェクト生成にAsyncを使用することはできません。");
-                    }
-                    return (typeInfo == null) ?
-                        App.Dim(new NewInfo(_typeFullName, args)) :
-                        App.Dim(new NewInfo(_typeFullName, args), typeInfo);
-                }
                 return GetFriendlyOperation(App, _typeFullName + "." + name, async, typeInfo)(args);
             }
             finally
@@ -39,4 +29,37 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
         }
     }
+
+
+    class FriendlyProxyConstructor<TInterface> : FriendlyProxy<TInterface>
+    where TInterface : IConstructor
+    {
+        string _typeFullName;
+
+        public FriendlyProxyConstructor(AppFriend app, string typeFullName)
+            : base(app)
+        {
+            _typeFullName = typeFullName;
+        }
+
+        protected override AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo typeInfo)
+        {
+            try
+            {
+                if (async != null)
+                {
+                    throw new NotSupportedException("オブジェクト生成にAsyncを使用することはできません。");
+                }
+                return (typeInfo == null) ?
+                    App.Dim(new NewInfo(_typeFullName, args)) :
+                    App.Dim(new NewInfo(_typeFullName, args), typeInfo);
+            }
+            finally
+            {
+                async = null;
+                typeInfo = null;
+            }
+        }
+    }
 }
+

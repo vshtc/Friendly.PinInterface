@@ -1,18 +1,10 @@
-﻿using Codeer.Friendly;
-
-namespace VSHTC.Friendly.PinInterface
-{
+﻿namespace VSHTC.Friendly.PinInterface.BaseInterfaces
+{   
     /// <summary>
-    /// 次回呼び出しの修飾。
+    /// 型情報修飾
     /// </summary>
-    public interface IModifyInvoke
+    public interface IModifyOperationTypeInfo
     {
-        /// <summary>
-        /// 次回呼び出しを非同期で実行させます。
-        /// </summary>
-        /// <returns>非同期実行オブジェクト</returns>
-        Async AsyncNext();
-
         /// <summary>
         /// 次回呼び出しの型を明確にします。
         /// </summary>
