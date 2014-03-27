@@ -1,7 +1,7 @@
-﻿namespace VSHTC.Friendly.PinInterface.BaseInterfaces
+﻿namespace VSHTC.Friendly.PinInterface.FunctionalInterfaces
 {   
     /// <summary>
-    /// 型情報修飾
+    /// 型情報修飾。
     /// </summary>
     public interface IModifyOperationTypeInfo
     {

@@ -4,12 +4,12 @@ using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
-    class FriendlyProxyStatic<TInterface> : FriendlyProxy<TInterface>
-        where TInterface : IStatic
+    class FriendlyProxyConstructor<TInterface> : FriendlyProxy<TInterface>
+    where TInterface : IConstructor
     {
         string _typeFullName;
 
-        public FriendlyProxyStatic(AppFriend app, string typeFullName)
+        public FriendlyProxyConstructor(AppFriend app, string typeFullName)
             : base(app)
         {
             _typeFullName = typeFullName;
@@ -19,7 +19,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             try
             {
-                return FriendlyProxyUtiltiy.GetFriendlyOperation(App, _typeFullName + "." + name, async, typeInfo)(args);
+                return (typeInfo == null) ?
+                    App.Dim(new NewInfo(_typeFullName, args)) :
+                    App.Dim(new NewInfo(_typeFullName, args), typeInfo);
             }
             finally
             {
@@ -29,4 +31,3 @@ namespace VSHTC.Friendly.PinInterface.Inside
         }
     }
 }
-

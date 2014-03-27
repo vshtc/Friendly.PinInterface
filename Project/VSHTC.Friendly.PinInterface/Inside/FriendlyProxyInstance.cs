@@ -1,6 +1,6 @@
-﻿using Codeer.Friendly;
-using System;
+﻿using System;
 using System.Reflection;
+using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -15,19 +15,15 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _appVar = appVar;
         }
 
-        public AppVar AppVar {
-            get { return _appVar; }
-        }
-
         protected override AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo typeInfo)
         {
-            if ((method.DeclaringType == typeof(IAppVarOwner) && name == "AppVar"))
+            if (InterfacesSpec.IsAppVar(method))
             {
                 return _appVar;
             }
             try
             {
-                return GetFriendlyOperation(_appVar, name, async, typeInfo)(args);
+                return FriendlyProxyUtiltiy.GetFriendlyOperation(_appVar, name, async, typeInfo)(args);
             }
             finally
             {

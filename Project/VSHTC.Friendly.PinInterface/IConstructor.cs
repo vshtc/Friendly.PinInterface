@@ -1,4 +1,4 @@
-﻿using VSHTC.Friendly.PinInterface.BaseInterfaces;
+﻿using VSHTC.Friendly.PinInterface.FunctionalInterfaces;
 
 namespace VSHTC.Friendly.PinInterface
 {
