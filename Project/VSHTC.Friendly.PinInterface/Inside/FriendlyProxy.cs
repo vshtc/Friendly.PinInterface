@@ -8,8 +8,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     abstract class FriendlyProxy<TInterface> : RealProxy
     {
-        Async _asyncNext;
-        OperationTypeInfo _operationTypeInfoNext;
+        protected Async _asyncNext;
+        protected OperationTypeInfo _operationTypeInfoNext;
 
         protected AppFriend App { get; private set; }
 
@@ -26,7 +26,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             //特殊インターフェイス対応
             object retunObject;
-            if (InterfacesSpec.TryExecuteSpecialInterface<TInterface>(this as IAppVarOwner, method, mm.Args, 
+            if (InterfacesSpec.TryExecute<TInterface>(this as IAppVarOwner, method, mm.Args, 
                 ref _asyncNext, ref _operationTypeInfoNext, out retunObject))
             {
                 return new ReturnMessage(retunObject, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
@@ -38,7 +38,16 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             //呼び出し            
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);
-            var returnedAppVal = Invoke(method, invokeName, args.InvokeArguments, ref _asyncNext, ref _operationTypeInfoNext);
+            AppVar returnedAppVal = null;
+            try
+            {
+                returnedAppVal = Invoke(method, invokeName, args.InvokeArguments, _asyncNext, _operationTypeInfoNext);
+            }
+            finally
+            {
+                _asyncNext = null;
+                _operationTypeInfoNext = null;
+            }
 
             //戻り値とout,refの処理
             object objReturn = ReturnObjectResolver.Resolve(isAsyunc, returnedAppVal, method.ReturnParameter);
@@ -46,6 +55,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);
         }
 
-        protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo info);
+        protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo info);
     }
 }

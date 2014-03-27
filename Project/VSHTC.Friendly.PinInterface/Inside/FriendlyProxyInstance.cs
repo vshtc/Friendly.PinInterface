@@ -15,17 +15,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
             AppVar = appVar;
         }
 
-        protected override AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo typeInfo)
+        protected override AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo typeInfo)
         {
-            try
-            {
-                return FriendlyInvokeSpec.GetFriendlyOperation(AppVar, name, async, typeInfo)(args);
-            }
-            finally
-            {
-                async = null;
-                typeInfo = null;
-            }
+            return FriendlyInvokeSpec.GetFriendlyOperation(AppVar, name, async, typeInfo)(args);
         }
     }
 }

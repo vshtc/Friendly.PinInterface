@@ -6,7 +6,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     static class InterfacesSpec
     {
-        internal static bool TryExecuteSpecialInterface<TInterface>(IAppVarOwner appVarOwner, MethodInfo method, object[] args,
+        internal static bool TryExecute<TInterface>(IAppVarOwner appVarOwner, MethodInfo method, object[] args,
                                 ref Async asyncNext, ref OperationTypeInfo operationTypeInfoNext, out object retunObject)
         {
             retunObject = null;

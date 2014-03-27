@@ -15,19 +15,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _typeFullName = typeFullName;
         }
 
-        protected override AppVar Invoke(MethodInfo method, string name, object[] args, ref Async async, ref OperationTypeInfo typeInfo)
+        protected override AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo typeInfo)
         {
-            try
-            {
-                return (typeInfo == null) ?
-                    App.Dim(new NewInfo(_typeFullName, args)) :
-                    App.Dim(new NewInfo(_typeFullName, args), typeInfo);
-            }
-            finally
-            {
-                async = null;
-                typeInfo = null;
-            }
+            return (typeInfo == null) ?
+                     App.Dim(new NewInfo(_typeFullName, args)) :
+                     App.Dim(new NewInfo(_typeFullName, args), typeInfo);
         }
     }
 }
