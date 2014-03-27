@@ -59,9 +59,9 @@ namespace VSHTC.Friendly.PinInterface
         public static TInterface Pin<TInterface>(this AppFriend app, string targetTypeFullName)
         where TInterface : IAppFriendFunctions
         {
-            Type proxyType = FriendlyProxyUtiltiy.HasInterface(typeof(TInterface), typeof(IStatic)) ?
+            Type proxyType = TypeUtility.HasInterface(typeof(TInterface), typeof(IStatic)) ?
                 typeof(FriendlyProxyStatic<>) : typeof(FriendlyProxyConstructor<>);
-            return FriendlyProxyUtiltiy.WrapFriendlyProxy<TInterface>(proxyType, app, targetTypeFullName);
+            return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(proxyType, app, targetTypeFullName);
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>後。</returns>
         public static T Cast<T>(this IAppVarOwner source)
         {
-            return FriendlyProxyUtiltiy.HasInterface(typeof(T), typeof(IInstance)) ?
-                FriendlyProxyUtiltiy.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar) :
+            return TypeUtility.HasInterface(typeof(T), typeof(IInstance)) ?
+                FriendlyProxyFactory.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar) :
                 (T)source.AppVar.Core;
         }
     }

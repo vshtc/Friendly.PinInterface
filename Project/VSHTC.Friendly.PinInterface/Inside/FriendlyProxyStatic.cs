@@ -19,7 +19,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             try
             {
-                return FriendlyProxyUtiltiy.GetFriendlyOperation(App, _typeFullName + "." + name, async, typeInfo)(args);
+                return FriendlyInvokeSpec.GetFriendlyOperation(App, _typeFullName + "." + name, async, typeInfo)(args);
             }
             finally
             {
