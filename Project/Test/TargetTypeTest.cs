@@ -102,7 +102,7 @@ namespace Test
         {
             Assert.AreEqual(
                 typeof(Dictionary<int, Point>).FullName,
-                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, Point_.Instance>.Constructor)));
+                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, Point_.Instance>.Instance)));
         }
 
         [TestMethod]
@@ -146,7 +146,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestX()
+        public void TestGenericConstructor()
         {
             var dic = _app.Pin<Dictionary_<int, Point_.Instance>.Constructor>().New();
             dic.Add(1, _app.Pin<Point_.Constructor>().New());
