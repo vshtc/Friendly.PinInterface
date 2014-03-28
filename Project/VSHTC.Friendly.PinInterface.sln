@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Target", "Target\Target.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3A900542-0D80-4A40-90FC-E3F22F108838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSHTC.Friendly.PinInterface", "VSHTC.Friendly.PinInterface\VSHTC.Friendly.PinInterface.csproj", "{2D1B0C42-0050-4E70-9567-8925246DFFFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSHTC.Friendly.PinInterface.2.0", "VSHTC.Friendly.PinInterface.2.0\VSHTC.Friendly.PinInterface.2.0.csproj", "{2D1B0C42-0050-4E70-9567-8925246DFFFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSHTC.Friendly.PinInterface.3.5", "VSHTC.Friendly.PinInterface.3.5\VSHTC.Friendly.PinInterface.3.5.csproj", "{33EA5391-10DA-4C94-8A93-B0B89862D0A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D1B0C42-0050-4E70-9567-8925246DFFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33EA5391-10DA-4C94-8A93-B0B89862D0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33EA5391-10DA-4C94-8A93-B0B89862D0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33EA5391-10DA-4C94-8A93-B0B89862D0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33EA5391-10DA-4C94-8A93-B0B89862D0A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

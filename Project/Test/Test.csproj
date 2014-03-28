@@ -35,16 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codeer.Friendly, Version=2.2.0.0, Culture=neutral, PublicKeyToken=6c44da6fca38aa86, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Codeer.Friendly">
       <HintPath>..\packages\Codeer.Friendly.2.2.0\lib\net40\Codeer.Friendly.dll</HintPath>
     </Reference>
-    <Reference Include="Codeer.Friendly.Dynamic, Version=2.2.0.0, Culture=neutral, PublicKeyToken=376bc779077733e8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Codeer.Friendly.Dynamic">
       <HintPath>..\packages\Codeer.Friendly.2.2.0\lib\net40\Codeer.Friendly.Dynamic.dll</HintPath>
     </Reference>
-    <Reference Include="Codeer.Friendly.Windows, Version=2.3.0.0, Culture=neutral, PublicKeyToken=532f270f1da385b3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Codeer.Friendly.Windows">
       <HintPath>..\packages\Codeer.Friendly.Windows.2.3.0\lib\net20\Codeer.Friendly.Windows.dll</HintPath>
     </Reference>
     <Reference Include="Codeer.Friendly.Windows.Grasp">
@@ -90,9 +87,13 @@
       <Project>{dab9bd76-a107-450e-8dc9-1dd8d6439ed0}</Project>
       <Name>Target</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VSHTC.Friendly.PinInterface\VSHTC.Friendly.PinInterface.csproj">
+    <ProjectReference Include="..\VSHTC.Friendly.PinInterface.2.0\VSHTC.Friendly.PinInterface.2.0.csproj">
       <Project>{2d1b0c42-0050-4e70-9567-8925246dfffd}</Project>
-      <Name>VSHTC.Friendly.PinInterface</Name>
+      <Name>VSHTC.Friendly.PinInterface.2.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VSHTC.Friendly.PinInterface.3.5\VSHTC.Friendly.PinInterface.3.5.csproj">
+      <Project>{33ea5391-10da-4c94-8a93-b0b89862d0a0}</Project>
+      <Name>VSHTC.Friendly.PinInterface.3.5</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

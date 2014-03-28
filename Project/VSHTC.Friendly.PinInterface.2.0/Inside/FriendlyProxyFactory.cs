@@ -1,5 +1,6 @@
 ﻿using System;
 using Codeer.Friendly;
+using System.Runtime.Remoting.Proxies;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -18,7 +19,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         internal static object WrapFriendlyProxy(Type proxyType, Type interfaceType, object[] args)
         {
             var friendlyProxyType = proxyType.MakeGenericType(interfaceType);
-            dynamic friendlyProxy = Activator.CreateInstance(friendlyProxyType, args);
+            RealProxy friendlyProxy = Activator.CreateInstance(friendlyProxyType, args) as RealProxy;
             return friendlyProxy.GetTransparentProxy();
         }
     }

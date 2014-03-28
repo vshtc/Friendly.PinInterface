@@ -27,7 +27,24 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return invokeName;
         }
 
-        internal static FriendlyOperation GetFriendlyOperation(dynamic target, string name, Async async, OperationTypeInfo typeInfo)
+        internal static FriendlyOperation GetFriendlyOperation(AppVar target, string name, Async async, OperationTypeInfo typeInfo)
+        {
+            if (async != null && typeInfo != null)
+            {
+                return target[name, typeInfo, async];
+            }
+            else if (async != null)
+            {
+                return target[name, async];
+            }
+            else if (typeInfo != null)
+            {
+                return target[name, typeInfo];
+            }
+            return target[name];
+        }
+
+        internal static FriendlyOperation GetFriendlyOperation(AppFriend target, string name, Async async, OperationTypeInfo typeInfo)
         {
             if (async != null && typeInfo != null)
             {

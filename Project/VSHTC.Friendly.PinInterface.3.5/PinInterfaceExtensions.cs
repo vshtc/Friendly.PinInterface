@@ -9,7 +9,7 @@ namespace VSHTC.Friendly.PinInterface
     /// <summary>
     /// インターフェイス付加のためのヘルパメソッドです。
     /// </summary>
-    public static class InterfaceHelper
+    public static class PinInterfaceExtensions
     {
         /// <summary>
         /// AppVarの操作を指定のインターフェイスで固定します。
@@ -20,7 +20,7 @@ namespace VSHTC.Friendly.PinInterface
         public static TInterface Pin<TInterface>(this AppVar appVar)
              where TInterface : IInstance
         {
-            return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
+            return InterfaceHelper.Pin<TInterface>(appVar);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace VSHTC.Friendly.PinInterface
         public static TInterface Pin<TInterface, TTarget>(this AppFriend app)
         where TInterface : IAppFriendFunctions
         {
-            return Pin<TInterface>(app, typeof(TTarget));
+            return InterfaceHelper.Pin<TInterface, TTarget>(app);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace VSHTC.Friendly.PinInterface
         public static TInterface Pin<TInterface>(this AppFriend app, Type targetType)
         where TInterface : IAppFriendFunctions
         {
-            return Pin<TInterface>(app, targetType.FullName);
+            return InterfaceHelper.Pin<TInterface>(app, targetType.FullName);
         }
 
         /// <summary>
@@ -59,9 +59,7 @@ namespace VSHTC.Friendly.PinInterface
         public static TInterface Pin<TInterface>(this AppFriend app, string targetTypeFullName)
         where TInterface : IAppFriendFunctions
         {
-            Type proxyType = TypeUtility.HasInterface(typeof(TInterface), typeof(IStatic)) ?
-                typeof(FriendlyProxyStatic<>) : typeof(FriendlyProxyConstructor<>);
-            return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(proxyType, app, targetTypeFullName);
+            return InterfaceHelper.Pin<TInterface>(app, targetTypeFullName);
         }
 
         /// <summary>
@@ -74,9 +72,7 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>後。</returns>
         public static T Cast<T>(this IAppVarOwner source)
         {
-            return TypeUtility.HasInterface(typeof(T), typeof(IInstance)) ?
-                FriendlyProxyFactory.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar) :
-                (T)source.AppVar.Core;
+            return InterfaceHelper.Cast<T>(source);
         }
     }
 }

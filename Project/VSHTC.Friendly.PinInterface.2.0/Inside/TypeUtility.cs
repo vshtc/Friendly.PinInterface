@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -7,7 +6,14 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static bool HasInterface(Type ownerType, Type inType)
         {
-            return ownerType.GetInterfaces().Any(e => e == inType);
+            foreach (var element in ownerType.GetInterfaces())
+            {
+                if (element == inType)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         internal static object GetDefault(Type type)

@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VSHTC.Friendly.PinInterface</RootNamespace>
-    <AssemblyName>VSHTC.Friendly.PinInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>VSHTC.Friendly.PinInterface.2.0</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,21 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codeer.Friendly, Version=2.2.0.0, Culture=neutral, PublicKeyToken=6c44da6fca38aa86, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Codeer.Friendly.2.2.0\lib\net40\Codeer.Friendly.dll</HintPath>
-    </Reference>
-    <Reference Include="Codeer.Friendly.Dynamic, Version=2.2.0.0, Culture=neutral, PublicKeyToken=376bc779077733e8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Codeer.Friendly.2.2.0\lib\net40\Codeer.Friendly.Dynamic.dll</HintPath>
+    <Reference Include="Codeer.Friendly">
+      <HintPath>..\packages\Codeer.Friendly.2.2.0\lib\net20\Codeer.Friendly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FunctionalInterfaces\IAppFriendFunctions.cs" />

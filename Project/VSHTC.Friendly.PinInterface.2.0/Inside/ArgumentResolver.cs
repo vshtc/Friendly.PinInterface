@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Codeer.Friendly;
-using Codeer.Friendly.Dynamic;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     class ArgumentResolver
     {
+        delegate object ResolveArgument();
         internal object[] InvokeArguments { get; private set; }
-        Func<object>[] _refoutArgsFunc;
+        ResolveArgument[] _resolveArguments;
 
         internal ArgumentResolver(AppFriend app, MethodInfo method, bool isAsyunc, object[] src)
         {
             InvokeArguments = new object[src.Length];
-            _refoutArgsFunc = new Func<object>[src.Length];
+            _resolveArguments = new ResolveArgument[src.Length];
             var parameters = method.GetParameters();
             for (int i = 0; i < parameters.Length; i++)
             {
@@ -23,25 +22,30 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 if (paramType.IsByRef)
                 {
                     object arg;
-                    Func<object> refoutFunc;
+                    ResolveArgument refoutFunc;
                     ResolveRefOutArgs(app, paramType.GetElementType(), srcObj, out arg, out refoutFunc);
                     InvokeArguments[i] = arg;
-                    _refoutArgsFunc[i] = isAsyunc ? (() => TypeUtility.GetDefault(paramType)) : refoutFunc;
+                    _resolveArguments[i] = isAsyunc ? (() => TypeUtility.GetDefault(paramType)) : refoutFunc;
                 }
                 else
                 {
                     InvokeArguments[i] = srcObj;
-                    _refoutArgsFunc[i] = () => srcObj;
+                    _resolveArguments[i] = () => srcObj;
                 }
             }
         }
 
         internal object[] GetRefOutArgs()
         {
-            return _refoutArgsFunc.Select(e => e()).ToArray();
+            object[] args = new object[_resolveArguments.Length];
+            for (int i = 0; i < _resolveArguments.Length; i++)
+            {
+                args[i] = _resolveArguments[i]();
+            }
+            return args;
         }
 
-        static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out Func<object> refoutFunc)
+        static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
         {
             if (type.IsInterface)
             {
@@ -49,7 +53,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 {
                     AppVar appVar = app.Dim();
                     arg = appVar;
-                    refoutFunc = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
+                    resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
                 }
                 else
                 {
@@ -57,21 +61,21 @@ namespace VSHTC.Friendly.PinInterface.Inside
                     if (appVarOwner != null)
                     {
                         arg = src;
-                        refoutFunc = () => src;
+                        resolveArgument = () => src;
                     }
                     else
                     {
                         AppVar appVar = app.Dim();
                         arg = appVar;
-                        refoutFunc = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
+                        resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
                     }
                 }
             }
             else
             {
-                AppVar appVar = app.Copy(src);
+                AppVar appVar = app.Dim(src);
                 arg = appVar;
-                refoutFunc = () => appVar.Core;
+                resolveArgument = () => appVar.Core;
             }
         }
     }
