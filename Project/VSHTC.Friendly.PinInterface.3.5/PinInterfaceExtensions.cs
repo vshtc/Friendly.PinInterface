@@ -7,20 +7,20 @@ using VSHTC.Friendly.PinInterface.FunctionalInterfaces;
 namespace VSHTC.Friendly.PinInterface
 {
     /// <summary>
-    /// インターフェイス付加のためのヘルパメソッドです。
+    /// PinInterfaceHelperの処理を拡張メソッドで提供します。
     /// </summary>
     public static class PinInterfaceExtensions
-    {
+    {        
         /// <summary>
-        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// AppFriendの操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="appVar">アプリケーション変数。</param>
+        /// <param name="app">アプリケーション操作クラス。</param>
         /// <returns>操作用インターフェイス。</returns>
-        public static TInterface Pin<TInterface>(this AppVar appVar)
-             where TInterface : IInstance
+        public static TInterface Pin<TInterface>(this AppFriend app)
+        where TInterface : IAppFriendFunctions
         {
-            return InterfaceHelper.Pin<TInterface>(appVar);
+            return InterfaceHelper.Pin<TInterface>(app);
         }
 
         /// <summary>
@@ -60,6 +60,18 @@ namespace VSHTC.Friendly.PinInterface
         where TInterface : IAppFriendFunctions
         {
             return InterfaceHelper.Pin<TInterface>(app, targetTypeFullName);
+        }
+
+        /// <summary>
+        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="appVar">アプリケーション変数。</param>
+        /// <returns>操作用インターフェイス。</returns>
+        public static TInterface Pin<TInterface>(this AppVar appVar)
+             where TInterface : IInstance
+        {
+            return InterfaceHelper.Pin<TInterface>(appVar);
         }
 
         /// <summary>

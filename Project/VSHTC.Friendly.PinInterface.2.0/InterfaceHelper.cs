@@ -3,24 +3,30 @@ using System.Runtime.Remoting.Proxies;
 using VSHTC.Friendly.PinInterface.Inside;
 using Codeer.Friendly;
 using VSHTC.Friendly.PinInterface.FunctionalInterfaces;
+using VSHTC.Friendly.PinInterface.Properties;
 
 namespace VSHTC.Friendly.PinInterface
 {
     /// <summary>
-    /// インターフェイス付加のためのヘルパメソッドです。
+    /// インターフェイス付加、変更のためのヘルパメソッドです。
     /// </summary>
     public static class InterfaceHelper
     {
         /// <summary>
-        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// AppFriendの操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="appVar">アプリケーション変数。</param>
+        /// <param name="app">アプリケーション操作クラス。</param>
         /// <returns>操作用インターフェイス。</returns>
-        public static TInterface Pin<TInterface>(AppVar appVar)
-             where TInterface : IInstance
+        public static TInterface Pin<TInterface>(AppFriend app)
+        where TInterface : IAppFriendFunctions
         {
-            return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
+            string targetTypeFullName = TargetTypeUtility.GetFullName(app, typeof(TInterface));
+            if (string.IsNullOrEmpty(targetTypeFullName))
+            {
+                throw new NotSupportedException(Resources.ErrorNotFoundTargetType);
+            }
+            return Pin<TInterface>(app, targetTypeFullName);
         }
 
         /// <summary>
@@ -62,6 +68,18 @@ namespace VSHTC.Friendly.PinInterface
             Type proxyType = TypeUtility.HasInterface(typeof(TInterface), typeof(IStatic)) ?
                 typeof(FriendlyProxyStatic<>) : typeof(FriendlyProxyConstructor<>);
             return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(proxyType, app, targetTypeFullName);
+        }
+
+        /// <summary>
+        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="appVar">アプリケーション変数。</param>
+        /// <returns>操作用インターフェイス。</returns>
+        public static TInterface Pin<TInterface>(AppVar appVar)
+             where TInterface : IInstance
+        {
+            return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
 
         /// <summary>

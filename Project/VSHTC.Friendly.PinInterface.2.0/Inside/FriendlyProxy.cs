@@ -36,6 +36,12 @@ namespace VSHTC.Friendly.PinInterface.Inside
             //引数解決
             ArgumentResolver args = new ArgumentResolver(App, method, isAsyunc, mm.Args);
 
+            //OperationTypeInfoが設定されていなければ、メソッドの型から取得してみる
+            if (_operationTypeInfoNext == null)
+            {
+                _operationTypeInfoNext = ArgumentResolver.TryCreateOperationTypeInfo<TInterface>(App, method);
+            }
+
             //呼び出し            
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);
             AppVar returnedAppVal = null;

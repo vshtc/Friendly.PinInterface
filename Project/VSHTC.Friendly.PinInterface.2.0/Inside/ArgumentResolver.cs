@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Codeer.Friendly;
+using System.Collections.Generic;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -43,6 +44,26 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 args[i] = _resolveArguments[i]();
             }
             return args;
+        }
+
+        internal static OperationTypeInfo TryCreateOperationTypeInfo<TInterface>(AppFriend app, MethodInfo method)
+        {
+            string declaringType = TargetTypeUtility.GetFullName(app, typeof(TInterface));
+            if (string.IsNullOrEmpty(declaringType))
+            {
+                return null;
+            }
+            List<string> arguments = new List<string>();
+            foreach (var arg in method.GetParameters())
+            {
+                string argTarget = TargetTypeUtility.GetFullName(app, arg.ParameterType);
+                if (string.IsNullOrEmpty(argTarget))
+                {
+                    return null;
+                }
+                arguments.Add(argTarget);
+            }
+            return new OperationTypeInfo(declaringType, arguments.ToArray());
         }
 
         static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)

@@ -139,7 +139,6 @@ namespace Test
             Assert.AreEqual(100, array[1]);
         }
 
-
         interface IPoint : IInstance
         {
             double X { get; set; }
@@ -159,6 +158,5 @@ namespace Test
             pos.X = 100;
             Assert.AreEqual(100, pos.X);
         }
-            
     }
 }

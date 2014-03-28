@@ -1,0 +1,158 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Windows;
+using Codeer.Friendly;
+using Codeer.Friendly.Dynamic;
+using Codeer.Friendly.Windows;
+using System.Diagnostics;
+using VSHTC.Friendly.PinInterface;
+using VSHTC.Friendly.PinInterface.Inside;
+using System.Windows.Documents;
+using System.Collections.Generic;
+
+namespace Test
+{
+    [TestClass]
+    public class TargetTypeTest
+    {
+        WindowsAppFriend _app;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _app = new WindowsAppFriend(Process.Start("Target.exe"));
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            Process.GetProcessById(_app.ProcessId).CloseMainWindow();
+        }
+
+
+        [TargetType("System.Windows.Point")]
+        class Point_
+        {
+            internal interface Instance : IInstance
+            {
+                double X { get; set; }
+                double Y { get; set; }
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New();
+            }
+        }
+
+        [TargetType("System.Collections.Generic.Dictionary`2")]
+        class Dictionary_<Key, Value>
+        {
+            internal interface Instance : IInstance
+            {
+                Value this[Key key] { get; set; }
+                void Add(Key key, Value value);
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New();
+            }
+        }
+
+        [TargetType("[]")]
+        class Array1<T>
+        {
+            internal interface Instance : IInstance
+            {
+                T this[int index] { get; set; }
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New(int count);
+            }
+        }
+
+        [TargetType("[,]")]
+        class Array2<T>
+        {
+            internal interface Instance : IInstance
+            {
+                T this[int index0, int index1] { get; set; }
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New(int count0, int count1);
+            }
+        }
+
+        [TargetType("[,,]")]
+        class Array3<T>
+        {
+            internal interface Instance : IInstance
+            {
+                T this[int index0, int index1, int index2] { get; set; }
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New(int count0, int count1, int count2);
+            }
+        }
+
+        [TestMethod]
+        public void TestGeneric()
+        {
+            Assert.AreEqual(
+                typeof(Dictionary<int, Point>).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, Point_.Instance>.Constructor)));
+        }
+
+        [TestMethod]
+        public void TestArray()
+        {
+            Assert.AreEqual(
+                typeof(int[]).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Array1<int>.Instance)));
+        }
+
+        [TestMethod]
+        public void TestJugArray()
+        {
+            Assert.AreEqual(
+                typeof(int[][]).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Array1<Array1<int>.Instance>.Instance)));
+        }
+
+        [TestMethod]
+        public void TestArray2()
+        {
+            Assert.AreEqual(
+                typeof(int[,]).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Array2<int>.Instance)));
+        }
+
+        [TestMethod]
+        public void TestArray1_2()
+        {
+            Assert.AreEqual(
+                typeof(int[][,]).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Array1<Array2<int>.Instance>.Instance)));
+        }
+
+        [TestMethod]
+        public void TestArray1_2_3()
+        {
+            Assert.AreEqual(
+                typeof(int[][,][, ,]).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Array1<Array2<Array3<int>.Instance>.Instance>.Instance)));
+        }
+
+        [TestMethod]
+        public void TestX()
+        {
+            var dic = _app.Pin<Dictionary_<int, Point_.Instance>.Constructor>().New();
+            dic.Add(1, _app.Pin<Point_.Constructor>().New());
+            dic[1].X = 100;
+        }
+
+        //@@@非同期テスト追加とOperationTypeInfoテスト（自動推測も）追加
+    }
+}
