@@ -49,6 +49,16 @@ namespace Test
             {
                 return 2;
             }
+            static int FuncRefOut(ref string value1, out string value2)
+            {
+                value2 = null;
+                return 1;
+            }
+            static int FuncRefOut(ref Data value1, out Data value2)
+            {
+                value2 = null;
+                return 2;
+            }
         }
 
         interface ITargetStatic : IStatic
@@ -56,10 +66,20 @@ namespace Test
             int Func();
             int Func(string value);
             int Func(Data value);
+            int FuncRefOut(ref string value1, out string value2);
+            int FuncRefOut(ref Data value1, out Data value2);
         }
 
         class TargetInstance
         {
+            int _value;
+
+            TargetInstance() { }
+
+            TargetInstance(string data) { _value = 1; }
+
+            TargetInstance(Data data) { _value = 2; }
+
             int Func()
             {
                 return 0;
@@ -79,6 +99,14 @@ namespace Test
             int Func();
             int Func(string value);
             int Func(Data value);
+            int _value { get; }
+        }
+
+        [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
+        interface ITargetInstanceConstructor : IConstructor
+        {
+            ITargetInstance New(string value);
+            ITargetInstance New(Data value);
         }
 
         [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
@@ -88,7 +116,6 @@ namespace Test
             int Func(string value);
             int Func(Data value);
         }
-
 
         [TestMethod]
         public void TestOperationTypeInfoStaticAuto()
@@ -118,8 +145,33 @@ namespace Test
             Assert.AreEqual(2, target.Func((Data)null));
         }
 
-        //@@@outrefを正しく解釈できているのか
+        [TestMethod]
+        public void TestOperationTypeInfoStaticAutoRefOut()
+        {
+            var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
+            {
+                string value1 = null;
+                string value2 = null;
+                Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
+            }
+            {
+                Data value1 = null;
+                Data value2 = null;
+                Assert.AreEqual(2, target.FuncRefOut(ref value1, out value2));
+            }
+        }
 
-        //@@@コンストラクタも見ておく
+        [TestMethod]
+        public void TestOperationTypeInfoConstructorAuto()
+        {
+            {
+                var target = _app.Pin<ITargetInstanceConstructor>().New((string)null);
+                Assert.AreEqual(1, target._value);
+            }
+            {
+                var target = _app.Pin<ITargetInstanceConstructor>().New((Data)null);
+                Assert.AreEqual(2, target._value);
+            }
+        }
     }
 }

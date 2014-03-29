@@ -9,6 +9,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static string GetFullName(AppFriend app, Type type)
         {
+            if (type.IsByRef)
+            {
+                type = type.GetElementType();
+            }
             TargetTypeAttribute attr = GetTargetTypeAttribute(type);
             if (attr == null)
             {
