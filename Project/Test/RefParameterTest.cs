@@ -74,7 +74,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Refシリアライズ()
+        public void RefSerialize()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
@@ -89,7 +89,7 @@ namespace Test
             Assert.AreEqual("X", b);
             Point pos = new Point() { X = 1, Y = 2 };
 
-            //構造体
+            //struct.
             target.ChangeX(ref pos);
             Assert.AreEqual(10, pos.X);
             Assert.AreEqual(2, pos.Y);
@@ -105,12 +105,12 @@ namespace Test
             Assert.AreEqual(5, data.A);
             Assert.AreEqual("X", data.B);
 
-            //バッファにデータが入っている場合
+            //data is not null.
             target.Create(6, "Y", ref data);
             Assert.AreEqual(6, data.A);
             Assert.AreEqual("Y", data.B);
 
-            //構造体
+            //struct.
             IPoint pos = InterfaceHelper.Pin<IPoint>(_app.Copy(new Point() { X = 1, Y = 2 }));
             target.ChangeX(ref pos);
             Assert.AreEqual(10, pos.X);

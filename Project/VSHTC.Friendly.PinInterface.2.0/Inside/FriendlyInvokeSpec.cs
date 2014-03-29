@@ -8,7 +8,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static string GetInvokeName(MethodInfo method)
         {
-            //配列とその他の[]アクセスの差分を吸収する処理
+            //Treat array and other index access equally. 
             string invokeName = method.Name;
             if (invokeName == "get_Item")
             {
@@ -18,7 +18,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 return "[" + GetCommas(method.GetParameters().Length - 2) + "]";
             }
-            //プロパティーが指し示すものがフィールドである場合の対応
+            //Treat property and field equally. 
             else if (invokeName.IndexOf("get_") == 0 ||
                     invokeName.IndexOf("set_") == 0)
             {

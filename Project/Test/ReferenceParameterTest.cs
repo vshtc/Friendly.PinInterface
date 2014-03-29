@@ -63,7 +63,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void 参照としてインターフェイスを戻り値と引数につかう()
+        public void UseInterfaceReturnValueAndArguments()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
@@ -75,7 +75,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void 既存のFriendlyの操作に引数として渡すことができる()
+        public void CompatibilityFriendlyOperation()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();

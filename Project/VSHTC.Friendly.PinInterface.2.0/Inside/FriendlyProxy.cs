@@ -24,7 +24,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
             var mm = msg as IMethodMessage;
             var method = (MethodInfo)mm.MethodBase;
 
-            //特殊インターフェイス対応
             object retunObject;
             if (InterfacesSpec.TryExecute<TInterface>(this as IAppVarOwner, method, mm.Args, 
                 ref _asyncNext, ref _operationTypeInfoNext, out retunObject))
@@ -33,16 +32,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             bool isAsyunc = _asyncNext != null;
 
-            //引数解決
             ArgumentResolver args = new ArgumentResolver(App, method, isAsyunc, mm.Args);
 
-            //OperationTypeInfoが設定されていなければ、メソッドの型から取得してみる
             if (_operationTypeInfoNext == null)
             {
                 _operationTypeInfoNext = ArgumentResolver.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
             }
 
-            //呼び出し            
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);
             AppVar returnedAppVal = null;
             try
@@ -55,7 +51,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 _operationTypeInfoNext = null;
             }
 
-            //戻り値とout,refの処理
+            //Resolve return value and ref out arguments.
             object objReturn = ReturnObjectResolver.Resolve(isAsyunc, returnedAppVal, method.ReturnParameter);
             var refoutArgs = args.GetRefOutArgs();
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);

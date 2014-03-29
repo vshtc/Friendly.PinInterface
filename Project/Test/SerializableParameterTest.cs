@@ -58,7 +58,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void シリアライズ可能な引数と戻り値()
+        public void SerializableReturnValueAndArguments()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();

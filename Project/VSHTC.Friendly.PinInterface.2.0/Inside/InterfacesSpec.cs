@@ -11,8 +11,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             retunObject = null;
 
-            //GetTypeだけは相性が悪い
-            //思わぬところで呼び出され、シリアライズできず、クラッシュしてしまう。
+            //GetType is not proxy.
+            //Type may be unable to be serialized. 
             if (IsGetType(method))
             {
                 retunObject = typeof(TInterface);

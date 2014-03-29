@@ -61,7 +61,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Outシリアライズ()
+        public void OutSerialize()
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
