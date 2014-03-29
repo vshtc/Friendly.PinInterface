@@ -51,7 +51,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TreatPropertyAndFieldEqually()
+        public void PropertyAndFieldEqually()
         {
             var appStatic = _app.Pin<IApplicationStatic, Application>();
             var window = appStatic.Current.MainWindow;

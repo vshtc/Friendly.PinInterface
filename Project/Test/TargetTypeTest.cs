@@ -112,7 +112,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestGeneric()
+        public void NameGeneric()
         {
             Assert.AreEqual(
                 typeof(Dictionary<int, List<Point>>).FullName,
@@ -120,7 +120,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestArray()
+        public void NameArray()
         {
             Assert.AreEqual(
                 typeof(int[]).FullName,
@@ -128,7 +128,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestJugArray()
+        public void NameJugArray()
         {
             Assert.AreEqual(
                 typeof(int[][]).FullName,
@@ -136,7 +136,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestArray2()
+        public void NameArray2()
         {
             Assert.AreEqual(
                 typeof(int[,]).FullName,
@@ -144,7 +144,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestArray1_2()
+        public void NameArray1_2()
         {
             Assert.AreEqual(
                 typeof(int[][,]).FullName,
@@ -152,7 +152,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestArray1_2_3()
+        public void NameArray1_2_3()
         {
             Assert.AreEqual(
                 typeof(int[][,][, ,]).FullName,
@@ -160,7 +160,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestGenericConstructor()
+        public void GenericConstructor()
         {
             var dic = _app.Pin<Dictionary_<int, Point_.Instance>.Constructor>().New();
             var pos = _app.Pin<Point_.Constructor>().New();

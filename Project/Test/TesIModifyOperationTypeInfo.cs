@@ -118,7 +118,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestOperationTypeInfoStaticAuto()
+        public void OperationTypeInfoStaticAuto()
         {
             var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
             Assert.AreEqual(1, target.Func((string)null));
@@ -126,7 +126,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestOperationTypeInfoInstanceAuto()
+        public void OperationTypeInfoInstanceAuto()
         {
             var target = ((AppVar)_app.Type<TargetInstance>()()).Pin<ITargetInstanceAuto>();
             Assert.AreEqual(1, target.Func((string)null));
@@ -134,7 +134,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestOperationTypeInfo()
+        public void OperationTypeInfo()
         {
             var target = ((AppVar)_app.Type<TargetInstance>()()).Pin<ITargetInstance>();
             target.OperationTypeInfoNext(typeof(TargetInstance).FullName);
@@ -146,7 +146,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestOperationTypeInfoStaticAutoRefOut()
+        public void OperationTypeInfoStaticAutoRefOut()
         {
             var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
             {
@@ -162,7 +162,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestOperationTypeInfoConstructorAuto()
+        public void OperationTypeInfoConstructorAuto()
         {
             {
                 var target = _app.Pin<ITargetInstanceConstructor>().New((string)null);
