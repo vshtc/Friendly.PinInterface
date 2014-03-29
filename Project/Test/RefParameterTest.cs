@@ -78,18 +78,22 @@ namespace Test
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
+
+            //class
             Data data = null;
             target.Create(5, "X", ref data);
             Assert.AreEqual(5, data.A);
             Assert.AreEqual("X", data.B);
+
+            //primitive
             int a = 0;
             string b = null;
             target.GetRef(data, ref a, ref b);
             Assert.AreEqual(5, a);
             Assert.AreEqual("X", b);
-            Point pos = new Point() { X = 1, Y = 2 };
 
             //struct.
+            Point pos = new Point() { X = 1, Y = 2 };
             target.ChangeX(ref pos);
             Assert.AreEqual(10, pos.X);
             Assert.AreEqual(2, pos.Y);
@@ -100,6 +104,8 @@ namespace Test
         {
             AppVar v = _app.Type<Target>()();
             ITarget target = v.Pin<ITarget>();
+
+            //data is null.
             IData data = null;
             target.Create(5, "X", ref data);
             Assert.AreEqual(5, data.A);

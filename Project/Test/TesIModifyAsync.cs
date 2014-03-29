@@ -37,7 +37,6 @@ namespace Test
             MessageBoxResult Show(string messageBoxText);
         }
 
-        
         [Serializable]
         class Data { }
 

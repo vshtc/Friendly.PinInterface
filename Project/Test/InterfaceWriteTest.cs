@@ -21,6 +21,7 @@ namespace Test
         public void TestInitialize()
         {
             _app = new WindowsAppFriend(Process.Start("Target.exe"));
+            WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
         }
 
         [TestCleanup]
@@ -29,33 +30,24 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-        public interface IWindow : IInstance
+        class Target
         {
-            string Title { get; set; }
-            ITextBlock UserNameBlock { get; set; }
+            public int _data;
+            public int Data { get { return _data; } set { _data = value; } }
         }
 
-        public interface ITextBlock : IInstance
+        interface ITarget : IInstance
         {
-            string Text { get; set; }
-        }
-
-        public interface IApplication : IInstance
-        {
-            IWindow MainWindow { get; set; }
-        }
-
-        public interface IApplicationStatic : IStatic
-        {
-            IApplication Current { get; }
+            int _data { get; set; }
+            int Data { get; set; }
         }
 
         [TestMethod]
         public void PropertyAndFieldEqually()
         {
-            var appStatic = _app.Pin<IApplicationStatic, Application>();
-            var window = appStatic.Current.MainWindow;
-            Assert.AreEqual("Foo", window.UserNameBlock.Text);
+            var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
+            target._data = 100;
+            Assert.AreEqual(100, target.Data);
         }
 
         public interface IIndexAccess : IInstance

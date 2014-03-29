@@ -70,6 +70,11 @@ namespace Test
                 void Get(out Instance target);
             }
         }
+        internal interface ITarget : IInstance
+        {
+            int A { get; set; }
+            int Func();
+        }
 
         [TestMethod]
         public void PinStatic()
@@ -116,6 +121,16 @@ namespace Test
             AppVar appVar = _app.Type<Target>()(3);
             var target = appVar.Pin<Target_.Instance>();
             Assert.AreEqual(3, target.A);
+        }
+
+        [TestMethod]
+        public void Cast()
+        {
+            var src = _app.Pin<Target_.Constructor>().New(3);
+            var target = src.Cast<ITarget>();
+            Assert.AreEqual(3, target.A);
+            var copy = target.Cast<Target>();
+            Assert.AreEqual(3, copy.A);
         }
     }
 }
