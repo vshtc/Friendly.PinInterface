@@ -21,6 +21,7 @@ namespace Test
         public void TestInitialize()
         {
             _app = new WindowsAppFriend(Process.Start("Target.exe"));
+            WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
         }
 
         [TestCleanup]
@@ -56,7 +57,6 @@ namespace Test
                 Instance New();
             }
         }
-
 
         [TargetType("System.Collections.Generic.List`1")]
         class List_<T>
@@ -163,10 +163,10 @@ namespace Test
         public void TestGenericConstructor()
         {
             var dic = _app.Pin<Dictionary_<int, Point_.Instance>.Constructor>().New();
-            dic.Add(1, _app.Pin<Point_.Constructor>().New());
-            dic[1].X = 100;
+            var pos = _app.Pin<Point_.Constructor>().New();
+            pos.X = 100;
+            dic.Add(1, pos);
+            Assert.AreEqual(100, dic[1].X);
         }
-
-        //@@@非同期テスト追加とOperationTypeInfoテスト（自動推測も）追加
     }
 }

@@ -26,7 +26,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             if (IsOperationTypeInfoNext(method))
             {
-                operationTypeInfoNext = (OperationTypeInfo)args[0];
+                operationTypeInfoNext = new OperationTypeInfo((string)args[0], (string[])args[1]);
                 return true;
             }
             if (IsAppVar(method))

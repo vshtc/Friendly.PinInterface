@@ -19,6 +19,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             return FriendlyInvokeSpec.GetFriendlyOperation(App, _typeFullName + "." + name, async, typeInfo)(args);
         }
+
+        protected override string GetTargetTypeFullName()
+        {
+            return _typeFullName;
+        }
     }
 }
 

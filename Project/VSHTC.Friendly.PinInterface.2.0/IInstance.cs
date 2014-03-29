@@ -11,5 +11,5 @@ namespace VSHTC.Friendly.PinInterface
     /// インスタンスのインターフェイスです。
     /// </summary>
 #endif
-    public interface IInstance : IModifyAsync, IAppVarFunctions { }
+    public interface IInstance : IModifyAsync, IModifyOperationTypeInfo, IAppVarFunctions { }
 }

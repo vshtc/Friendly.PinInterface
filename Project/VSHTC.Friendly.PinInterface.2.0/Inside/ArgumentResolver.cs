@@ -46,9 +46,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return args;
         }
 
-        internal static OperationTypeInfo TryCreateOperationTypeInfo<TInterface>(AppFriend app, MethodInfo method)
+        internal static OperationTypeInfo TryCreateOperationTypeInfo(AppFriend app, string declaringType, MethodInfo method)
         {
-            string declaringType = TargetTypeUtility.GetFullName(app, typeof(TInterface));
             if (string.IsNullOrEmpty(declaringType))
             {
                 return null;

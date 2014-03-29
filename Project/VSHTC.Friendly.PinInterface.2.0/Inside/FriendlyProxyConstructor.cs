@@ -21,5 +21,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
                      App.Dim(new NewInfo(_typeFullName, args)) :
                      App.Dim(new NewInfo(_typeFullName, args), typeInfo);
         }
+
+        protected override string GetTargetTypeFullName()
+        {
+            return _typeFullName;
+        }
     }
 }

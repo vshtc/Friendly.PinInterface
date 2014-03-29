@@ -39,7 +39,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             //OperationTypeInfoが設定されていなければ、メソッドの型から取得してみる
             if (_operationTypeInfoNext == null)
             {
-                _operationTypeInfoNext = ArgumentResolver.TryCreateOperationTypeInfo<TInterface>(App, method);
+                _operationTypeInfoNext = ArgumentResolver.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
             }
 
             //呼び出し            
@@ -61,6 +61,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);
         }
 
+        protected abstract string GetTargetTypeFullName();
         protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo info);
     }
 }
