@@ -72,7 +72,7 @@ namespace Test
 
         class TargetInstance
         {
-            int _value;
+            public int _value;
 
             TargetInstance() { }
 

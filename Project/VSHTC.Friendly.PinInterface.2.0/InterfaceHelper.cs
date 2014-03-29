@@ -117,6 +117,50 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
+        /// Copies indicated object into the target application and returns a DynamicAppVar to access it.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <param name="obj">Object to be sent (must be serializable, AppVar, or DynamicAppVar).</param>
+        /// <returns>DynamicAppVar.</returns>
+#else
+        /// <summary>
+        /// テスト対象アプリケーション内に指定のオブジェクトをコピーし、その変数を操作するインターフェイスを返します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="app">アプリケーション操作クラス。</param>
+        /// <param name="obj">初期化オブジェクト（シリアライズ可能なオブジェクトもしくはAppVarであること）。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface PinCopy<TInterface>(AppFriend app, object obj)
+        where TInterface : IInstance
+        {
+            return Pin<TInterface>(app.Dim(obj));
+        }
+
+#if ENG
+        /// <summary>
+        /// Declares a null variable in the target application and returns a DynamicAppVar to access it.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <returns>DynamicAppVar.</returns>
+#else
+        /// <summary>
+        /// テスト対象アプリケーション内にnullの変数を宣言し、その変数を操作するインターフェイスを返します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="app">アプリケーション操作クラス。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface PinNull<TInterface>(AppFriend app)
+        where TInterface : IInstance
+        {
+            return Pin<TInterface>(app.Dim());
+        }
+
+#if ENG
+        /// <summary>
         /// Pin AppVar's opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
