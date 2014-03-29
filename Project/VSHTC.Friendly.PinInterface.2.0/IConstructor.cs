@@ -2,9 +2,16 @@
 
 namespace VSHTC.Friendly.PinInterface
 {
+#if ENG
     /// <summary>
     /// コンストラクタ用インターフェイス。
     /// これを継承したインターフェイスのメソッドは指定の引数で対象タイプのコンストラクタを呼び出します。
     /// </summary>
+#else
+    /// <summary>
+    /// コンストラクタ用インターフェイス。
+    /// これを継承したインターフェイスのメソッドは指定の引数で対象タイプのコンストラクタを呼び出します。
+    /// </summary>
+#endif
     public interface IConstructor : IAppFriendFunctions, IModifyOperationTypeInfo { }
 }
