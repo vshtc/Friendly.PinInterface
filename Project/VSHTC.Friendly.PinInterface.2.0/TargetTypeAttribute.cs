@@ -4,11 +4,11 @@ namespace VSHTC.Friendly.PinInterface
 {
 #if ENG
     /// <summary>
-    /// プロクシ対象のタイプを指定する
+    /// Specify proxy target type.
     /// </summary>
 #else
     /// <summary>
-    /// プロクシ対象のタイプを指定する
+    /// プロクシ対象のタイプを指定します。
     /// </summary>
 #endif
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
@@ -16,7 +16,7 @@ namespace VSHTC.Friendly.PinInterface
     {
 #if ENG
         /// <summary>
-        /// プロクシ対象タイプのフルネームです。
+        /// Proxy target type full name.
         /// </summary>
 #else
         /// <summary>
@@ -27,9 +27,9 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// コンストラクタ。
+        /// Constructor.
         /// </summary>
-        /// <param name="fullNmae">プロクシ対象タイプのフルネーム。</param>
+        /// <param name="fullNmae">Proxy target type full name.</param>
 #else
         /// <summary>
         /// コンストラクタ。

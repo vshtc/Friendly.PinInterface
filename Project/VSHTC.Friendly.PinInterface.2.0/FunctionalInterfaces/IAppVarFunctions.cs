@@ -4,7 +4,7 @@ namespace VSHTC.Friendly.PinInterface.FunctionalInterfaces
 {
 #if ENG
     /// <summary>
-    /// AppVarの機能を使う印。
+    /// Mark of using AppVar functions.
     /// </summary>
 #else
     /// <summary>

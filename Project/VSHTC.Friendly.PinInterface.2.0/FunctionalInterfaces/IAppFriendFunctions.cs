@@ -2,7 +2,7 @@
 {
 #if ENG
     /// <summary>
-    /// AppFriendの機能を使う印。
+    /// Mark of using AppFriend functions.
     /// </summary>
 #else
     /// <summary>

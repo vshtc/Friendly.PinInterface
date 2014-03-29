@@ -2,7 +2,7 @@
 {
 #if ENG
     /// <summary>
-    /// 型情報修飾。
+    /// Interface for OperationTypeInfo modifying.
     /// </summary>
 #else
     /// <summary>

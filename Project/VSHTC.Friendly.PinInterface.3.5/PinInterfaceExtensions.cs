@@ -8,7 +8,7 @@ namespace VSHTC.Friendly.PinInterface
 {
 #if ENG
     /// <summary>
-    /// PinInterfaceHelperの処理を拡張メソッドで提供します。
+    /// Extension methods for pinning interface.
     /// </summary>
 #else
     /// <summary>
@@ -19,11 +19,11 @@ namespace VSHTC.Friendly.PinInterface
     {
 #if ENG
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Pin AppFriend's opertion by TInterface.
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
         /// AppFriendの操作を指定のインターフェイスで固定します。
@@ -40,12 +40,12 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Pin AppFriend's opertion by TInterface.
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <typeparam name="TTarget">対応するタイプ。</typeparam>
-        /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <typeparam name="TTarget">Proxy target type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
         /// AppFriendの操作を指定のインターフェイスで固定します。
@@ -63,12 +63,12 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Pin AppFriend's opertion by TInterface.
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="app">アプリケーション操作クラス。</param>
-        /// <param name="targetType">対応するタイプ。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <param name="targetType">Proxy target type.</param>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
         /// AppFriendの操作を指定のインターフェイスで固定します。
@@ -86,12 +86,12 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Pin AppFriend's opertion by TInterface.
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="app">アプリケーション操作クラス。</param>
-        /// <param name="targetTypeFullName">対応するタイプフルネーム。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <param name="targetTypeFullName">Proxy target type full name.</param>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
         /// AppFriendの操作を指定のインターフェイスで固定します。
@@ -109,11 +109,11 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// Pin AppVar's opertion by TInterface.
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="appVar">アプリケーション変数。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="appVar">Application varialbe manipulation object.</param>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
         /// AppVarの操作を指定のインターフェイスで固定します。

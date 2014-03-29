@@ -4,7 +4,7 @@ namespace VSHTC.Friendly.PinInterface.FunctionalInterfaces
 {
 #if ENG
     /// <summary>
-    /// 非同期修飾。
+    /// Interface for Async modifying.
     /// </summary>
 #else
     /// <summary>

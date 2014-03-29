@@ -4,7 +4,7 @@ namespace VSHTC.Friendly.PinInterface
 {
 #if ENG
     /// <summary>
-    /// staticインターフェイスです。
+    /// Interface for Static.
     /// </summary>
 #else
     /// <summary>

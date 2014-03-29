@@ -4,7 +4,7 @@ namespace VSHTC.Friendly.PinInterface
 {
 #if ENG
     /// <summary>
-    /// インスタンスのインターフェイスです。
+    /// Interface for Instance.
     /// </summary>
 #else
     /// <summary>
