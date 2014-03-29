@@ -22,11 +22,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 object srcObj = src[i];
                 if (paramType.IsByRef)
                 {
+                    Type elementType = paramType.GetElementType();
                     object arg;
                     ResolveArgument refoutFunc;
-                    ResolveRefOutArgs(app, paramType.GetElementType(), srcObj, out arg, out refoutFunc);
+                    ResolveRefOutArgs(app, elementType, srcObj, out arg, out refoutFunc);
                     InvokeArguments[i] = arg;
-                    _resolveArguments[i] = isAsyunc ? (() => TypeUtility.GetDefault(paramType)) : refoutFunc;
+                    bool isInterface = TypeUtility.HasInterface(elementType, typeof(IInstance));
+                    _resolveArguments[i] = (isAsyunc && !isInterface) ? (() => TypeUtility.GetDefault(elementType)) : refoutFunc;
                 }
                 else
                 {

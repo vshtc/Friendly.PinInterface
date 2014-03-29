@@ -11,7 +11,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 return null;
             }
-            else if (parameterInfo.ParameterType.IsInterface)
+            else if (TypeUtility.HasInterface(parameterInfo.ParameterType, typeof(IInstance)))
             {
                 return FriendlyProxyFactory.WrapFriendlyProxyInstance(parameterInfo.ParameterType, returnedAppVal);
             }

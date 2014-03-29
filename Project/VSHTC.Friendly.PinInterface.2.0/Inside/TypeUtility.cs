@@ -6,6 +6,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static bool HasInterface(Type ownerType, Type inType)
         {
+            if (ownerType == inType)
+            {
+                return true;
+            }
             foreach (var element in ownerType.GetInterfaces())
             {
                 if (element == inType)

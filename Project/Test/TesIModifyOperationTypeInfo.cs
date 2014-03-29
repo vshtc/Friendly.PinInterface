@@ -15,7 +15,7 @@ using Codeer.Friendly.Windows.NativeStandardControls;
 namespace Test
 {
     [TestClass]
-    public class TesIModifyInvoke
+    public class TesIModifyOperationTypeInfo
     {
         WindowsAppFriend _app;
 
@@ -31,26 +31,6 @@ namespace Test
         {
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
-
-        interface IMessageBox : IStatic
-        {
-            MessageBoxResult Show(string messageBoxText);
-        }
-
-        //@@@インスタンス版も見る
-        [TestMethod]
-        public void 非同期実行()
-        {
-            IMessageBox msg = _app.Pin<IMessageBox, MessageBox>();
-            WindowControl top = WindowControl.FromZTop(_app);
-            Async async = msg.AsyncNext();
-            msg.Show("");
-            WindowControl next = top.WaitForNextModal();
-            new NativeMessageBox(next).EmulateButtonClick("OK");
-            async.WaitForCompletion();
-        }
-
-
         
         [Serializable]
         class Data{}
@@ -101,7 +81,7 @@ namespace Test
             int Func(Data value);
         }
 
-        [TargetType("Test.TesIModifyInvoke+TargetInstance")]
+        [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
         interface ITargetInstanceAuto : IInstance
         {
             int Func();
@@ -137,6 +117,8 @@ namespace Test
             target.OperationTypeInfoNext(typeof(TargetInstance).FullName, typeof(Data).FullName);
             Assert.AreEqual(2, target.Func((Data)null));
         }
+
+        //@@@outrefを正しく解釈できているのか
 
         //@@@コンストラクタも見ておく
     }
