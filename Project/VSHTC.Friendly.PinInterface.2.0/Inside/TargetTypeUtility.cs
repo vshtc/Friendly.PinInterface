@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using VSHTC.Friendly.PinInterface.Inside;
 
-namespace VSHTC.Friendly.PinInterface
+namespace VSHTC.Friendly.PinInterface.Inside
 {
-    public static class TargetTypeUtility
+    static class TargetTypeUtility
     {
-        public static string GetFullName(AppFriend app, Type type)
+        internal static string GetFullName(AppFriend app, Type type)
         {
             TargetTypeAttribute attr = GetTargetTypeAttribute(type);
             if (attr == null)

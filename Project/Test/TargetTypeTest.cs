@@ -29,7 +29,6 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-
         [TargetType("System.Windows.Point")]
         class Point_
         {
@@ -51,6 +50,21 @@ namespace Test
             {
                 Value this[Key key] { get; set; }
                 void Add(Key key, Value value);
+            }
+            internal interface Constructor : IConstructor
+            {
+                Instance New();
+            }
+        }
+
+
+        [TargetType("System.Collections.Generic.List`1")]
+        class List_<T>
+        {
+            internal interface Instance : IInstance
+            {
+                T this[int index] { get; set; }
+                void Add(T value);
             }
             internal interface Constructor : IConstructor
             {
@@ -101,8 +115,8 @@ namespace Test
         public void TestGeneric()
         {
             Assert.AreEqual(
-                typeof(Dictionary<int, Point>).FullName,
-                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, Point_.Instance>.Instance)));
+                typeof(Dictionary<int, List<Point>>).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, List_<Point_.Instance>.Instance>.Instance)));
         }
 
         [TestMethod]
