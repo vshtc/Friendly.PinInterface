@@ -132,5 +132,19 @@ namespace Test
             var copy = target.Cast<Target>();
             Assert.AreEqual(3, copy.A);
         }
+
+        interface TargetStatic : IStatic
+        {
+            int FuncStatic();
+            void Get(out Target_.Instance target);
+        }
+
+        [TestMethod]
+        public void PinStaticException()
+        {
+            TestUtility.TestExceptionMessage(() => { _app.Pin<TargetStatic>(); },
+                "Not found target type.\r\nOrder by TargetTypeAttribute,Or Use other Pin method which can specify the target type.",
+                "対象の型を見つけることができませんでした。\r\nTargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。");
+        }
     }
 }
