@@ -95,5 +95,7 @@ namespace Test
             Assert.AreEqual(6, data.A);
             Assert.AreEqual("Y", data.B);
         }
+
+        //TODO: AppVar, UserWrapper
     }
 }

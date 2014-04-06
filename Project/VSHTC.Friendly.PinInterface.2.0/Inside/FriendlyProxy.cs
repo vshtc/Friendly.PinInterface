@@ -36,7 +36,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             if (_operationTypeInfoNext == null)
             {
-                _operationTypeInfoNext = ArgumentResolver.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
+                _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
             }
 
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);

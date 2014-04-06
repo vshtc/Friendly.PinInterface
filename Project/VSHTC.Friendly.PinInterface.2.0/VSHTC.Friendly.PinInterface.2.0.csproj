@@ -69,6 +69,7 @@
     <Compile Include="Inside\FriendlyProxyFactory.cs" />
     <Compile Include="Inside\InterfacesSpec.cs" />
     <Compile Include="Inside\ReturnObjectResolver.cs" />
+    <Compile Include="Inside\UserWrapperUtility.cs" />
     <Compile Include="Properties\Resources.ja.Designer.cs">
       <DependentUpon>Resources.ja.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -48,56 +48,42 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return args;
         }
 
-        internal static OperationTypeInfo TryCreateOperationTypeInfo(AppFriend app, string declaringType, MethodInfo method)
-        {
-            if (string.IsNullOrEmpty(declaringType))
-            {
-                return null;
-            }
-            List<string> arguments = new List<string>();
-            foreach (var arg in method.GetParameters())
-            {
-                string argTarget = TargetTypeUtility.GetFullName(app, arg.ParameterType);
-                if (string.IsNullOrEmpty(argTarget))
-                {
-                    return null;
-                }
-                arguments.Add(argTarget);
-            }
-            return new OperationTypeInfo(declaringType, arguments.ToArray());
-        }
-
         static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
         {
-            if (type.IsInterface)
+            if (TypeUtility.HasInterface(type, typeof(IInstance)))
             {
-                if (src == null)
-                {
-                    AppVar appVar = app.Dim();
-                    arg = appVar;
-                    resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
-                }
-                else
-                {
-                    IAppVarOwner appVarOwner = src as IAppVarOwner;
-                    if (appVarOwner != null)
-                    {
-                        arg = src;
-                        resolveArgument = () => src;
-                    }
-                    else
-                    {
-                        AppVar appVar = app.Dim();
-                        arg = appVar;
-                        resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
-                    }
-                }
+                ResolveAppVarRefOutArgs(app, type, src, FriendlyProxyFactory.WrapFriendlyProxyInstance, out arg, out resolveArgument);
+            }
+            else if (type == typeof(AppVar))
+            {
+                ResolveAppVarRefOutArgs(app, type, src, (t, appVar) => appVar, out arg, out resolveArgument);
+            }
+            else if (UserWrapperUtility.IsAppVarWrapper(type))
+            {
+
+                ResolveAppVarRefOutArgs(app, type, src, UserWrapperUtility.CreateWrapper, out arg, out resolveArgument);
             }
             else
             {
                 AppVar appVar = app.Dim(src);
                 arg = appVar;
                 resolveArgument = () => appVar.Core;
+            }
+        }
+
+        delegate object ResolveAppVar(Type type, AppVar appVar);
+        private static void ResolveAppVarRefOutArgs(AppFriend app, Type type, object src, ResolveAppVar resolver, out object arg, out ResolveArgument resolveArgument)
+        {
+            if (src == null)
+            {
+                AppVar appVar = app.Dim();
+                arg = appVar;
+                resolveArgument = () => resolver(type, appVar);
+            }
+            else
+            {
+                arg = src;
+                resolveArgument = () => src;
             }
         }
     }

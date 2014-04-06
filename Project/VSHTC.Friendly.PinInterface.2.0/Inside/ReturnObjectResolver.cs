@@ -15,6 +15,14 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 return FriendlyProxyFactory.WrapFriendlyProxyInstance(parameterInfo.ParameterType, returnedAppVal);
             }
+            else if (parameterInfo.ParameterType == typeof(AppVar))
+            {
+                return returnedAppVal;
+            }
+            else if (UserWrapperUtility.IsAppVarWrapper(parameterInfo.ParameterType))
+            {
+                return UserWrapperUtility.CreateWrapper(parameterInfo.ParameterType, returnedAppVal);
+            }
             else
             {
                 return isAsync ? TypeUtility.GetDefault(parameterInfo.ParameterType) : returnedAppVal.Core;

@@ -71,6 +71,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RM.Friendly.WPFStandardControls3">
+      <HintPath>..\packages\RM.Friendly.WPFStandardControls.0.0.2\lib\net40\RM.Friendly.WPFStandardControls3.dll</HintPath>
+    </Reference>
+    <Reference Include="RM.Friendly.WPFStandardControls4">
+      <HintPath>..\packages\RM.Friendly.WPFStandardControls.0.0.2\lib\net40\RM.Friendly.WPFStandardControls4.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
@@ -93,6 +99,7 @@
     <Compile Include="RefParameterTest.cs" />
     <Compile Include="OutParameterTest.cs" />
     <Compile Include="ReferenceParameterTest.cs" />
+    <Compile Include="ReturnValueTest.cs" />
     <Compile Include="SerializableParameterTest.cs" />
     <Compile Include="TargetTypeTest.cs" />
     <Compile Include="TesIModifyAsync.cs" />

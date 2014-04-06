@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <TextBlock x:Name="UserNameBlock" Text="{Binding Name}" FontSize="36" />
+        <TextBox x:Name="_textBox" HorizontalAlignment="Left" Height="23" Margin="92,122,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+
     </Grid>
 </Window>

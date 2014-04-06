@@ -1,24 +1,45 @@
 ﻿using Codeer.Friendly;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using VSHTC.Friendly.PinInterface.Inside;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     static class TargetTypeUtility
     {
+        internal static OperationTypeInfo TryCreateOperationTypeInfo(AppFriend app, string declaringType, MethodInfo method)
+        {
+            if (string.IsNullOrEmpty(declaringType))
+            {
+                return null;
+            }
+            List<string> arguments = new List<string>();
+            foreach (var arg in method.GetParameters())
+            {
+                string argTarget = TargetTypeUtility.GetFullName(app, arg.ParameterType);
+                if (string.IsNullOrEmpty(argTarget))
+                {
+                    return null;
+                }
+                arguments.Add(argTarget);
+            }
+            return new OperationTypeInfo(declaringType, arguments.ToArray());
+        }
+
         internal static string GetFullName(AppFriend app, Type type)
         {
-            if (type.IsByRef)
-            {
-                type = type.GetElementType();
-            }
             TargetTypeAttribute attr = GetTargetTypeAttribute(type);
             if (attr == null)
             {
-                if (TypeUtility.HasInterface(type, typeof(IInstance)) ||
-                    TypeUtility.HasInterface(type, typeof(IStatic)) ||
-                    TypeUtility.HasInterface(type, typeof(IConstructor)))
+                Type coreType = type;
+                if (coreType.IsByRef)
+                {
+                    coreType = coreType.GetElementType();
+                }
+                if (TypeUtility.HasInterface(coreType, typeof(IInstance)) ||
+                    TypeUtility.HasInterface(coreType, typeof(IStatic)) ||
+                    TypeUtility.HasInterface(coreType, typeof(IConstructor)))
                 {
                     return string.Empty;
                 }
@@ -29,38 +50,43 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             else
             {
-                if (IsGeneric(attr.FullName))
+                return GetFullNameFromAttr(app, type, attr) + (type.IsByRef ? "&" : string.Empty);
+            }
+        }
+
+        private static string GetFullNameFromAttr(AppFriend app, Type type, TargetTypeAttribute attr)
+        {
+            if (IsGeneric(attr.FullName))
+            {
+                List<string> genericArguments = new List<string>();
+                foreach (var element in type.GetGenericArguments())
                 {
-                    List<string> genericArguments = new List<string>();
-                    foreach (var element in type.GetGenericArguments())
-                    {
-                        string innerType = GetFullName(app, element);
-                        if (string.IsNullOrEmpty(innerType))
-                        {
-                            return string.Empty;
-                        }
-                        genericArguments.Add(innerType);
-                    }
-                    return MakeGenericTypeFullName(app, attr.FullName, genericArguments.ToArray());
-                }
-                else if (IsArray(attr.FullName))
-                {
-                    var innerTypes = type.GetGenericArguments();
-                    if (innerTypes.Length != 1)
+                    string innerType = GetFullName(app, element);
+                    if (string.IsNullOrEmpty(innerType))
                     {
                         return string.Empty;
                     }
-                    string arrayCoreType = GetFullName(app, innerTypes[0]);
-                    if (string.IsNullOrEmpty(arrayCoreType))
-                    {
-                        return string.Empty;
-                    }
-                    return arrayCoreType + attr.FullName;
+                    genericArguments.Add(innerType);
                 }
-                else
+                return MakeGenericTypeFullName(app, attr.FullName, genericArguments.ToArray());
+            }
+            else if (IsArray(attr.FullName))
+            {
+                var innerTypes = type.GetGenericArguments();
+                if (innerTypes.Length != 1)
                 {
-                    return attr.FullName;
+                    return string.Empty;
                 }
+                string arrayCoreType = GetFullName(app, innerTypes[0]);
+                if (string.IsNullOrEmpty(arrayCoreType))
+                {
+                    return string.Empty;
+                }
+                return arrayCoreType + attr.FullName;
+            }
+            else
+            {
+                return attr.FullName;
             }
         }
 

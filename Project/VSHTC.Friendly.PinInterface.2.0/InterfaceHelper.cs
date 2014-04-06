@@ -199,9 +199,18 @@ namespace VSHTC.Friendly.PinInterface
 #endif
         public static T Cast<T>(IAppVarOwner source)
         {
-            return TypeUtility.HasInterface(typeof(T), typeof(IInstance)) ?
-                FriendlyProxyFactory.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar) :
-                (T)source.AppVar.Core;
+            if (TypeUtility.HasInterface(typeof(T), typeof(IInstance)))
+            {
+                return FriendlyProxyFactory.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar);
+            }
+            else if (UserWrapperUtility.IsAppVarWrapper(typeof(T)))
+            {
+                return (T)UserWrapperUtility.CreateWrapper(typeof(T), source.AppVar);
+            }
+            else
+            {
+                return (T)source.AppVar.Core;
+            }
         }
     }
 }
