@@ -27,5 +27,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             throw new NotSupportedException();
         }
+        //TODO: Exception Message
     }
 }
