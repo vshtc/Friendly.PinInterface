@@ -13,6 +13,17 @@
     {
 #if ENG
         /// <summary>
+        ///メソッド、プロパティーの型から自動でOperationTypeInfoを作成するか
+        /// </summary>
+#else
+        /// <summary>
+        /// OperationTypeInfo is automatically guessed from method or poroperty information. 
+        /// </summary>
+#endif
+        bool IsAutoOperationTypeInfo { get; set; }
+
+#if ENG
+        /// <summary>
         /// Set OperationTypeInfo to next operation.
         /// </summary>
         /// <param name="target">The full class name of the target type for the target operation.</param>

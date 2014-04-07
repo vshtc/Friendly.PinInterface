@@ -7,7 +7,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
     static class InterfacesSpec
     {
         internal static bool TryExecute<TInterface>(IAppVarOwner appVarOwner, MethodInfo method, object[] args,
-                                ref Async asyncNext, ref OperationTypeInfo operationTypeInfoNext, out object retunObject)
+                                ref Async asyncNext, ref OperationTypeInfo operationTypeInfoNext, ref bool isAutoOperationTypeInfo, out object retunObject)
         {
             retunObject = null;
 
@@ -27,6 +27,16 @@ namespace VSHTC.Friendly.PinInterface.Inside
             if (IsOperationTypeInfoNext(method))
             {
                 operationTypeInfoNext = new OperationTypeInfo((string)args[0], (string[])args[1]);
+                return true;
+            }
+            if (IsSetIsAutoOperationTypeInfo(method))
+            {
+                isAutoOperationTypeInfo = (bool)args[0];
+                return true;
+            }
+            if (IsGetIsAutoOperationTypeInfo(method))
+            {
+                retunObject = isAutoOperationTypeInfo;
                 return true;
             }
             if (IsAppVar(method))
@@ -56,5 +66,17 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             return (method.DeclaringType == typeof(IModifyOperationTypeInfo) && method.Name == "OperationTypeInfoNext");
         }
+
+        static bool IsSetIsAutoOperationTypeInfo(MethodInfo method)
+        {
+            return (method.DeclaringType == typeof(IModifyOperationTypeInfo) && method.Name == "set_IsAutoOperationTypeInfo");
+        }
+
+        static bool IsGetIsAutoOperationTypeInfo(MethodInfo method)
+        {
+            return (method.DeclaringType == typeof(IModifyOperationTypeInfo) && method.Name == "get_IsAutoOperationTypeInfo");
+        }
+
+        //@@@自動でONになる属性も追加
     }
 }

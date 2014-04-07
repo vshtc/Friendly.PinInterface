@@ -108,6 +108,7 @@ namespace Test
             IInstance value = null;
             IData data = null;
             IInstance ret = target.Func(ref value, out data);
+            async.WaitForCompletion();
             Assert.AreEqual(2, ret.Cast<int>());
             Assert.AreEqual(1, value.Cast<int>());
             Assert.IsNotNull(data.Cast<Data>());

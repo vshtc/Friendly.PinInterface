@@ -39,7 +39,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 }
                 if (TypeUtility.HasInterface(coreType, typeof(IInstance)) ||
                     TypeUtility.HasInterface(coreType, typeof(IStatic)) ||
-                    TypeUtility.HasInterface(coreType, typeof(IConstructor)))
+                    TypeUtility.HasInterface(coreType, typeof(IConstructor)) ||
+                    UserWrapperUtility.IsAppVarWrapper(coreType))
                 {
                     return string.Empty;
                 }

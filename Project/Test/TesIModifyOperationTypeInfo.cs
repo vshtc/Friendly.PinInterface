@@ -121,6 +121,7 @@ namespace Test
         public void OperationTypeInfoStaticAuto()
         {
             var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
+            target.IsAutoOperationTypeInfo = true;
             Assert.AreEqual(1, target.Func((string)null));
             Assert.AreEqual(2, target.Func((Data)null));
         }
@@ -129,6 +130,7 @@ namespace Test
         public void OperationTypeInfoInstanceAuto()
         {
             var target = ((AppVar)_app.Type<TargetInstance>()()).Pin<ITargetInstanceAuto>();
+            target.IsAutoOperationTypeInfo = true;
             Assert.AreEqual(1, target.Func((string)null));
             Assert.AreEqual(2, target.Func((Data)null));
         }
@@ -149,6 +151,7 @@ namespace Test
         public void OperationTypeInfoStaticAutoRefOut()
         {
             var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
+            target.IsAutoOperationTypeInfo = true;
             {
                 string value1 = null;
                 string value2 = null;
@@ -164,13 +167,18 @@ namespace Test
         [TestMethod]
         public void OperationTypeInfoConstructorAuto()
         {
+            var target = _app.Pin<ITargetInstanceConstructor>();
+            target.IsAutoOperationTypeInfo = true;
             {
-                var target = _app.Pin<ITargetInstanceConstructor>().New((string)null);
-                Assert.AreEqual(1, target._value);
+
+                var ret = target.New((string)null);
+                ret.IsAutoOperationTypeInfo = true;
+                Assert.AreEqual(1, ret._value);
             }
             {
-                var target = _app.Pin<ITargetInstanceConstructor>().New((Data)null);
-                Assert.AreEqual(2, target._value);
+                var ret = target.New((Data)null);
+                ret.IsAutoOperationTypeInfo = true;
+                Assert.AreEqual(2, ret._value);
             }
         }
     }

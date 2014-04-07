@@ -8,8 +8,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     abstract class FriendlyProxy<TInterface> : RealProxy
     {
-        protected Async _asyncNext;
-        protected OperationTypeInfo _operationTypeInfoNext;
+        Async _asyncNext;
+        OperationTypeInfo _operationTypeInfoNext;
+        bool _isAutoOperationTypeInfo;
 
         protected AppFriend App { get; private set; }
 
@@ -26,7 +27,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             object retunObject;
             if (InterfacesSpec.TryExecute<TInterface>(this as IAppVarOwner, method, mm.Args, 
-                ref _asyncNext, ref _operationTypeInfoNext, out retunObject))
+                ref _asyncNext, ref _operationTypeInfoNext, ref _isAutoOperationTypeInfo, out retunObject))
             {
                 return new ReturnMessage(retunObject, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
@@ -34,7 +35,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             ArgumentResolver args = new ArgumentResolver(App, method, isAsyunc, mm.Args);
 
-            if (_operationTypeInfoNext == null)
+            if (_operationTypeInfoNext == null && _isAutoOperationTypeInfo)
             {
                 _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
             }
