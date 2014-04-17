@@ -56,7 +56,7 @@ namespace VSHTC.Friendly.PinInterface
         /// 指定のインターフェイスにIInstanceを追加合成したインターフェイスを生成し登録します。
         /// </summary>
         /// <param name="srcInterfaceTypes">通常のインターフェイス</param>
-        public static void GenerateIInstandePlus(params Type[] srcInterfaceTypes)
+        public static void GenerateIInstancePlus(params Type[] srcInterfaceTypes)
         {
             lock (_sync)
             {

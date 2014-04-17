@@ -47,7 +47,7 @@ namespace Test
         {
             _app = new WindowsAppFriend(Process.Start("Target.exe"));
             WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
-            MapIInstance.GenerateIInstandePlus(typeof(IA), typeof(IB));
+            MapIInstance.GenerateIInstancePlus(typeof(IA), typeof(IB));
         }
 
         [TestCleanup]
