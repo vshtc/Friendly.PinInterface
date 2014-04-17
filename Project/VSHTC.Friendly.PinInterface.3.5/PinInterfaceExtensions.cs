@@ -109,6 +109,29 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
+        /// Pin AppVar's opertion by TInterface.
+        /// TInterface does not need to inherit IInstance. 
+        /// But, It needs to be registered into MapIInstance. 
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="appVar">Application varialbe manipulation object.</param>
+        /// <returns>Interface for manipulation.</returns>
+#else
+        /// <summary>
+        /// AppVarの操作を指定のインターフェイスで固定します。
+        /// TInterfaceはIInstanceを継承している必要はありませんが、MapIInstanceに登録されている必要があります。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="appVar">アプリケーション変数。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface FindPin<TInterface>(this AppVar appVar)
+        {
+            return InterfaceHelper.FindPin<TInterface>(appVar);
+        }
+
+#if ENG
+        /// <summary>
         /// Copies indicated object into the target application and returns a DynamicAppVar to access it.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>

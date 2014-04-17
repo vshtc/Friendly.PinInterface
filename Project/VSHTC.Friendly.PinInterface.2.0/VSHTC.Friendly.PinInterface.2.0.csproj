@@ -67,9 +67,12 @@
     <Compile Include="Inside\FriendlyProxyInstance.cs" />
     <Compile Include="Inside\FriendlyProxyStatic.cs" />
     <Compile Include="Inside\FriendlyProxyFactory.cs" />
+    <Compile Include="Inside\IInstanceGenerator.cs" />
+    <Compile Include="Inside\IInstanceMappingChecker.cs" />
     <Compile Include="Inside\InterfacesSpec.cs" />
     <Compile Include="Inside\ReturnObjectResolver.cs" />
     <Compile Include="Inside\UserWrapperUtility.cs" />
+    <Compile Include="MapIInstance.cs" />
     <Compile Include="Properties\Resources.ja.Designer.cs">
       <DependentUpon>Resources.ja.resx</DependentUpon>
       <AutoGen>True</AutoGen>

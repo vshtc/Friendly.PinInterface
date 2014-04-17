@@ -16,7 +16,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return (T)WrapFriendlyProxy(proxyType, typeof(T), args);
         }
 
-        internal static object WrapFriendlyProxy(Type proxyType, Type interfaceType, object[] args)
+        static object WrapFriendlyProxy(Type proxyType, Type interfaceType, object[] args)
         {
             var friendlyProxyType = proxyType.MakeGenericType(interfaceType);
             RealProxy friendlyProxy = Activator.CreateInstance(friendlyProxyType, args) as RealProxy;

@@ -50,6 +50,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
         {
+            type = MapIInstance.TryConvertType(type);
             if (TypeUtility.HasInterface(type, typeof(IInstance)))
             {
                 ResolveAppVarRefOutArgs(app, type, src, FriendlyProxyFactory.WrapFriendlyProxyInstance, out arg, out resolveArgument);

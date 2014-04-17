@@ -29,6 +29,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         internal static string GetFullName(AppFriend app, Type type)
         {
+            type = MapIInstance.TryConvertType(type);
+
             TargetTypeAttribute attr = GetTargetTypeAttribute(type);
             if (attr == null)
             {
