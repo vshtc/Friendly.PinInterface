@@ -4,8 +4,7 @@ using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
-    class FriendlyProxyInstance<TInterface> : FriendlyProxy<TInterface>, IAppVarOwner
-        where TInterface : IInstance
+    class FriendlyProxyInstance<TInterface> : FriendlyProxy<TInterface>, IAppVarOwner, IModifyAsync
     {
         public AppVar AppVar { get; private set; }
 
@@ -23,6 +22,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
         protected override string GetTargetTypeFullName()
         {
             return TargetTypeUtility.GetFullName(App, typeof(TInterface));
+        }
+
+        public Async AsyncNext()
+        {
+            Async async = new Async();
+            SetAsyncNext(async);
+            return async;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-        interface IMessageBox : IStatic
+        interface IMessageBox
         {
             MessageBoxResult Show(string messageBoxText);
         }
@@ -40,7 +40,7 @@ namespace Test
         [Serializable]
         class Data { }
 
-        interface IData : IInstance{ }
+        interface IData{ }
 
         class Target
         {
@@ -56,11 +56,11 @@ namespace Test
             }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             void Show();
             int Func(ref int vale, out Data data);
-            IInstance Func(ref IInstance vale, out IData data);
+            AppVar Func(ref AppVar vale, out IData data);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Test
         {
             IMessageBox msg = _app.Pin<IMessageBox, MessageBox>();
             WindowControl top = WindowControl.FromZTop(_app);
-            Async async = msg.AsyncNext();
+            Async async = PinHelper.AsyncNext(msg);
             msg.Show("");
             WindowControl next = top.WaitForNextModal();
             new NativeMessageBox(next).EmulateButtonClick("OK");
@@ -80,7 +80,7 @@ namespace Test
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
             WindowControl top = WindowControl.FromZTop(_app);
-            Async async = target.AsyncNext();
+            Async async = PinHelper.AsyncNext(target);
             target.Show();
             WindowControl next = top.WaitForNextModal();
             new NativeMessageBox(next).EmulateButtonClick("OK");
@@ -91,7 +91,7 @@ namespace Test
         public void AsyncSerialize()
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
-            Async async = target.AsyncNext();
+            Async async = PinHelper.AsyncNext(target);
             int value = 0;
             Data data = null;
             int ret = target.Func(ref value, out data);
@@ -104,14 +104,14 @@ namespace Test
         public void AsyncInterface()
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
-            Async async = target.AsyncNext();
-            IInstance value = null;
+            Async async = PinHelper.AsyncNext(target);
+            AppVar value = null;
             IData data = null;
-            IInstance ret = target.Func(ref value, out data);
+            AppVar ret = target.Func(ref value, out data);
             async.WaitForCompletion();
-            Assert.AreEqual(2, ret.Cast<int>());
-            Assert.AreEqual(1, value.Cast<int>());
-            Assert.IsNotNull(data.Cast<Data>());
+            Assert.AreEqual(2, (int)ret.Core);
+            Assert.AreEqual(1, (int)value.Core);
+            Assert.IsNull(data);
         }
     }
 }

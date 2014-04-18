@@ -2,6 +2,7 @@
 using System.Reflection;
 using Codeer.Friendly;
 using System.Collections.Generic;
+using System.Runtime.Remoting;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -27,12 +28,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
                     ResolveArgument refoutFunc;
                     ResolveRefOutArgs(app, elementType, srcObj, out arg, out refoutFunc);
                     InvokeArguments[i] = arg;
-                    bool isInterface = TypeUtility.HasInterface(elementType, typeof(IInstance));
-                    _resolveArguments[i] = (isAsyunc && !isInterface) ? (() => TypeUtility.GetDefault(elementType)) : refoutFunc;
+                    _resolveArguments[i] = (isAsyunc && elementType != typeof(AppVar)) ? (() => TypeUtility.GetDefault(elementType)) : refoutFunc;
                 }
                 else
                 {
-                    InvokeArguments[i] = srcObj;
+                    InvokeArguments[i] = TryConvertProxy(srcObj);
                     _resolveArguments[i] = () => srcObj;
                 }
             }
@@ -50,10 +50,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         static void ResolveRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
         {
-            type = MapIInstance.TryConvertType(type);
-            if (TypeUtility.HasInterface(type, typeof(IInstance)))
+            if (type.IsInterface)
             {
-                ResolveAppVarRefOutArgs(app, type, src, FriendlyProxyFactory.WrapFriendlyProxyInstance, out arg, out resolveArgument);
+                ResolveInterfaceRefOutArgs(app, type, src, out arg, out resolveArgument);
             }
             else if (type == typeof(AppVar))
             {
@@ -61,7 +60,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             else if (UserWrapperUtility.IsAppVarWrapper(type))
             {
-
                 ResolveAppVarRefOutArgs(app, type, src, UserWrapperUtility.CreateWrapper, out arg, out resolveArgument);
             }
             else
@@ -83,9 +81,38 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             else
             {
-                arg = src;
+                arg = TryConvertProxy(src);
                 resolveArgument = () => src;
             }
+        }
+        private static void ResolveInterfaceRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
+        {
+            if (src == null)
+            {
+                AppVar appVar = app.Dim();
+                arg = appVar;
+                resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
+            }
+            else
+            {
+                var proxy = RemotingServices.GetRealProxy(src) as IAppVarOwner;
+                if (proxy == null)
+                {
+                    AppVar appVar = app.Dim(src);
+                    arg = appVar;
+                    resolveArgument = () => FriendlyProxyFactory.WrapFriendlyProxyInstance(type, appVar);
+                }
+                else
+                {
+                    arg = TryConvertProxy(proxy);
+                    resolveArgument = () => src;
+                }
+            }
+        }
+        static object TryConvertProxy(object obj)
+        {
+            var proxy = RemotingServices.GetRealProxy(obj) as IAppVarOwner;
+            return proxy == null ? obj : proxy;
         }
     }
 }

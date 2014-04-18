@@ -27,10 +27,17 @@ namespace VSHTC.Friendly.PinInterface.Inside
             return new OperationTypeInfo(declaringType, arguments.ToArray());
         }
 
+        internal static string GetFullNameTopMustHaveAttr(AppFriend app, Type type)
+        {
+            if (GetTargetTypeAttribute(type) == null)
+            {
+                return string.Empty;
+            }
+            return GetFullName(app, type);
+        }
+
         internal static string GetFullName(AppFriend app, Type type)
         {
-            type = MapIInstance.TryConvertType(type);
-
             TargetTypeAttribute attr = GetTargetTypeAttribute(type);
             if (attr == null)
             {
@@ -39,17 +46,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 {
                     coreType = coreType.GetElementType();
                 }
-                if (TypeUtility.HasInterface(coreType, typeof(IInstance)) ||
-                    TypeUtility.HasInterface(coreType, typeof(IStatic)) ||
-                    TypeUtility.HasInterface(coreType, typeof(IConstructor)) ||
-                    UserWrapperUtility.IsAppVarWrapper(coreType))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return type.FullName;
-                }
+                return type.FullName;
             }
             else
             {

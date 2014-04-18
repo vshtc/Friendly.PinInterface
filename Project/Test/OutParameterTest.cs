@@ -47,13 +47,13 @@ namespace Test
             }
         }
 
-        interface IData : IInstance
+        interface IData
         {
             int A { get; set; }
             string B { get; set; }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             void Create(int a, string b, out Data data);
             void Create(int a, string b, out IData data);

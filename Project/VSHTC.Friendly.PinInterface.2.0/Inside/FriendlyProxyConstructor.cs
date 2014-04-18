@@ -5,7 +5,6 @@ using Codeer.Friendly;
 namespace VSHTC.Friendly.PinInterface.Inside
 {
     class FriendlyProxyConstructor<TInterface> : FriendlyProxy<TInterface>
-    where TInterface : IConstructor
     {
         string _typeFullName;
 

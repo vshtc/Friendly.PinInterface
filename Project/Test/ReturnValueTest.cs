@@ -31,7 +31,7 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-        interface IMainWindow : IInstance
+        interface IMainWindow
         {
             WPFTextBox _textBox { get; }
         }

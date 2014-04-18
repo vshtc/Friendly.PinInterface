@@ -54,12 +54,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctionalInterfaces\IAppFriendFunctions.cs" />
-    <Compile Include="FunctionalInterfaces\IAppVarFunctions.cs" />
-    <Compile Include="FunctionalInterfaces\IModifyAsync.cs" />
-    <Compile Include="FunctionalInterfaces\IModifyOperationTypeInfo.cs" />
-    <Compile Include="IConstructor.cs" />
-    <Compile Include="IInstance.cs" />
     <Compile Include="Inside\ArgumentResolver.cs" />
     <Compile Include="Inside\FriendlyInvokeSpec.cs" />
     <Compile Include="Inside\FriendlyProxy.cs" />
@@ -67,12 +61,11 @@
     <Compile Include="Inside\FriendlyProxyInstance.cs" />
     <Compile Include="Inside\FriendlyProxyStatic.cs" />
     <Compile Include="Inside\FriendlyProxyFactory.cs" />
-    <Compile Include="Inside\IInstanceGenerator.cs" />
-    <Compile Include="Inside\IInstanceMappingChecker.cs" />
+    <Compile Include="Inside\IModifyAsync.cs" />
+    <Compile Include="Inside\IModifyOperationTypeInfo.cs" />
     <Compile Include="Inside\InterfacesSpec.cs" />
     <Compile Include="Inside\ReturnObjectResolver.cs" />
     <Compile Include="Inside\UserWrapperUtility.cs" />
-    <Compile Include="MapIInstance.cs" />
     <Compile Include="Properties\Resources.ja.Designer.cs">
       <DependentUpon>Resources.ja.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -85,8 +78,7 @@
     </Compile>
     <Compile Include="Inside\TargetTypeUtility.cs" />
     <Compile Include="Inside\TypeUtility.cs" />
-    <Compile Include="InterfaceHelper.cs" />
-    <Compile Include="IStatic.cs" />
+    <Compile Include="PinHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TargetTypeAttribute.cs" />
   </ItemGroup>

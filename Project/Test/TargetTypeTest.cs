@@ -33,12 +33,12 @@ namespace Test
         [TargetType("System.Windows.Point")]
         class Point_
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 double X { get; set; }
                 double Y { get; set; }
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New();
             }
@@ -47,12 +47,12 @@ namespace Test
         [TargetType("System.Collections.Generic.Dictionary`2")]
         class Dictionary_<Key, Value>
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 Value this[Key key] { get; set; }
                 void Add(Key key, Value value);
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New();
             }
@@ -61,12 +61,12 @@ namespace Test
         [TargetType("System.Collections.Generic.List`1")]
         class List_<T>
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 T this[int index] { get; set; }
                 void Add(T value);
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New();
             }
@@ -75,11 +75,11 @@ namespace Test
         [TargetType("[]")]
         class Array1<T>
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 T this[int index] { get; set; }
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New(int count);
             }
@@ -88,11 +88,11 @@ namespace Test
         [TargetType("[,]")]
         class Array2<T>
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 T this[int index0, int index1] { get; set; }
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New(int count0, int count1);
             }
@@ -101,11 +101,11 @@ namespace Test
         [TargetType("[,,]")]
         class Array3<T>
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 T this[int index0, int index1, int index2] { get; set; }
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New(int count0, int count1, int count2);
             }
@@ -162,8 +162,8 @@ namespace Test
         [TestMethod]
         public void GenericConstructor()
         {
-            var dic = _app.Pin<Dictionary_<int, Point_.Instance>.Constructor>().New();
-            var pos = _app.Pin<Point_.Constructor>().New();
+            var dic = _app.PinConstructor<Dictionary_<int, Point_.Instance>.Constructor>().New();
+            var pos = _app.PinConstructor<Point_.Constructor>().New();
             pos.X = 100;
             dic.Add(1, pos);
             Assert.AreEqual(100, dic[1].X);

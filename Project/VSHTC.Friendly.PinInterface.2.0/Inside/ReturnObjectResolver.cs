@@ -7,12 +7,12 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static object Resolve(bool isAsync, AppVar returnedAppVal, ParameterInfo parameterInfo)
         {
-            var type = MapIInstance.TryConvertType(parameterInfo.ParameterType);
+            var type = parameterInfo.ParameterType;
             if (type == typeof(void))
             {
                 return null;
             }
-            else if (TypeUtility.HasInterface(type, typeof(IInstance)))
+            else if (type.IsInterface)
             {
                 return FriendlyProxyFactory.WrapFriendlyProxyInstance(type, returnedAppVal);
             }

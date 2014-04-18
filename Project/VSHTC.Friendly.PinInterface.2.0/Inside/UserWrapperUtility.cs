@@ -9,6 +9,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             return (type.GetConstructor(new Type[] { typeof(AppVar) }) != null) ||
                 //TODO: This is interim procedures until a circumference library catches up. 
+                //@@@これバグっている
                     (type.GetConstructor(new Type[] { typeof(AppFriend), typeof(AppVar) }) != null);
         }
 
@@ -20,6 +21,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 return constructor.Invoke(new object[] { appVar });
             }
             //TODO: This is interim procedures until a circumference library catches up. 
+            //@@@これも
             constructor = type.GetConstructor(new Type[] { typeof(AppVar), typeof(AppVar) });
             if (constructor != null)
             {

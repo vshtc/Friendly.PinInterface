@@ -55,22 +55,22 @@ namespace Test
         [TargetType("Test.PinInterfaceExtensionsTest+Target")]
         class Target_
         {
-            internal interface Instance : IInstance
+            internal interface Instance
             {
                 int A { get; set; }
                 int Func();
             }
-            internal interface Constructor : IConstructor
+            internal interface Constructor
             {
                 Instance New(int a);
             }
-            internal interface Static : IStatic
+            internal interface Static
             {
                 int FuncStatic();
                 void Get(out Instance target);
             }
         }
-        internal interface ITarget : IInstance
+        internal interface ITarget
         {
             int A { get; set; }
             int Func();
@@ -93,24 +93,9 @@ namespace Test
         }
 
         [TestMethod]
-        public void PinCopy()
-        {
-            var target = _app.PinCopy<Target_.Instance>(new Target(5));
-            Assert.AreEqual(5, target.A);
-        }
-
-        [TestMethod]
-        public void PinNull()
-        {
-            var target = _app.PinNull<Target_.Instance>();
-            _app.Pin<Target_.Static>().Get(out target);
-            Assert.AreEqual(10, target.A);
-        }
-
-        [TestMethod]
         public void PinConstructor()
         {
-            var target = _app.Pin<Target_.Constructor>();
+            var target = _app.PinConstructor<Target_.Constructor>();
             var instance = target.New(3);
             Assert.AreEqual(3, instance.A);
         }
@@ -123,6 +108,7 @@ namespace Test
             Assert.AreEqual(3, target.A);
         }
 
+        /*@@@
         [TestMethod]
         public void Cast()
         {
@@ -131,9 +117,9 @@ namespace Test
             Assert.AreEqual(3, target.A);
             var copy = target.Cast<Target>();
             Assert.AreEqual(3, copy.A);
-        }
+        }*/
 
-        interface TargetStatic : IStatic
+        interface TargetStatic
         {
             int FuncStatic();
             void Get(out Target_.Instance target);

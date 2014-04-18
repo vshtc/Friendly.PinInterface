@@ -2,8 +2,8 @@
 using System.Runtime.Remoting.Proxies;
 using VSHTC.Friendly.PinInterface.Inside;
 using Codeer.Friendly;
-using VSHTC.Friendly.PinInterface.FunctionalInterfaces;
 using VSHTC.Friendly.PinInterface.Properties;
+using System.Runtime.Remoting;
 
 namespace VSHTC.Friendly.PinInterface
 {
@@ -16,7 +16,7 @@ namespace VSHTC.Friendly.PinInterface
     /// インターフェイス付加、変更のためのヘルパメソッドです。
     /// </summary>
 #endif
-    public static class InterfaceHelper
+    public static class PinHelper
     {
 #if ENG
         /// <summary>
@@ -34,9 +34,8 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>操作用インターフェイス。</returns>
 #endif
         public static TInterface Pin<TInterface>(AppFriend app)
-        where TInterface : IAppFriendFunctions
         {
-            string targetTypeFullName = TargetTypeUtility.GetFullName(app, typeof(TInterface));
+            string targetTypeFullName = TargetTypeUtility.GetFullNameTopMustHaveAttr(app, typeof(TInterface));
             if (string.IsNullOrEmpty(targetTypeFullName))
             {
                 throw new NotSupportedException(Resources.ErrorNotFoundTargetType);
@@ -62,7 +61,6 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>操作用インターフェイス。</returns>
 #endif
         public static TInterface Pin<TInterface, TTarget>(AppFriend app)
-        where TInterface : IAppFriendFunctions
         {
             return Pin<TInterface>(app, typeof(TTarget));
         }
@@ -85,7 +83,6 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>操作用インターフェイス。</returns>
 #endif
         public static TInterface Pin<TInterface>(AppFriend app, Type targetType)
-        where TInterface : IAppFriendFunctions
         {
             return Pin<TInterface>(app, targetType.FullName);
         }
@@ -108,56 +105,101 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>操作用インターフェイス。</returns>
 #endif
         public static TInterface Pin<TInterface>(AppFriend app, string targetTypeFullName)
-        where TInterface : IAppFriendFunctions
         {
-            Type proxyType = TypeUtility.HasInterface(typeof(TInterface), typeof(IStatic)) ?
-                typeof(FriendlyProxyStatic<>) : typeof(FriendlyProxyConstructor<>);
-            return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(proxyType, app, targetTypeFullName);
+            return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(typeof(FriendlyProxyStatic<>), app, targetTypeFullName);
         }
 
 #if ENG
         /// <summary>
-        /// Copies indicated object into the target application and returns a DynamicAppVar to access it.
+        /// Pin AppFriend's opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
-        /// <param name="obj">Object to be sent (must be serializable, AppVar, or DynamicAppVar).</param>
-        /// <returns>DynamicAppVar.</returns>
+        /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
-        /// テスト対象アプリケーション内に指定のオブジェクトをコピーし、その変数を操作するインターフェイスを返します。
-        /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="app">アプリケーション操作クラス。</param>
-        /// <param name="obj">初期化オブジェクト（シリアライズ可能なオブジェクトもしくはAppVarであること）。</param>
-        /// <returns>操作用インターフェイス。</returns>
-#endif
-        public static TInterface PinCopy<TInterface>(AppFriend app, object obj)
-        where TInterface : IInstance
-        {
-            return Pin<TInterface>(app.Dim(obj));
-        }
-
-#if ENG
-        /// <summary>
-        /// Declares a null variable in the target application and returns a DynamicAppVar to access it.
-        /// </summary>
-        /// <typeparam name="TInterface">Interface type.</typeparam>
-        /// <param name="app">Application manipulation object.</param>
-        /// <returns>DynamicAppVar.</returns>
-#else
-        /// <summary>
-        /// テスト対象アプリケーション内にnullの変数を宣言し、その変数を操作するインターフェイスを返します。
+        /// AppFriendの操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
         /// <returns>操作用インターフェイス。</returns>
 #endif
-        public static TInterface PinNull<TInterface>(AppFriend app)
-        where TInterface : IInstance
+        public static TInterface PinConstructor<TInterface>(AppFriend app)
         {
-            return Pin<TInterface>(app.Dim());
+            string targetTypeFullName = TargetTypeUtility.GetFullNameTopMustHaveAttr(app, typeof(TInterface));
+            if (string.IsNullOrEmpty(targetTypeFullName))
+            {
+                throw new NotSupportedException(Resources.ErrorNotFoundTargetType);
+            }
+            return PinConstructor<TInterface>(app, targetTypeFullName);
         }
+
+#if ENG
+        /// <summary>
+        /// Pin AppFriend's opertion by TInterface.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <typeparam name="TTarget">Proxy target type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <returns>Interface for manipulation.</returns>
+#else
+        /// <summary>
+        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TTarget">対応するタイプ。</typeparam>
+        /// <param name="app">アプリケーション操作クラス。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface PinConstructor<TInterface, TTarget>(AppFriend app)
+        {
+            return PinConstructor<TInterface>(app, typeof(TTarget));
+        }
+
+#if ENG
+        /// <summary>
+        /// Pin AppFriend's opertion by TInterface.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <param name="targetType">Proxy target type.</param>
+        /// <returns>Interface for manipulation.</returns>
+#else
+        /// <summary>
+        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="app">アプリケーション操作クラス。</param>
+        /// <param name="targetType">対応するタイプ。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface PinConstructor<TInterface>(AppFriend app, Type targetType)
+        {
+            return PinConstructor<TInterface>(app, targetType.FullName);
+        }
+
+#if ENG
+        /// <summary>
+        /// Pin AppFriend's opertion by TInterface.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface type.</typeparam>
+        /// <param name="app">Application manipulation object.</param>
+        /// <param name="targetTypeFullName">Proxy target type full name.</param>
+        /// <returns>Interface for manipulation.</returns>
+#else
+        /// <summary>
+        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// </summary>
+        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <param name="app">アプリケーション操作クラス。</param>
+        /// <param name="targetTypeFullName">対応するタイプフルネーム。</param>
+        /// <returns>操作用インターフェイス。</returns>
+#endif
+        public static TInterface PinConstructor<TInterface>(AppFriend app, string targetTypeFullName)
+        {
+            return FriendlyProxyFactory.WrapFriendlyProxy<TInterface>(typeof(FriendlyProxyConstructor<>), app, targetTypeFullName);
+        }
+
 
 #if ENG
         /// <summary>
@@ -175,70 +217,74 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>操作用インターフェイス。</returns>
 #endif
         public static TInterface Pin<TInterface>(AppVar appVar)
-             where TInterface : IInstance
         {
             return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
 
-#if ENG
+
+
+
+
+
+
+
+
         /// <summary>
-        /// Pin AppVar's opertion by TInterface.
-        /// TInterface does not need to inherit IInstance. 
-        /// But, It needs to be registered into MapIInstance. 
+        /// 
         /// </summary>
-        /// <typeparam name="TInterface">Interface type.</typeparam>
-        /// <param name="appVar">Application varialbe manipulation object.</param>
-        /// <returns>Interface for manipulation.</returns>
-#else
-        /// <summary>
-        /// AppVarの操作を指定のインターフェイスで固定します。
-        /// TInterfaceはIInstanceを継承している必要はありませんが、MapIInstanceに登録されている必要があります。
-        /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
-        /// <param name="appVar">アプリケーション変数。</param>
-        /// <returns>操作用インターフェイス。</returns>
-#endif
-        public static TInterface FindPin<TInterface>(AppVar appVar)
+        /// <param name="pinnedInterface"></param>
+        /// <returns></returns>
+        public static AppVar GetAppVar(object pinnedInterface)
         {
-            var iinstance = MapIInstance.FindIInstancePlus(typeof(TInterface));
-            if (iinstance == null)
-            {
-                throw new NotSupportedException();//@@@
-            }
-            return (TInterface)FriendlyProxyFactory.WrapFriendlyProxyInstance(iinstance, appVar);
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IAppVarOwner;
+            return proxy == null ? null : proxy.AppVar;
         }
 
-#if ENG
         /// <summary>
-        /// Cast.
+        /// 
         /// </summary>
-        /// <typeparam name="T">Cast type.</typeparam>
-        /// <param name="source">Source.</param>
-        /// <returns>Destination.</returns>
-#else
-        /// <summary>
-        /// 指定の型にキャストします。
-        /// TがIInstane型であれば、その操作用インターフェイスを返します。
-        /// それ以外であれば、AppVarの中身をシリアライズして、対象アプリケーションからテストプロセスへ転送、取得します。
-        /// </summary>
-        /// <typeparam name="T">キャストする型。</typeparam>
-        /// <param name="source">元。</param>
-        /// <returns>後。</returns>
-#endif
-        public static T Cast<T>(IAppVarOwner source)
+        /// <param name="pinnedInterface"></param>
+        /// <returns></returns>
+        public static Async AsyncNext(object pinnedInterface)
         {
-            if (TypeUtility.HasInterface(typeof(T), typeof(IInstance)))
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyAsync;
+            if (proxy == null)
             {
-                return FriendlyProxyFactory.WrapFriendlyProxy<T>(typeof(FriendlyProxyInstance<>), source.AppVar);
+                throw new NotSupportedException();
             }
-            else if (UserWrapperUtility.IsAppVarWrapper(typeof(T)))
-            {
-                return (T)UserWrapperUtility.CreateWrapper(typeof(T), source.AppVar);
-            }
-            else
-            {
-                return (T)source.AppVar.Core;
-            }
+            return proxy.AsyncNext();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pinnedInterface"></param>
+        /// <param name="operationTypeInfo"></param>
+        public static void OperationTypeInfoNext(object pinnedInterface, OperationTypeInfo operationTypeInfo)
+        {
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
+            if (proxy == null)
+            {
+                throw new NotSupportedException();
+            }
+            proxy.OperationTypeInfoNext(operationTypeInfo);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pinnedInterface"></param>
+        public static void OperationTypeInfoNext(object pinnedInterface)
+        {
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
+            if (proxy == null)
+            {
+                throw new NotSupportedException();
+            }
+            proxy.SetOperationTypeInfoNextAuto();
+        }
+
+
+
     }
 }

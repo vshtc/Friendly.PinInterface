@@ -49,13 +49,13 @@ namespace Test
             }
         }
 
-        interface IData : IInstance
+        interface IData
         {
             int A { get; set; }
             string B { get; set; }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             IData Create(int a, string b);
             int GetA(IData data);
@@ -72,16 +72,6 @@ namespace Test
             Assert.AreEqual("X", data.B);
             Assert.AreEqual(5, target.GetA(data));
             Assert.AreEqual("X", target.GetB(data));
-        }
-
-        [TestMethod]
-        public void CompatibilityFriendlyOperation()
-        {
-            AppVar v = _app.Type<Target>()();
-            ITarget target = v.Pin<ITarget>();
-            IData data = target.Create(5, "X");
-            Assert.AreEqual(5, (int)target.Dynamic().GetA(data));
-            Assert.AreEqual("X", (string)target.Dynamic().GetB(data));
         }
     }
 }

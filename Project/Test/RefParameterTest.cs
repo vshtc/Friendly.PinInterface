@@ -52,19 +52,19 @@ namespace Test
         }
 
 
-        interface IData : IInstance
+        interface IData
         {
             int A { get; set; }
             string B { get; set; }
         }
 
-        interface IPoint : IInstance
+        interface IPoint
         {
             double X { get; set; }
             double Y { get; set; }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             void Create(int a, string b, ref Data data);
             void Create(int a, string b, ref IData data);
@@ -117,7 +117,7 @@ namespace Test
             Assert.AreEqual("Y", data.B);
 
             //struct.
-            IPoint pos = InterfaceHelper.Pin<IPoint>(_app.Copy(new Point() { X = 1, Y = 2 }));
+            IPoint pos = PinHelper.Pin<IPoint>(_app.Copy(new Point() { X = 1, Y = 2 }));
             target.ChangeX(ref pos);
             Assert.AreEqual(10, pos.X);
             Assert.AreEqual(2, pos.Y);

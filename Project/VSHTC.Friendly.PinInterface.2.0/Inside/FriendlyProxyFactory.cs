@@ -6,9 +6,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     internal static class FriendlyProxyFactory
     {
-        internal static object WrapFriendlyProxyInstance(Type type, AppVar ret)
+        internal static object WrapFriendlyProxyInstance(Type type, AppVar appVar)
         {
-            return WrapFriendlyProxy(typeof(FriendlyProxyInstance<>), type, new object[] { ret });
+            return (bool)appVar.App[typeof(object), "ReferenceEquals"](null, appVar).Core ?
+                null : WrapFriendlyProxy(typeof(FriendlyProxyInstance<>), type, new object[] { appVar });
         }
 
         internal static T WrapFriendlyProxy<T>(Type proxyType, params object[] args)

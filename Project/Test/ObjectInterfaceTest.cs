@@ -33,17 +33,17 @@ namespace Test
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
 
-        public interface IWindow : IInstance
+        public interface IWindow
         {
             string Title { get; set; }
         }
 
-        public interface IApplication : IInstance
+        public interface IApplication
         {
             IWindow MainWindow { get; set; }
         }
 
-        public interface IApplicationStatic : IStatic
+        public interface IApplicationStatic
         {
             IApplication Current { get; }
         }
@@ -63,7 +63,7 @@ namespace Test
         [TestMethod]
         public void GetHashCode_IsProxy()
         {
-            Assert.AreEqual((int)_window.Dynamic().GetHashCode(), _window.GetHashCode());
+            Assert.AreEqual((int)PinHelper.GetAppVar(_window).Dynamic().GetHashCode(), _window.GetHashCode());
         }
 
         [TestMethod]

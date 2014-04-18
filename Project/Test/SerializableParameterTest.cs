@@ -50,7 +50,7 @@ namespace Test
             }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             Data Create(int a, string b);
             int GetA(Data data);

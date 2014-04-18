@@ -4,8 +4,7 @@ using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
-    class FriendlyProxyStatic<TInterface> : FriendlyProxy<TInterface>
-        where TInterface : IStatic
+    class FriendlyProxyStatic<TInterface> : FriendlyProxy<TInterface>, IModifyAsync
     {
         string _typeFullName;
 
@@ -23,6 +22,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
         protected override string GetTargetTypeFullName()
         {
             return _typeFullName;
+        }
+
+        public Async AsyncNext()
+        {
+            Async async = new Async();
+            SetAsyncNext(async);
+            return async;
         }
     }
 }

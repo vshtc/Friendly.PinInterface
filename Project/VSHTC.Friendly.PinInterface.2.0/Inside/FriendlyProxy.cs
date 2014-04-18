@@ -6,13 +6,29 @@ using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
-    abstract class FriendlyProxy<TInterface> : RealProxy
+    abstract class FriendlyProxy<TInterface> : RealProxy, IModifyOperationTypeInfo
     {
         Async _asyncNext;
         OperationTypeInfo _operationTypeInfoNext;
-        bool _isAutoOperationTypeInfo;
 
         protected AppFriend App { get; private set; }
+
+        public bool _isAutoOperationTypeInfo;
+
+        public void OperationTypeInfoNext(OperationTypeInfo info)
+        {
+            _operationTypeInfoNext = info;
+        }
+
+        protected void SetAsyncNext(Async asyncNext)
+        {
+            _asyncNext = asyncNext;
+        }
+
+        public void SetOperationTypeInfoNextAuto()
+        {
+            _isAutoOperationTypeInfo = true;
+        }
 
         public FriendlyProxy(AppFriend app)
             : base(typeof(TInterface)) 
@@ -26,8 +42,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             var method = (MethodInfo)mm.MethodBase;
 
             object retunObject;
-            if (InterfacesSpec.TryExecute<TInterface>(this as IAppVarOwner, method, mm.Args, 
-                ref _asyncNext, ref _operationTypeInfoNext, ref _isAutoOperationTypeInfo, out retunObject))
+            if (InterfacesSpec.TryExecute<TInterface>(this as IAppVarOwner, method, mm.Args, out retunObject))
             {
                 return new ReturnMessage(retunObject, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
@@ -35,9 +50,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             ArgumentResolver args = new ArgumentResolver(App, method, isAsyunc, mm.Args);
 
-            if (_operationTypeInfoNext == null && _isAutoOperationTypeInfo)
+            if (_isAutoOperationTypeInfo)
             {
                 _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
+                _isAutoOperationTypeInfo = false;
             }
 
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);

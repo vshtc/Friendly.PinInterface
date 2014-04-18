@@ -36,7 +36,7 @@ namespace Test
             public int Data { get { return _data; } set { _data = value; } }
         }
 
-        interface ITarget : IInstance
+        interface ITarget
         {
             int _data { get; set; }
             int Data { get; set; }
@@ -50,7 +50,7 @@ namespace Test
             Assert.AreEqual(100, target.Data);
         }
 
-        public interface IIndexAccess : IInstance
+        public interface IIndexAccess
         {
             int this[int index] { get; set; }
         }
@@ -58,11 +58,11 @@ namespace Test
         [TestMethod]
         public void IndexAccess()
         {
-            IIndexAccess list = InterfaceHelper.Pin<IIndexAccess>(_app.Copy(new List<int>(new int[] { 0, 1, 2 })));
+            IIndexAccess list = PinHelper.Pin<IIndexAccess>(_app.Copy(new List<int>(new int[] { 0, 1, 2 })));
             list[1] = 100;
             Assert.AreEqual(100, list[1]);
 
-            IIndexAccess array = InterfaceHelper.Pin<IIndexAccess>(_app.Copy(new int[] { 0, 1, 2 }));
+            IIndexAccess array = PinHelper.Pin<IIndexAccess>(_app.Copy(new int[] { 0, 1, 2 }));
             array[1] = 100;
             Assert.AreEqual(100, array[1]);
         }

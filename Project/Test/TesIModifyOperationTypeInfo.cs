@@ -14,6 +14,7 @@ using Codeer.Friendly.Windows.NativeStandardControls;
 
 namespace Test
 {
+    /*
     [TestClass]
     public class TesIModifyOperationTypeInfo
     {
@@ -61,7 +62,7 @@ namespace Test
             }
         }
 
-        interface ITargetStatic : IStatic
+        interface ITargetStatic
         {
             int Func();
             int Func(string value);
@@ -94,7 +95,7 @@ namespace Test
             }
         }
 
-        interface ITargetInstance : IInstance
+        interface ITargetInstance
         {
             int Func();
             int Func(string value);
@@ -103,14 +104,14 @@ namespace Test
         }
 
         [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
-        interface ITargetInstanceConstructor : IConstructor
+        interface ITargetInstanceConstructor
         {
             ITargetInstance New(string value);
             ITargetInstance New(Data value);
         }
 
         [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
-        interface ITargetInstanceAuto : IInstance
+        interface ITargetInstanceAuto
         {
             int Func();
             int Func(string value);
@@ -181,5 +182,5 @@ namespace Test
                 Assert.AreEqual(2, ret._value);
             }
         }
-    }
+    }*/
 }
