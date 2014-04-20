@@ -221,14 +221,6 @@ namespace VSHTC.Friendly.PinInterface
             return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
 
-
-
-
-
-
-
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -283,8 +275,5 @@ namespace VSHTC.Friendly.PinInterface
             }
             proxy.SetOperationTypeInfoNextAuto();
         }
-
-
-
     }
 }
