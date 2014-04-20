@@ -1,5 +1,6 @@
 ﻿using System;
 using Codeer.Friendly;
+using System.Reflection;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -7,26 +8,41 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static bool IsAppVarWrapper(Type type)
         {
-            return (type.GetConstructor(new Type[] { typeof(AppVar) }) != null) ||
+            foreach (var element in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var args = element.GetParameters();
+                if (args.Length == 1 && args[0].ParameterType.IsAssignableFrom(typeof(AppVar)))
+                {
+                    return true;
+                }
                 //TODO: This is interim procedures until a circumference library catches up. 
-                //@@@これバグっている
-                    (type.GetConstructor(new Type[] { typeof(AppFriend), typeof(AppVar) }) != null);
+                if (args.Length == 2 && 
+                    typeof(AppFriend).IsAssignableFrom(args[0].ParameterType) &&
+                    args[1].ParameterType.IsAssignableFrom(typeof(AppVar)))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         internal static object CreateWrapper(Type type, AppVar appVar)
         {
-            var constructor = type.GetConstructor(new Type[] { typeof(AppVar) });
-            if (constructor != null)
+            foreach (var element in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
             {
-                return constructor.Invoke(new object[] { appVar });
-            }
-            //TODO: This is interim procedures until a circumference library catches up. 
-            //@@@これも
-            constructor = type.GetConstructor(new Type[] { typeof(AppVar), typeof(AppVar) });
-            if (constructor != null)
-            {
-                return constructor.Invoke(new object[] { appVar.App, appVar });
-            }
+                var args = element.GetParameters();
+                if (args.Length == 1 && args[0].ParameterType.IsAssignableFrom(typeof(AppVar)))
+                {
+                    return element.Invoke(new object[] { appVar });
+                }
+                //TODO: This is interim procedures until a circumference library catches up. 
+                if (args.Length == 2 &&
+                    typeof(AppFriend).IsAssignableFrom(args[0].ParameterType) &&
+                    args[1].ParameterType.IsAssignableFrom(typeof(AppVar)))
+                {
+                    return element.Invoke(new object[] { appVar.App, appVar });
+                }
+            } 
             throw new NotSupportedException();
         }
         //TODO: Exception Message

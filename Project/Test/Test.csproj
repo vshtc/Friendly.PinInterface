@@ -69,6 +69,10 @@
       <HintPath>..\packages\Codeer.Friendly.Windows.NativeStandardControls.2.1.4\lib\net20\Codeer.Friendly.Windows.NativeStandardControls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ong.Friendly.FormsStandardControls, Version=2.1.4.0, Culture=neutral, PublicKeyToken=ee7fcdb5644bd140, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ong.Friendly.FormsStandardControls.2.1.4\lib\net20\Ong.Friendly.FormsStandardControls.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RM.Friendly.WPFStandardControls3">
@@ -99,7 +103,8 @@
     <Compile Include="RefParameterTest.cs" />
     <Compile Include="OutParameterTest.cs" />
     <Compile Include="ReferenceParameterTest.cs" />
-    <Compile Include="ReturnValueTest.cs" />
+    <Compile Include="UserWrapperFormsTest.cs" />
+    <Compile Include="UserWrapperTest.cs" />
     <Compile Include="SerializableParameterTest.cs" />
     <Compile Include="TargetTypeTest.cs" />
     <Compile Include="TesIModifyAsync.cs" />
@@ -114,6 +119,10 @@
     <None Include="Test.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TargetForms\TargetForms.csproj">
+      <Project>{fcbbe5f3-7b0a-41b4-abce-96c27f566e3d}</Project>
+      <Name>TargetForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Target\Target.csproj">
       <Project>{dab9bd76-a107-450e-8dc9-1dd8d6439ed0}</Project>
       <Name>Target</Name>
