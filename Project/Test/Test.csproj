@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="InterfaceWriteTest.cs" />
     <Compile Include="ObjectInterfaceTest.cs" />
+    <Compile Include="PinHelperTest.cs" />
     <Compile Include="RefParameterTest.cs" />
     <Compile Include="OutParameterTest.cs" />
     <Compile Include="ReferenceParameterTest.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="TargetTypeTest.cs" />
     <Compile Include="TesIModifyAsync.cs" />
     <Compile Include="TesIModifyOperationTypeInfo.cs" />
-    <Compile Include="PinInterfaceExtensionsTest.cs" />
+    <Compile Include="PinHelperExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestUtility.cs" />
   </ItemGroup>

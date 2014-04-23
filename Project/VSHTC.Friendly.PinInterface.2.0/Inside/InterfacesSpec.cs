@@ -23,7 +23,5 @@ namespace VSHTC.Friendly.PinInterface.Inside
         {
             return (method.DeclaringType == typeof(object) && method.Name == "GetType");
         }
-
-        //@@@自動でONになる属性も追加
     }
 }

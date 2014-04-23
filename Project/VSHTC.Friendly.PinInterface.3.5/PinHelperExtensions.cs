@@ -14,7 +14,7 @@ namespace VSHTC.Friendly.PinInterface
     /// PinInterfaceHelperの処理を拡張メソッドで提供します。
     /// </summary>
 #endif
-    public static class PinInterfaceExtensions
+    public static class PinHelperExtensions
     {
 #if ENG
         /// <summary>

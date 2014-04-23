@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Test
 {
     [TestClass]
-    public class PinInterfaceExtensionsTest
+    public class PinHelperExtensionsTest
     {
         WindowsAppFriend _app;
 
@@ -52,7 +52,7 @@ namespace Test
             }
         }
 
-        [TargetType("Test.PinInterfaceExtensionsTest+Target")]
+        [TargetType("Test.PinHelperExtensionsTest+Target")]
         class Target_
         {
             internal interface Instance
@@ -70,10 +70,23 @@ namespace Test
                 void Get(out Instance target);
             }
         }
-        internal interface ITarget
+
+        class TargetNoAttr_
         {
-            int A { get; set; }
-            int Func();
+            internal interface Instance
+            {
+                int A { get; set; }
+                int Func();
+            }
+            internal interface Constructor
+            {
+                Instance New(int a);
+            }
+            internal interface Static
+            {
+                int FuncStatic();
+                void Get(out Instance target);
+            }
         }
 
         [TestMethod]
@@ -82,13 +95,13 @@ namespace Test
             var target = _app.Pin<Target_.Static>();
             Assert.AreEqual(2, target.FuncStatic());
 
-            target = _app.Pin<Target_.Static, Target>();
+            var targetNoAttr = _app.Pin<TargetNoAttr_.Static, Target>();
             Assert.AreEqual(2, target.FuncStatic());
 
-            target = _app.Pin<Target_.Static>(typeof(Target));
+            targetNoAttr = _app.Pin<TargetNoAttr_.Static>(typeof(Target));
             Assert.AreEqual(2, target.FuncStatic());
 
-            target = _app.Pin<Target_.Static>(typeof(Target).ToString());
+            targetNoAttr = _app.Pin<TargetNoAttr_.Static>(typeof(Target).ToString());
             Assert.AreEqual(2, target.FuncStatic());
         }
 
@@ -96,8 +109,20 @@ namespace Test
         public void PinConstructor()
         {
             var target = _app.PinConstructor<Target_.Constructor>();
-            var instance = target.New(3);
-            Assert.AreEqual(3, instance.A);
+            var instance = target.New(1);
+            Assert.AreEqual(1, instance.A);
+
+            var targetNoAttr = _app.PinConstructor<TargetNoAttr_.Constructor, Target>();
+            var instanceNoAttr = targetNoAttr.New(2);
+            Assert.AreEqual(2, instanceNoAttr.A);
+
+            targetNoAttr = _app.PinConstructor<TargetNoAttr_.Constructor>(typeof(Target));
+            instanceNoAttr = targetNoAttr.New(3);
+            Assert.AreEqual(3, instanceNoAttr.A);
+
+            targetNoAttr = _app.PinConstructor<TargetNoAttr_.Constructor>(typeof(Target).ToString());
+            instanceNoAttr = targetNoAttr.New(4);
+            Assert.AreEqual(4, instanceNoAttr.A);
         }
 
         [TestMethod]
@@ -106,31 +131,6 @@ namespace Test
             AppVar appVar = _app.Type<Target>()(3);
             var target = appVar.Pin<Target_.Instance>();
             Assert.AreEqual(3, target.A);
-        }
-
-        /*@@@
-        [TestMethod]
-        public void Cast()
-        {
-            var src = _app.Pin<Target_.Constructor>().New(3);
-            var target = src.Cast<ITarget>();
-            Assert.AreEqual(3, target.A);
-            var copy = target.Cast<Target>();
-            Assert.AreEqual(3, copy.A);
-        }*/
-
-        interface TargetStatic
-        {
-            int FuncStatic();
-            void Get(out Target_.Instance target);
-        }
-
-        [TestMethod]
-        public void PinStaticException()
-        {
-            TestUtility.TestExceptionMessage(() => { _app.Pin<TargetStatic>(); },
-                "Not found target type.\r\nOrder by TargetTypeAttribute,Or Use other Pin method which can specify the target type.",
-                "対象の型を見つけることができませんでした。\r\nTargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。");
         }
     }
 }

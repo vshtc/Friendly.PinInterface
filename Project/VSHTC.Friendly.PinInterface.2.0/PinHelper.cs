@@ -237,6 +237,21 @@ namespace VSHTC.Friendly.PinInterface
         /// </summary>
         /// <param name="pinnedInterface"></param>
         /// <returns></returns>
+        public static T GetValue<T>(object pinnedInterface)
+        {
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IAppVarOwner;
+            if (proxy == null)
+            {
+                throw new NotSupportedException();
+            }
+            return (T)proxy.AppVar.Core;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pinnedInterface"></param>
+        /// <returns></returns>
         public static Async AsyncNext(object pinnedInterface)
         {
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyAsync;

@@ -6,9 +6,6 @@ using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows;
 using System.Diagnostics;
 using VSHTC.Friendly.PinInterface;
-using VSHTC.Friendly.PinInterface.Inside;
-using System.Windows.Documents;
-using System.Collections.Generic;
 
 namespace Test
 {
