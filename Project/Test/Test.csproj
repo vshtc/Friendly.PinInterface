@@ -101,12 +101,11 @@
     <Compile Include="InterfaceWriteTest.cs" />
     <Compile Include="ObjectInterfaceTest.cs" />
     <Compile Include="PinHelperTest.cs" />
-    <Compile Include="RefParameterTest.cs" />
-    <Compile Include="OutParameterTest.cs" />
-    <Compile Include="ReferenceParameterTest.cs" />
+    <Compile Include="ArgumentResolveOutTest.cs" />
+    <Compile Include="ArgumentResolveRefTest.cs" />
     <Compile Include="UserWrapperFormsTest.cs" />
     <Compile Include="UserWrapperTest.cs" />
-    <Compile Include="SerializableParameterTest.cs" />
+    <Compile Include="ArgumentResolveTest.cs" />
     <Compile Include="TargetTypeTest.cs" />
     <Compile Include="TesIModifyAsync.cs" />
     <Compile Include="TesIModifyOperationTypeInfo.cs" />

@@ -56,11 +56,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
             else if (type == typeof(AppVar))
             {
-                ResolveAppVarRefOutArgs(app, type, src, (t, appVar) => appVar, out arg, out resolveArgument);
+                ResolveAppVarRefOutArgs(app, type, src, out arg, out resolveArgument);
             }
             else if (UserWrapperUtility.IsAppVarWrapper(type))
             {
-                ResolveAppVarRefOutArgs(app, type, src, UserWrapperUtility.CreateWrapper, out arg, out resolveArgument);
+                ResolveUserWrapperRefOutArgs(app, type, src, out arg, out resolveArgument);
             }
             else
             {
@@ -70,22 +70,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
         }
 
-        delegate object ResolveAppVar(Type type, AppVar appVar);
-        private static void ResolveAppVarRefOutArgs(AppFriend app, Type type, object src, ResolveAppVar resolver, out object arg, out ResolveArgument resolveArgument)
-        {
-            if (src == null)
-            {
-                AppVar appVar = app.Dim();
-                arg = appVar;
-                resolveArgument = () => resolver(type, appVar);
-            }
-            else
-            {
-                arg = TryConvertProxy(src);
-                resolveArgument = () => src;
-            }
-        }
-        private static void ResolveInterfaceRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
+        static void ResolveInterfaceRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
         {
             if (src == null)
             {
@@ -104,11 +89,42 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 }
                 else
                 {
-                    arg = TryConvertProxy(proxy);
+                    arg = proxy;
                     resolveArgument = () => src;
                 }
             }
         }
+        
+        static void ResolveAppVarRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
+        {
+            if (src == null)
+            {
+                AppVar appVar = app.Dim();
+                arg = appVar;
+                resolveArgument = () => appVar;
+            }
+            else
+            {
+                arg = src;
+                resolveArgument = () => src;
+            }
+        }
+
+        static void ResolveUserWrapperRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
+        {
+            if (src == null)
+            {
+                AppVar appVar = app.Dim();
+                arg = appVar;
+                resolveArgument = () => UserWrapperUtility.CreateWrapper(type, appVar);
+            }
+            else
+            {
+                arg = src;
+                resolveArgument = () => src;
+            }
+        }
+
         static object TryConvertProxy(object obj)
         {
             var proxy = RemotingServices.GetRealProxy(obj) as IAppVarOwner;
