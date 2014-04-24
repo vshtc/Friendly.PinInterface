@@ -28,6 +28,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         internal static object CreateWrapper(Type type, AppVar appVar)
         {
+            if ((bool)appVar.App[typeof(object), "ReferenceEquals"](null, appVar).Core)
+            {
+                return null;
+            }
+
             foreach (var element in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
             {
                 var args = element.GetParameters();

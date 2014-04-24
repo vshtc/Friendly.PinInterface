@@ -64,7 +64,7 @@
     <Compile Include="Inside\IModifyAsync.cs" />
     <Compile Include="Inside\IModifyOperationTypeInfo.cs" />
     <Compile Include="Inside\InterfacesSpec.cs" />
-    <Compile Include="Inside\ReturnObjectResolver.cs" />
+    <Compile Include="Inside\ReturnResolver.cs" />
     <Compile Include="Inside\UserWrapperUtility.cs" />
     <Compile Include="Properties\Resources.ja.Designer.cs">
       <DependentUpon>Resources.ja.resx</DependentUpon>

@@ -103,12 +103,13 @@
     <Compile Include="PinHelperTest.cs" />
     <Compile Include="ArgumentResolveOutTest.cs" />
     <Compile Include="ArgumentResolveRefTest.cs" />
+    <Compile Include="ReturnResolveTest.cs" />
     <Compile Include="UserWrapperFormsTest.cs" />
     <Compile Include="UserWrapperTest.cs" />
     <Compile Include="ArgumentResolveTest.cs" />
     <Compile Include="TargetTypeTest.cs" />
-    <Compile Include="TesIModifyAsync.cs" />
-    <Compile Include="TesIModifyOperationTypeInfo.cs" />
+    <Compile Include="ModifyAsyncTest.cs" />
+    <Compile Include="ModifyOperationTypeInfoTest.cs" />
     <Compile Include="PinHelperExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestUtility.cs" />

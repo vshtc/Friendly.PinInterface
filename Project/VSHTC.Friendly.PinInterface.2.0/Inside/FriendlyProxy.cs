@@ -69,7 +69,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
 
             //Resolve return value and ref out arguments.
-            object objReturn = ReturnObjectResolver.Resolve(isAsyunc, returnedAppVal, method.ReturnParameter);
+            object objReturn = ReturnResolver.Resolve(isAsyunc, returnedAppVal, method.ReturnParameter);
             var refoutArgs = args.GetRefOutArgs();
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);
         }

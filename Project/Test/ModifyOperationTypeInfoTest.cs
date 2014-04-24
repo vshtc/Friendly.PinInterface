@@ -14,9 +14,8 @@ using Codeer.Friendly.Windows.NativeStandardControls;
 
 namespace Test
 {
-    /*
     [TestClass]
-    public class TesIModifyOperationTypeInfo
+    public class ModifyOperationTypeInfoTest
     {
         WindowsAppFriend _app;
 
@@ -32,11 +31,11 @@ namespace Test
         {
             Process.GetProcessById(_app.ProcessId).CloseMainWindow();
         }
-        
-        [Serializable]
-        class Data{}
 
-        static class TargetStatic
+        [Serializable]
+        class Data { }
+
+        class Target
         {
             static int Func()
             {
@@ -62,15 +61,60 @@ namespace Test
             }
         }
 
-        interface ITargetStatic
+        [TargetType("Test.ModifyOperationTypeInfoTest+Data")]
+        interface IData { }
+
+        interface ITarget
         {
             int Func();
             int Func(string value);
             int Func(Data value);
+            int Func(IData value);
             int FuncRefOut(ref string value1, out string value2);
             int FuncRefOut(ref Data value1, out Data value2);
+            int FuncRefOut(ref IData value1, out IData value2);
         }
 
+        [TestMethod]
+        public void TestOrder()
+        {
+            var target = _app.Pin<ITarget, Target>();
+            PinHelper.OperationTypeInfoNext(target,
+                new OperationTypeInfo("Test.ModifyOperationTypeInfoTest+Target",
+                    typeof(string).FullName + "&",
+                    typeof(string).FullName + "&"));
+            string value1 = null;
+            string value2 = null;
+            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
+        }
+
+        [TestMethod]
+        public void TestAuto()
+        {
+            var target = _app.Pin<ITarget, Target>();
+
+            PinHelper.OperationTypeInfoNext(target);
+            Assert.AreEqual(1, target.Func((string)null));
+
+            PinHelper.OperationTypeInfoNext(target);
+            Assert.AreEqual(2, target.Func((Data)null));
+
+            PinHelper.OperationTypeInfoNext(target);
+            Assert.AreEqual(2, target.Func((IData)null));
+
+            string value1 = null;
+            string value2 = null;
+            PinHelper.OperationTypeInfoNext(target);
+            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
+        }
+
+        //@@@仕様としてAlwaysをつくるか？
+            //→まあ面倒だけどあった方がいいよね。
+
+        //Instance、Static、Constructorに対して実行→軽くでいい。
+
+
+        /*
         class TargetInstance
         {
             public int _value;
@@ -181,6 +225,6 @@ namespace Test
                 ret.IsAutoOperationTypeInfo = true;
                 Assert.AreEqual(2, ret._value);
             }
-        }
-    }*/
+        }*/
+    }
 }
