@@ -54,6 +54,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inside\AppVarUtility.cs" />
     <Compile Include="Inside\ArgumentResolver.cs" />
     <Compile Include="Inside\FriendlyInvokeSpec.cs" />
     <Compile Include="Inside\FriendlyProxy.cs" />

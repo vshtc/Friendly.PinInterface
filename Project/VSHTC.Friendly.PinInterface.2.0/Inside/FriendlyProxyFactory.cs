@@ -8,7 +8,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
     {
         internal static object WrapFriendlyProxyInstance(Type type, AppVar appVar)
         {
-            return (bool)appVar.App[typeof(object), "ReferenceEquals"](null, appVar).Core ?
+            return AppVarUtility.IsNull(appVar) ?
                 null : WrapFriendlyProxy(typeof(FriendlyProxyInstance<>), type, new object[] { appVar });
         }
 

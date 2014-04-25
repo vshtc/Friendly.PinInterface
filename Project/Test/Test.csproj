@@ -89,6 +89,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="InterfaceWriteTest.cs" />
+    <Compile Include="NullTest.cs" />
     <Compile Include="ObjectInterfaceTest.cs" />
     <Compile Include="PinHelperTest.cs" />
     <Compile Include="ArgumentResolveOutTest.cs" />

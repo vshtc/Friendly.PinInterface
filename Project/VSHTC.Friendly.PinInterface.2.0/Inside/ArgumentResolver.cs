@@ -90,7 +90,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 else
                 {
                     arg = proxy;
-                    resolveArgument = () => src;
+                    resolveArgument = () => AppVarUtility.IsNull(proxy.AppVar) ? null : src;
                 }
             }
         }
@@ -121,7 +121,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
             else
             {
                 arg = src;
-                resolveArgument = () => src;
+                IAppVarOwner owner = src as IAppVarOwner;
+                resolveArgument = () => (owner != null && AppVarUtility.IsNull(owner.AppVar)) ? null : src;
             }
         }
 

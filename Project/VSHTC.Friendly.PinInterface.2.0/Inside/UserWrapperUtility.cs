@@ -21,7 +21,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         internal static object CreateWrapper(Type type, AppVar appVar)
         {
-            if ((bool)appVar.App[typeof(object), "ReferenceEquals"](null, appVar).Core)
+            if (AppVarUtility.IsNull(appVar))
             {
                 return null;
             }
