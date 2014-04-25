@@ -48,7 +48,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void SerializeTest()
+        public void Serialize()
         {
             var target = _app.Pin<ITargetSerialize, Target>();
             Data data;

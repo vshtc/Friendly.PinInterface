@@ -42,7 +42,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void PropertyTest()
+        public void Property()
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
             target._data = 100;
@@ -50,7 +50,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void FieldTest()
+        public void Field()
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
             target.Data = 101;
@@ -58,7 +58,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void FuncTest()
+        public void Func()
         {
             var target = ((AppVar)_app.Type<Target>()()).Pin<ITarget>();
             Assert.AreEqual(10, target.Func());

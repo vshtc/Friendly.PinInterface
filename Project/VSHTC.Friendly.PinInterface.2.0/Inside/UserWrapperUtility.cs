@@ -15,13 +15,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 {
                     return true;
                 }
-                //TODO: This is interim procedures until a circumference library catches up. 
-                if (args.Length == 2 && 
-                    typeof(AppFriend).IsAssignableFrom(args[0].ParameterType) &&
-                    args[1].ParameterType.IsAssignableFrom(typeof(AppVar)))
-                {
-                    return true;
-                }
             }
             return false;
         }
@@ -40,16 +33,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 {
                     return element.Invoke(new object[] { appVar });
                 }
-                //TODO: This is interim procedures until a circumference library catches up. 
-                if (args.Length == 2 &&
-                    typeof(AppFriend).IsAssignableFrom(args[0].ParameterType) &&
-                    args[1].ParameterType.IsAssignableFrom(typeof(AppVar)))
-                {
-                    return element.Invoke(new object[] { appVar.App, appVar });
-                }
             } 
             throw new NotSupportedException();
         }
-        //TODO: Exception Message
     }
 }

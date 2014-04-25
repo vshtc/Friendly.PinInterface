@@ -7,5 +7,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
         void OperationTypeInfoNext(OperationTypeInfo info);
 
         void SetOperationTypeInfoNextAuto();
+
+        void SetOperationTypeInfoAutoAlways(bool always);
     }
 }

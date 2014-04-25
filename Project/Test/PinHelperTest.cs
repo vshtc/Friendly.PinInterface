@@ -132,7 +132,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void GetAppVarTest()
+        public void GetAppVar()
         {
             AppVar appVar = _app.Type<Target>()(3);
             var target = PinHelper.Pin<Target_.Instance>(appVar);

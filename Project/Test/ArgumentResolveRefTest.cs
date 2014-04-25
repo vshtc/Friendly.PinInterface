@@ -51,7 +51,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void SerializeTest()
+        public void Serialize()
         {
             var target = _app.Pin<ITargetSerialize, Target>();
             Data data = null;
@@ -64,7 +64,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void SerializeHasEntityTest()
+        public void SerializeHasEntity()
         {
             var target = _app.Pin<ITargetSerialize, Target>();
             Data data = new Data() { A = 100 };

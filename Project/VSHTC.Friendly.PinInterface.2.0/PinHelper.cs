@@ -290,5 +290,20 @@ namespace VSHTC.Friendly.PinInterface
             }
             proxy.SetOperationTypeInfoNextAuto();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pinnedInterface"></param>
+        /// <param name="isAlways"></param>
+        public static void SetOperationTypeInfoAlways(object pinnedInterface, bool isAlways)
+        {
+            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
+            if (proxy == null)
+            {
+                throw new NotSupportedException();
+            }
+            proxy.SetOperationTypeInfoAutoAlways(isAlways);
+        }
     }
 }

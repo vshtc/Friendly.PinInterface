@@ -52,7 +52,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void SerializableTest()
+        public void Serializable()
         {
             AppVar v = _app.Type<Target>()();
             ITargetSerialize target = v.Pin<ITargetSerialize>();
@@ -73,7 +73,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void InterfaceTest()
+        public void Interface()
         {
             AppVar v = _app.Type<Target>()();
             ITargetInterface target = v.Pin<ITargetInterface>();
@@ -89,7 +89,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void AppVarTest()
+        public void AppVar()
         {
             AppVar v = _app.Type<Target>()();
             ITargetAppVar target = v.Pin<ITargetAppVar>();
@@ -115,7 +115,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void WrapperAndAppVarOwnerTest()
+        public void WrapperAndAppVarOwner()
         {
             AppVar v = _app.Type<Target>()();
             ITargetWrapper target = v.Pin<ITargetWrapper>();

@@ -75,8 +75,20 @@ namespace Test
             int FuncRefOut(ref IData value1, out IData value2);
         }
 
+        [OperationTypeInfoAuto]
+        interface ITargetAlways
+        {
+            int Func();
+            int Func(string value);
+            int Func(Data value);
+            int Func(IData value);
+            int FuncRefOut(ref string value1, out string value2);
+            int FuncRefOut(ref Data value1, out Data value2);
+            int FuncRefOut(ref IData value1, out IData value2);
+        }
+
         [TestMethod]
-        public void TestOrder()
+        public void Order()
         {
             var target = _app.Pin<ITarget, Target>();
             PinHelper.OperationTypeInfoNext(target,
@@ -89,7 +101,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void TestAuto()
+        public void Auto()
         {
             var target = _app.Pin<ITarget, Target>();
 
@@ -108,27 +120,45 @@ namespace Test
             Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
         }
 
-        //@@@仕様としてAlwaysをつくるか？
-            //→まあ面倒だけどあった方がいいよね。
+        [TestMethod]
+        public void AutoAlways()
+        {
+            var target = _app.Pin<ITarget, Target>();
 
-        //Instance、Static、Constructorに対して実行→軽くでいい。
+            PinHelper.SetOperationTypeInfoAlways(target, true);
+            Assert.AreEqual(1, target.Func((string)null));
+            Assert.AreEqual(2, target.Func((Data)null));
+            Assert.AreEqual(2, target.Func((IData)null));
+            string value1 = null;
+            string value2 = null;
+            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
+        }
 
+        [TestMethod]
+        public void AutoAlwaysAttr()
+        {
+            var target = _app.Pin<ITargetAlways, Target>();
+            Assert.AreEqual(1, target.Func((string)null));
+            Assert.AreEqual(2, target.Func((Data)null));
+            Assert.AreEqual(2, target.Func((IData)null));
+            string value1 = null;
+            string value2 = null;
+            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
+        }
 
-        /*
         class TargetInstance
         {
-            public int _value;
-
-            TargetInstance() { }
-
-            TargetInstance(string data) { _value = 1; }
-
-            TargetInstance(Data data) { _value = 2; }
-
-            int Func()
+            public int ConstructorNo { get; set; }
+            public TargetInstance() { }
+            public TargetInstance(string value)
             {
-                return 0;
+                ConstructorNo = 1;
             }
+            public TargetInstance(Data value)
+            {
+                ConstructorNo = 2;
+            }
+
             int Func(string value)
             {
                 return 1;
@@ -139,92 +169,45 @@ namespace Test
             }
         }
 
+        [TargetType("Test.ModifyOperationTypeInfoTest+TargetInstance")]
         interface ITargetInstance
         {
-            int Func();
+            int ConstructorNo { get; set; }
             int Func(string value);
             int Func(Data value);
-            int _value { get; }
+            int Func(IData value);
         }
 
-        [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
+        [TestMethod]
+        public void Instance()
+        {
+            ITargetInstance target = PinHelper.Pin<ITargetInstance>(_app.Type<TargetInstance>()());
+            WindowControl w = WindowControl.FromZTop(_app);
+            PinHelper.SetOperationTypeInfoAlways(target, true);
+            Assert.AreEqual(1, target.Func((string)null));
+            Assert.AreEqual(2, target.Func((Data)null));
+            Assert.AreEqual(2, target.Func((IData)null));
+        }
+
+        [TargetType("Test.ModifyOperationTypeInfoTest+TargetInstance")]
         interface ITargetInstanceConstructor
         {
             ITargetInstance New(string value);
             ITargetInstance New(Data value);
-        }
-
-        [TargetType("Test.TesIModifyOperationTypeInfo+TargetInstance")]
-        interface ITargetInstanceAuto
-        {
-            int Func();
-            int Func(string value);
-            int Func(Data value);
+            ITargetInstance New(IData value);
         }
 
         [TestMethod]
-        public void OperationTypeInfoStaticAuto()
+        public void Constructor()
         {
-            var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
-            target.IsAutoOperationTypeInfo = true;
-            Assert.AreEqual(1, target.Func((string)null));
-            Assert.AreEqual(2, target.Func((Data)null));
+            var constructor = _app.PinConstructor<ITargetInstanceConstructor>();
+            PinHelper.SetOperationTypeInfoAlways(constructor, true);
+            var target = constructor.New((string)null);
+            Assert.AreEqual(1, target.ConstructorNo);
+            target = constructor.New((Data)null);
+            Assert.AreEqual(2, target.ConstructorNo);
+            target = constructor.New((IData)null);
+            Assert.AreEqual(2, target.ConstructorNo);
         }
-
-        [TestMethod]
-        public void OperationTypeInfoInstanceAuto()
-        {
-            var target = ((AppVar)_app.Type<TargetInstance>()()).Pin<ITargetInstanceAuto>();
-            target.IsAutoOperationTypeInfo = true;
-            Assert.AreEqual(1, target.Func((string)null));
-            Assert.AreEqual(2, target.Func((Data)null));
-        }
-
-        [TestMethod]
-        public void OperationTypeInfo()
-        {
-            var target = ((AppVar)_app.Type<TargetInstance>()()).Pin<ITargetInstance>();
-            target.OperationTypeInfoNext(typeof(TargetInstance).FullName);
-            Assert.AreEqual(0, target.Func());
-            target.OperationTypeInfoNext(typeof(TargetInstance).FullName, typeof(string).FullName);
-            Assert.AreEqual(1, target.Func((string)null));
-            target.OperationTypeInfoNext(typeof(TargetInstance).FullName, typeof(Data).FullName);
-            Assert.AreEqual(2, target.Func((Data)null));
-        }
-
-        [TestMethod]
-        public void OperationTypeInfoStaticAutoRefOut()
-        {
-            var target = _app.Pin<ITargetStatic>(typeof(TargetStatic));
-            target.IsAutoOperationTypeInfo = true;
-            {
-                string value1 = null;
-                string value2 = null;
-                Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
-            }
-            {
-                Data value1 = null;
-                Data value2 = null;
-                Assert.AreEqual(2, target.FuncRefOut(ref value1, out value2));
-            }
-        }
-
-        [TestMethod]
-        public void OperationTypeInfoConstructorAuto()
-        {
-            var target = _app.Pin<ITargetInstanceConstructor>();
-            target.IsAutoOperationTypeInfo = true;
-            {
-
-                var ret = target.New((string)null);
-                ret.IsAutoOperationTypeInfo = true;
-                Assert.AreEqual(1, ret._value);
-            }
-            {
-                var ret = target.New((Data)null);
-                ret.IsAutoOperationTypeInfo = true;
-                Assert.AreEqual(2, ret._value);
-            }
-        }*/
     }
 }

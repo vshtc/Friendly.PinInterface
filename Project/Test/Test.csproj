@@ -60,27 +60,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Codeer.Friendly.Windows.2.4.0\lib\net20\Codeer.Friendly.Windows.dll</HintPath>
     </Reference>
-    <Reference Include="Codeer.Friendly.Windows.Grasp, Version=2.2.3.0, Culture=neutral, PublicKeyToken=92809a28945fb91d, processorArchitecture=MSIL">
+    <Reference Include="Codeer.Friendly.Windows.Grasp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=92809a28945fb91d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Codeer.Friendly.Windows.Grasp.2.2.3\lib\net20\Codeer.Friendly.Windows.Grasp.dll</HintPath>
+      <HintPath>..\packages\Codeer.Friendly.Windows.Grasp.2.3.0\lib\net20\Codeer.Friendly.Windows.Grasp.dll</HintPath>
     </Reference>
-    <Reference Include="Codeer.Friendly.Windows.NativeStandardControls, Version=2.1.4.0, Culture=neutral, PublicKeyToken=90759bf0c8b8639e, processorArchitecture=MSIL">
+    <Reference Include="Codeer.Friendly.Windows.NativeStandardControls, Version=2.1.5.0, Culture=neutral, PublicKeyToken=90759bf0c8b8639e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Codeer.Friendly.Windows.NativeStandardControls.2.1.4\lib\net20\Codeer.Friendly.Windows.NativeStandardControls.dll</HintPath>
+      <HintPath>..\packages\Codeer.Friendly.Windows.NativeStandardControls.2.1.5\lib\net20\Codeer.Friendly.Windows.NativeStandardControls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Ong.Friendly.FormsStandardControls, Version=2.1.4.0, Culture=neutral, PublicKeyToken=ee7fcdb5644bd140, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ong.Friendly.FormsStandardControls.2.1.4\lib\net20\Ong.Friendly.FormsStandardControls.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="RM.Friendly.WPFStandardControls3">
-      <HintPath>..\packages\RM.Friendly.WPFStandardControls.0.0.2\lib\net40\RM.Friendly.WPFStandardControls3.dll</HintPath>
-    </Reference>
-    <Reference Include="RM.Friendly.WPFStandardControls4">
-      <HintPath>..\packages\RM.Friendly.WPFStandardControls.0.0.2\lib\net40\RM.Friendly.WPFStandardControls4.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
@@ -104,8 +94,6 @@
     <Compile Include="ArgumentResolveOutTest.cs" />
     <Compile Include="ArgumentResolveRefTest.cs" />
     <Compile Include="ReturnResolveTest.cs" />
-    <Compile Include="UserWrapperFormsTest.cs" />
-    <Compile Include="UserWrapperTest.cs" />
     <Compile Include="ArgumentResolveTest.cs" />
     <Compile Include="TargetTypeTest.cs" />
     <Compile Include="ModifyAsyncTest.cs" />

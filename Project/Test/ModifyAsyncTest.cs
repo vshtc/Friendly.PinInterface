@@ -38,7 +38,7 @@ namespace Test
         }
         
         [TestMethod]
-        public void AsyncTest()
+        public void Async()
         {
             IMessageBox msg = _app.Pin<IMessageBox, MessageBox>();
             WindowControl top = WindowControl.FromZTop(_app);
@@ -47,6 +47,48 @@ namespace Test
             WindowControl next = top.WaitForNextModal();
             new NativeMessageBox(next).EmulateButtonClick("OK");
             async.WaitForCompletion();
+        }
+
+        class TargetInstance
+        {
+            public void Show()
+            {
+                MessageBox.Show("");
+            }
+        }
+
+        interface ITargetInstance
+        {
+            void Show();
+        }
+
+        [TestMethod]
+        public void Instance()
+        {
+            ITargetInstance target = PinHelper.Pin<ITargetInstance>(_app.Type<TargetInstance>()());
+            WindowControl w = WindowControl.FromZTop(_app);
+            Async async = PinHelper.AsyncNext(target);
+            target.Show();
+            new NativeMessageBox(w.WaitForNextModal()).EmulateButtonClick("OK");
+            async.WaitForCompletion();
+        }
+
+        interface ITargetInstanceConstructor
+        {
+            ITargetInstance New();
+        }
+
+        [TestMethod]
+        public void Constructor()
+        {
+            var constructor = _app.PinConstructor<ITargetInstanceConstructor, TargetInstance>();
+            try
+            {
+                PinHelper.AsyncNext(constructor);
+                Assert.Fail();
+            }
+            catch
+            { }//@@@msg
         }
 
         [Serializable]
@@ -71,7 +113,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void SerializeTest()
+        public void Serialize()
         {
             var target = _app.Pin<ITargetSerialize, Target>();
             Async async  = PinHelper.AsyncNext(target);
@@ -91,7 +133,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void InterfaceTest()
+        public void Interface()
         {
             var target = _app.Pin<ITargetInterface, Target>();
             Async async = PinHelper.AsyncNext(target);
@@ -109,7 +151,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void AppVarTest()
+        public void AppVar()
         {
             var target = _app.Pin<ITargetAppVar, Target>();
             Async async = PinHelper.AsyncNext(target);
@@ -137,7 +179,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void WrapperTest()
+        public void Wrapper()
         {
             var target = _app.Pin<ITargetWrapper, Target>();
             Async async = PinHelper.AsyncNext(target);
@@ -148,9 +190,5 @@ namespace Test
             Assert.IsNull(ret);
             Assert.IsNull(arg);
         }
-
-        //@@@Instance、Static、Constructorに対して実行→軽くでいい。
-
-        //@@@テストメソッドのサフィックスの統一(Testを付けるか)
     }
 }
