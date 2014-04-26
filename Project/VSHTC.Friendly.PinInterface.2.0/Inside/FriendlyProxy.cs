@@ -11,7 +11,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
         Async _asyncNext;
         OperationTypeInfo _operationTypeInfoNext;
         bool _isAutoOperationTypeInfoNext;
-        bool _isAutoOperationTypeInfoAlways;
 
         protected AppFriend App { get; private set; }
 
@@ -30,17 +29,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _isAutoOperationTypeInfoNext = true;
         }
 
-        public void SetOperationTypeInfoAutoAlways(bool always)
-        {
-            _isAutoOperationTypeInfoAlways = always;
-        }
-
         public FriendlyProxy(AppFriend app)
             : base(typeof(TInterface)) 
         {
             App = app;
-            _isAutoOperationTypeInfoAlways = 
-                0 < typeof(TInterface).GetCustomAttributes(typeof(OperationTypeInfoAutoAttribute), false).Length;
         }
 
         public override IMessage Invoke(IMessage msg)
@@ -59,8 +51,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             if (_operationTypeInfoNext == null)
             {
-                if (_isAutoOperationTypeInfoNext || 
-                    _isAutoOperationTypeInfoAlways)
+                if (_isAutoOperationTypeInfoNext)
                 {
                     _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
                     _isAutoOperationTypeInfoNext = false;

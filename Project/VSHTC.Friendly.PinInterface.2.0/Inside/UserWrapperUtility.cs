@@ -6,35 +6,20 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     static class UserWrapperUtility
     {
-        internal static bool IsAppVarWrapper(Type type)
+        internal delegate object Construct(AppVar appVar);
+
+        internal static Construct FindCreateConstructor(Type type)
         {
             foreach (var element in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
             {
                 var args = element.GetParameters();
                 if (args.Length == 1 && args[0].ParameterType.IsAssignableFrom(typeof(AppVar)))
                 {
-                    return true;
+                    var hitConstructor = element;
+                    return (v) => (AppVarUtility.IsNull(v)) ? null :  hitConstructor.Invoke(new object[] { v });
                 }
             }
-            return false;
-        }
-
-        internal static object CreateWrapper(Type type, AppVar appVar)
-        {
-            if (AppVarUtility.IsNull(appVar))
-            {
-                return null;
-            }
-
-            foreach (var element in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
-            {
-                var args = element.GetParameters();
-                if (args.Length == 1 && args[0].ParameterType.IsAssignableFrom(typeof(AppVar)))
-                {
-                    return element.Invoke(new object[] { appVar });
-                }
-            } 
-            throw new NotSupportedException();
+            return null;
         }
     }
 }

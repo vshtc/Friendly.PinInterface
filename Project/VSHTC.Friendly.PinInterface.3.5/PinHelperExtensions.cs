@@ -104,18 +104,18 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(this AppFriend app)
         {
@@ -124,20 +124,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <typeparam name="TTarget">Proxy target type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <typeparam name="TTarget">対応するタイプ。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface, TTarget>(this AppFriend app)
         {
@@ -146,20 +146,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
         /// <param name="targetType">Proxy target type.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
         /// <param name="targetType">対応するタイプ。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(this AppFriend app, Type targetType)
         {
@@ -168,20 +168,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
         /// <param name="targetTypeFullName">Proxy target type full name.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
         /// <param name="targetTypeFullName">対応するタイプフルネーム。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(this AppFriend app, string targetTypeFullName)
         {

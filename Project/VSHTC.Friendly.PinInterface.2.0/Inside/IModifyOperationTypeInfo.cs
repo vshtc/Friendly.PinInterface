@@ -5,9 +5,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
     interface IModifyOperationTypeInfo
     {
         void OperationTypeInfoNext(OperationTypeInfo info);
-
         void SetOperationTypeInfoNextAuto();
-
-        void SetOperationTypeInfoAutoAlways(bool always);
     }
 }

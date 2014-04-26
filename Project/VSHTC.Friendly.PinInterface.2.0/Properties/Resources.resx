@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ErrorCanNotUseAsync" xml:space="preserve">
+    <value>Asynchronous execution went wrong. 
+The following possibility can be considered. 
+・The object is not proxy created by PinInterface.
+・Asynchronous execution of the constructor was carried out.</value>
+  </data>
   <data name="ErrorNotFoundTargetType" xml:space="preserve">
     <value>Not found target type.
 Order by TargetTypeAttribute,Or Use other Pin method which can specify the target type.</value>
+  </data>
+  <data name="ErrorNotProxy" xml:space="preserve">
+    <value>The object is not proxy created by PinInterface.</value>
   </data>
 </root>

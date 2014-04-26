@@ -75,18 +75,6 @@ namespace Test
             int FuncRefOut(ref IData value1, out IData value2);
         }
 
-        [OperationTypeInfoAuto]
-        interface ITargetAlways
-        {
-            int Func();
-            int Func(string value);
-            int Func(Data value);
-            int Func(IData value);
-            int FuncRefOut(ref string value1, out string value2);
-            int FuncRefOut(ref Data value1, out Data value2);
-            int FuncRefOut(ref IData value1, out IData value2);
-        }
-
         [TestMethod]
         public void Order()
         {
@@ -117,32 +105,6 @@ namespace Test
             string value1 = null;
             string value2 = null;
             PinHelper.OperationTypeInfoNext(target);
-            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
-        }
-
-        [TestMethod]
-        public void AutoAlways()
-        {
-            var target = _app.Pin<ITarget, Target>();
-
-            PinHelper.SetOperationTypeInfoAlways(target, true);
-            Assert.AreEqual(1, target.Func((string)null));
-            Assert.AreEqual(2, target.Func((Data)null));
-            Assert.AreEqual(2, target.Func((IData)null));
-            string value1 = null;
-            string value2 = null;
-            Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
-        }
-
-        [TestMethod]
-        public void AutoAlwaysAttr()
-        {
-            var target = _app.Pin<ITargetAlways, Target>();
-            Assert.AreEqual(1, target.Func((string)null));
-            Assert.AreEqual(2, target.Func((Data)null));
-            Assert.AreEqual(2, target.Func((IData)null));
-            string value1 = null;
-            string value2 = null;
             Assert.AreEqual(1, target.FuncRefOut(ref value1, out value2));
         }
 
@@ -183,9 +145,11 @@ namespace Test
         {
             ITargetInstance target = PinHelper.Pin<ITargetInstance>(_app.Type<TargetInstance>()());
             WindowControl w = WindowControl.FromZTop(_app);
-            PinHelper.SetOperationTypeInfoAlways(target, true);
+            PinHelper.OperationTypeInfoNext(target);
             Assert.AreEqual(1, target.Func((string)null));
+            PinHelper.OperationTypeInfoNext(target);
             Assert.AreEqual(2, target.Func((Data)null));
+            PinHelper.OperationTypeInfoNext(target);
             Assert.AreEqual(2, target.Func((IData)null));
         }
 
@@ -201,11 +165,13 @@ namespace Test
         public void Constructor()
         {
             var constructor = _app.PinConstructor<ITargetInstanceConstructor>();
-            PinHelper.SetOperationTypeInfoAlways(constructor, true);
+            PinHelper.OperationTypeInfoNext(constructor);
             var target = constructor.New((string)null);
             Assert.AreEqual(1, target.ConstructorNo);
+            PinHelper.OperationTypeInfoNext(constructor);
             target = constructor.New((Data)null);
             Assert.AreEqual(2, target.ConstructorNo);
+            PinHelper.OperationTypeInfoNext(constructor);
             target = constructor.New((IData)null);
             Assert.AreEqual(2, target.ConstructorNo);
         }

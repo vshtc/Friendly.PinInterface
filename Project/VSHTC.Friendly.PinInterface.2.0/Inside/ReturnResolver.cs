@@ -21,10 +21,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 return TypeUtility.GetDefault(type);
             }
-            
-            if (UserWrapperUtility.IsAppVarWrapper(type))
+            var func = UserWrapperUtility.FindCreateConstructor(type);
+            if (func != null)
             {
-                return UserWrapperUtility.CreateWrapper(type, returnedAppVal);
+                return func(returnedAppVal);
             }
             else if (type.IsInterface)
             {

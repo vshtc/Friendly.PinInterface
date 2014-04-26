@@ -111,18 +111,18 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(AppFriend app)
         {
@@ -136,20 +136,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <typeparam name="TTarget">Proxy target type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <typeparam name="TTarget">対応するタイプ。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface, TTarget>(AppFriend app)
         {
@@ -158,20 +158,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
         /// <param name="targetType">Proxy target type.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
         /// <param name="targetType">対応するタイプ。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(AppFriend app, Type targetType)
         {
@@ -180,20 +180,20 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin Constructor by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
         /// <param name="targetTypeFullName">Proxy target type full name.</param>
-        /// <returns>Interface for manipulation.</returns>
+        /// <returns>Interface for Constructor.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// コンストラクタの呼び出しを指定のインターフェイスで固定します。
         /// </summary>
-        /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
+        /// <typeparam name="TInterface">コンストラクタインターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
         /// <param name="targetTypeFullName">対応するタイプフルネーム。</param>
-        /// <returns>操作用インターフェイス。</returns>
+        /// <returns>コンストラクタインターフェイス。</returns>
 #endif
         public static TInterface PinConstructor<TInterface>(AppFriend app, string targetTypeFullName)
         {
@@ -239,12 +239,12 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns></returns>
         public static T GetValue<T>(object pinnedInterface)
         {
-            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IAppVarOwner;
-            if (proxy == null)
+            var appVar = GetAppVar(pinnedInterface);
+            if (appVar == null)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException(Resources.ErrorNotProxy);
             }
-            return (T)proxy.AppVar.Core;
+            return (T)appVar.Core;
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace VSHTC.Friendly.PinInterface
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyAsync;
             if (proxy == null)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException(Resources.ErrorCanNotUseAsync);
             }
             return proxy.AsyncNext();
         }
@@ -272,7 +272,7 @@ namespace VSHTC.Friendly.PinInterface
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
             if (proxy == null)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException(Resources.ErrorNotProxy);
             }
             proxy.OperationTypeInfoNext(operationTypeInfo);
         }
@@ -286,24 +286,9 @@ namespace VSHTC.Friendly.PinInterface
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
             if (proxy == null)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException(Resources.ErrorNotProxy);
             }
             proxy.SetOperationTypeInfoNextAuto();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pinnedInterface"></param>
-        /// <param name="isAlways"></param>
-        public static void SetOperationTypeInfoAlways(object pinnedInterface, bool isAlways)
-        {
-            var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
-            if (proxy == null)
-            {
-                throw new NotSupportedException();
-            }
-            proxy.SetOperationTypeInfoAutoAlways(isAlways);
         }
     }
 }

@@ -58,15 +58,19 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 ResolveAppVarRefOutArgs(app, type, src, out arg, out resolveArgument);
             }
-            else if (UserWrapperUtility.IsAppVarWrapper(type))
-            {
-                ResolveUserWrapperRefOutArgs(app, type, src, out arg, out resolveArgument);
-            }
             else
             {
-                AppVar appVar = app.Dim(src);
-                arg = appVar;
-                resolveArgument = () => appVar.Core;
+                var func = UserWrapperUtility.FindCreateConstructor(type);
+                if (func != null)
+                {
+                    ResolveUserWrapperRefOutArgs(func, app, src, out arg, out resolveArgument);
+                }
+                else
+                {
+                    AppVar appVar = app.Dim(src);
+                    arg = appVar;
+                    resolveArgument = () => appVar.Core;
+                }
             }
         }
 
@@ -110,13 +114,13 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
         }
 
-        static void ResolveUserWrapperRefOutArgs(AppFriend app, Type type, object src, out object arg, out ResolveArgument resolveArgument)
+        static void ResolveUserWrapperRefOutArgs(UserWrapperUtility.Construct func, AppFriend app, object src, out object arg, out ResolveArgument resolveArgument)
         {
             if (src == null)
             {
                 AppVar appVar = app.Dim();
                 arg = appVar;
-                resolveArgument = () => UserWrapperUtility.CreateWrapper(type, appVar);
+                resolveArgument = () =>func(appVar);
             }
             else
             {
