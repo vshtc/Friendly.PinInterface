@@ -16,7 +16,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
                 if (args.Length == 1 && args[0].ParameterType.IsAssignableFrom(typeof(AppVar)))
                 {
                     var hitConstructor = element;
-                    return (v) => (AppVarUtility.IsNull(v)) ? null :  hitConstructor.Invoke(new object[] { v });
+                    return (v) => AppVarUtility.IsNull(v) ? null :  hitConstructor.Invoke(new object[] { v });
                 }
             }
             return null;

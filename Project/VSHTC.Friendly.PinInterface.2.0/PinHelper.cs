@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Runtime.Remoting.Proxies;
-using VSHTC.Friendly.PinInterface.Inside;
-using Codeer.Friendly;
-using VSHTC.Friendly.PinInterface.Properties;
 using System.Runtime.Remoting;
+using VSHTC.Friendly.PinInterface.Inside;
+using VSHTC.Friendly.PinInterface.Properties;
+using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface
 {
@@ -13,21 +12,21 @@ namespace VSHTC.Friendly.PinInterface
     /// </summary>
 #else
     /// <summary>
-    /// インターフェイス付加、変更のためのヘルパメソッドです。
+    /// PinInterfaceを使用するためのヘルパメソッドです。
     /// </summary>
 #endif
     public static class PinHelper
     {
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin static opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
         /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Static操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
@@ -45,7 +44,7 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin static opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <typeparam name="TTarget">Proxy target type.</typeparam>
@@ -53,7 +52,7 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Static操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
         /// <typeparam name="TTarget">対応するタイプ。</typeparam>
@@ -67,7 +66,7 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin static opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
@@ -75,7 +74,7 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Static操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
@@ -89,7 +88,7 @@ namespace VSHTC.Friendly.PinInterface
 
 #if ENG
         /// <summary>
-        /// Pin AppFriend's opertion by TInterface.
+        /// Pin static opertion by TInterface.
         /// </summary>
         /// <typeparam name="TInterface">Interface type.</typeparam>
         /// <param name="app">Application manipulation object.</param>
@@ -97,7 +96,7 @@ namespace VSHTC.Friendly.PinInterface
         /// <returns>Interface for manipulation.</returns>
 #else
         /// <summary>
-        /// AppFriendの操作を指定のインターフェイスで固定します。
+        /// Static操作を指定のインターフェイスで固定します。
         /// </summary>
         /// <typeparam name="TInterface">操作用インターフェイス。</typeparam>
         /// <param name="app">アプリケーション操作クラス。</param>
@@ -220,23 +219,41 @@ namespace VSHTC.Friendly.PinInterface
         {
             return (TInterface)new FriendlyProxyInstance<TInterface>(appVar).GetTransparentProxy();
         }
-
+       
+#if ENG
         /// <summary>
-        /// 
+        /// Get AppVar from interface.
         /// </summary>
-        /// <param name="pinnedInterface"></param>
-        /// <returns></returns>
+        /// <param name="pinnedInterface">Interface.</param>
+        /// <returns>AppVar.</returns>
+#else
+        /// <summary>
+        /// 指定のインターフェイスの元となったAppVarを取得します。
+        /// </summary>
+        /// <param name="pinnedInterface">インターフェイス。</param>
+        /// <returns>AppVar。</returns>
+#endif
         public static AppVar GetAppVar(object pinnedInterface)
         {
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IAppVarOwner;
             return proxy == null ? null : proxy.AppVar;
         }
-
+        
+#if ENG
         /// <summary>
-        /// 
+        /// Get copy of object.
         /// </summary>
-        /// <param name="pinnedInterface"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Type of object.</typeparam>
+        /// <param name="pinnedInterface">Interface.</param>
+        /// <returns>Copy of object.</returns>
+#else
+        /// <summary>
+        /// 対象のオブジェクトのコピーを取得します。
+        /// </summary>
+        /// <typeparam name="T">オブジェクトの型</typeparam>
+        /// <param name="pinnedInterface">インターフェイス。</param>
+        /// <returns>オブジェクトのコピー。</returns>
+#endif
         public static T GetValue<T>(object pinnedInterface)
         {
             var appVar = GetAppVar(pinnedInterface);
@@ -247,11 +264,19 @@ namespace VSHTC.Friendly.PinInterface
             return (T)appVar.Core;
         }
 
+#if ENG
         /// <summary>
-        /// 
+        /// A next call is made asynchronous. 
         /// </summary>
-        /// <param name="pinnedInterface"></param>
-        /// <returns></returns>
+        /// <param name="pinnedInterface">Interface.</param>
+        /// <returns>Asynchronous execution.</returns>
+#else        
+        /// <summary>
+        /// 次回の呼び出しを非同期にします。
+        /// </summary>
+        /// <param name="pinnedInterface">インターフェイス。</param>
+        /// <returns>非同期実行オブジェクト。</returns>
+#endif
         public static Async AsyncNext(object pinnedInterface)
         {
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyAsync;
@@ -262,11 +287,21 @@ namespace VSHTC.Friendly.PinInterface
             return proxy.AsyncNext();
         }
 
+#if ENG
         /// <summary>
-        /// 
+        /// Specify next call type.
+        /// Please refer to description of OperationTypeInfo for details. 
         /// </summary>
-        /// <param name="pinnedInterface"></param>
-        /// <param name="operationTypeInfo"></param>
+        /// <param name="pinnedInterface">Interface.</param>
+        /// <param name="operationTypeInfo">Inovke type infomation.</param>
+#else
+        /// <summary>
+        /// 次回呼び出しの型を特定します。
+        /// 詳しくはOperationTypeInfoの解説を参照してください。
+        /// </summary>
+        /// <param name="pinnedInterface">インターフェイス。</param>
+        /// <param name="operationTypeInfo">呼び出し型情報</param>
+#endif
         public static void OperationTypeInfoNext(object pinnedInterface, OperationTypeInfo operationTypeInfo)
         {
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;
@@ -277,10 +312,21 @@ namespace VSHTC.Friendly.PinInterface
             proxy.OperationTypeInfoNext(operationTypeInfo);
         }
 
+#if ENG
         /// <summary>
-        /// 
+        /// Specify next call type.
+        /// Type information is automatically guessed from interface definition.
+        /// Please refer to description of OperationTypeInfo for details. 
         /// </summary>
-        /// <param name="pinnedInterface"></param>
+        /// <param name="pinnedInterface">Interface.</param>
+#else
+        /// <summary>
+        /// 次回呼び出しの型を特定します。
+        /// 型情報はインターフェイスの定義から自動で推測されます。
+        /// 詳しくはOperationTypeInfoの解説を参照してください。
+        /// </summary>
+        /// <param name="pinnedInterface">インターフェイス。</param>
+#endif
         public static void OperationTypeInfoNext(object pinnedInterface)
         {
             var proxy = RemotingServices.GetRealProxy(pinnedInterface) as IModifyOperationTypeInfo;

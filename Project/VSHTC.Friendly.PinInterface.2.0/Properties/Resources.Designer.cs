@@ -73,6 +73,15 @@ namespace VSHTC.Friendly.PinInterface.Properties {
         }
         
         /// <summary>
+        ///   The guess of operationtypeinfo went wrong. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ErrorGuessOperationTypeInfo {
+            get {
+                return ResourceManager.GetString("ErrorGuessOperationTypeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Not found target type.
         ///Order by TargetTypeAttribute,Or Use other Pin method which can specify the target type. に類似しているローカライズされた文字列を検索します。
         /// </summary>

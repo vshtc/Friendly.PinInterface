@@ -1,8 +1,8 @@
-﻿using Codeer.Friendly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using VSHTC.Friendly.PinInterface.Inside;
+using Codeer.Friendly;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {

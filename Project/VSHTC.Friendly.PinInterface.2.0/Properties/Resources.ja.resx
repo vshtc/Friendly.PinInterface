@@ -123,6 +123,9 @@
 ・指定のオブジェクトは、PinInterfaceで作成したProxyではありません。
 ・コンストラクタを非同期実行しようとしました。</value>
   </data>
+  <data name="ErrorGuessOperationTypeInfo" xml:space="preserve">
+    <value>OperationTypeInfoの推測に失敗しました。</value>
+  </data>
   <data name="ErrorNotFoundTargetType" xml:space="preserve">
     <value>対象の型を見つけることができませんでした。
 TargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。</value>

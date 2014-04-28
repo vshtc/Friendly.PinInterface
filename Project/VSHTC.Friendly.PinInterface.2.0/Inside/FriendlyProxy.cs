@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
 using Codeer.Friendly;
+using VSHTC.Friendly.PinInterface.Properties;
 
 namespace VSHTC.Friendly.PinInterface.Inside
 {
@@ -13,21 +14,6 @@ namespace VSHTC.Friendly.PinInterface.Inside
         bool _isAutoOperationTypeInfoNext;
 
         protected AppFriend App { get; private set; }
-
-        public void OperationTypeInfoNext(OperationTypeInfo info)
-        {
-            _operationTypeInfoNext = info;
-        }
-
-        protected void SetAsyncNext(Async asyncNext)
-        {
-            _asyncNext = asyncNext;
-        }
-
-        public void SetOperationTypeInfoNextAuto()
-        {
-            _isAutoOperationTypeInfoNext = true;
-        }
 
         public FriendlyProxy(AppFriend app)
             : base(typeof(TInterface)) 
@@ -45,16 +31,21 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 return new ReturnMessage(retunObject, null, 0, mm.LogicalCallContext, (IMethodCallMessage)msg);
             }
-            bool isAsyunc = _asyncNext != null;
 
-            ArgumentResolver args = new ArgumentResolver(App, method, isAsyunc, mm.Args);
+            bool isAsync = _asyncNext != null;
+
+            ArgumentResolver args = new ArgumentResolver(App, method, isAsync, mm.Args);
 
             if (_operationTypeInfoNext == null)
             {
                 if (_isAutoOperationTypeInfoNext)
                 {
-                    _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
                     _isAutoOperationTypeInfoNext = false;
+                    _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
+                    if (_operationTypeInfoNext == null)
+                    {
+                        throw new NotSupportedException(Resources.ErrorGuessOperationTypeInfo);
+                    }
                 }
             }
 
@@ -71,9 +62,24 @@ namespace VSHTC.Friendly.PinInterface.Inside
             }
 
             //Resolve return value and ref out arguments.
-            object objReturn = ReturnResolver.Resolve(isAsyunc, returnedAppVal, method.ReturnParameter);
+            object objReturn = ReturnResolver.Resolve(isAsync, returnedAppVal, method.ReturnParameter);
             var refoutArgs = args.GetRefOutArgs();
             return new ReturnMessage(objReturn, refoutArgs, refoutArgs.Length, mm.LogicalCallContext, (IMethodCallMessage)msg);
+        }
+
+        public void OperationTypeInfoNext(OperationTypeInfo info)
+        {
+            _operationTypeInfoNext = info;
+        }
+
+        public void SetOperationTypeInfoNextAuto()
+        {
+            _isAutoOperationTypeInfoNext = true;
+        }
+
+        protected void SetAsyncNext(Async asyncNext)
+        {
+            _asyncNext = asyncNext;
         }
 
         protected abstract string GetTargetTypeFullName();

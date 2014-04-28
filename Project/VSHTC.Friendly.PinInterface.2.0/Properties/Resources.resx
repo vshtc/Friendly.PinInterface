@@ -123,6 +123,9 @@ The following possibility can be considered.
 ・The object is not proxy created by PinInterface.
 ・Asynchronous execution of the constructor was carried out.</value>
   </data>
+  <data name="ErrorGuessOperationTypeInfo" xml:space="preserve">
+    <value>The guess of operationtypeinfo went wrong.</value>
+  </data>
   <data name="ErrorNotFoundTargetType" xml:space="preserve">
     <value>Not found target type.
 Order by TargetTypeAttribute,Or Use other Pin method which can specify the target type.</value>

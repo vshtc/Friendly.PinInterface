@@ -8,8 +8,9 @@ namespace VSHTC.Friendly.PinInterface.Inside
 {
     class ArgumentResolver
     {
-        delegate object ResolveArgument();
         internal object[] InvokeArguments { get; private set; }
+
+        delegate object ResolveArgument();
         ResolveArgument[] _resolveArguments;
 
         internal ArgumentResolver(AppFriend app, MethodInfo method, bool isAsyunc, object[] src)
