@@ -80,5 +80,21 @@ namespace Test
             array[1] = 100;
             Assert.AreEqual(100, array[1]);
         }
+
+        [TestMethod]
+        public void TestForeach()
+        {
+            int[] src = new int[] { 1, 2, 3 };
+
+            AppVar appVar = _app.Copy(new List<int>(src));
+            var list = appVar.Pin<IList<int>>();
+            Assert.AreEqual(src.Length, list.Count);
+
+            int i = 0;
+            foreach (var val in list)
+            {
+                Assert.AreEqual(src[i++], val);
+            }
+        }
     }
 }

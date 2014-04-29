@@ -112,11 +112,26 @@ namespace Test
         }
 
         [TestMethod]
-        public void NameGeneric()
+        public void NameGeneric1()
         {
             Assert.AreEqual(
                 typeof(Dictionary<int, List<Point>>).FullName,
                 TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, List_<Point_.Instance>.Instance>.Instance)));
+        }
+
+        [TestMethod]
+        public void NameGeneric2()
+        {
+            Assert.AreEqual(
+                typeof(IList<Point>).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(IList<Point_.Instance>)));
+        }
+        [TestMethod]
+        public void NameGeneric3()
+        {
+            Assert.AreEqual(
+                typeof(Dictionary<int, IList<Point>>).FullName,
+                TargetTypeUtility.GetFullName(_app, typeof(Dictionary_<int, IList<Point_.Instance>>.Instance)));
         }
 
         [TestMethod]

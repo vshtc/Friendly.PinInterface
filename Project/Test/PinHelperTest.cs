@@ -152,7 +152,7 @@ namespace Test
         [TestMethod]
         public void PinStaticException()
         {
-            TestUtility.TestExceptionMessage(() => { _app.Pin<TargetNoAttr_.Static>(); },
+            TestUtility.TestExceptionMessage(() => { PinHelper.Pin<TargetNoAttr_.Static>(_app); },
                 "Not found target type.\r\nOrder by TargetTypeAttribute,Or Use other Pin method which can specify the target type.",
                 "対象の型を見つけることができませんでした。\r\nTargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。");
         }
@@ -160,9 +160,43 @@ namespace Test
         [TestMethod]
         public void PinConstructorException()
         {
-            TestUtility.TestExceptionMessage(() => { _app.Pin<TargetNoAttr_.Constructor>(); },
+            TestUtility.TestExceptionMessage(() => { PinHelper.PinConstructor<TargetNoAttr_.Constructor>(_app); },
                 "Not found target type.\r\nOrder by TargetTypeAttribute,Or Use other Pin method which can specify the target type.",
                 "対象の型を見つけることができませんでした。\r\nTargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。");
+        }
+
+        [TestMethod]
+        public void GetValueInvalidObject()
+        {
+            TestUtility.TestExceptionMessage(() => { PinHelper.GetValue<object>(new object()); },
+                "The object is not proxy created by PinInterface.",
+                "指定のオブジェクトは、PinInterfaceで作成したProxyではありません。");
+        }
+
+        [TestMethod]
+        public void OperationTypeInfoNextInvalidObject()
+        {
+            TestUtility.TestExceptionMessage(() => { PinHelper.OperationTypeInfoNext(new object()); },
+                "The object is not proxy created by PinInterface.",
+                "指定のオブジェクトは、PinInterfaceで作成したProxyではありません。");
+            TestUtility.TestExceptionMessage(() => { PinHelper.OperationTypeInfoNext(new object(), new OperationTypeInfo("x")); },
+               "The object is not proxy created by PinInterface.",
+               "指定のオブジェクトは、PinInterfaceで作成したProxyではありません。");
+        }
+
+        [TestMethod]
+        public void AsyncInvalidObject()
+        {
+            var target = PinHelper.PinConstructor<Target_.Constructor>(_app);
+            TestUtility.TestExceptionMessage(() => { PinHelper.AsyncNext(target); },
+                "Asynchronous execution went wrong. \r\n" + 
+                "The following possibility can be considered. \r\n" +
+                "・The object is not proxy created by PinInterface.\r\n" + 
+                "・Asynchronous execution of the constructor was carried out.",
+                "非同期実行に失敗しました。\r\n" + 
+                "次の原因が考えられます。\r\n" +
+                "・指定のオブジェクトは、PinInterfaceで作成したProxyではありません。\r\n" + 
+                "・コンストラクタを非同期実行しようとしました。");
         }
     }
 }

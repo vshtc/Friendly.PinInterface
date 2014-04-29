@@ -17,7 +17,7 @@ namespace VSHTC.Friendly.PinInterface.Inside
             List<string> arguments = new List<string>();
             foreach (var arg in method.GetParameters())
             {
-                string argTarget = TargetTypeUtility.GetFullName(app, arg.ParameterType);
+                string argTarget = GetFullName(app, arg.ParameterType);
                 if (string.IsNullOrEmpty(argTarget))
                 {
                     return null;
@@ -38,20 +38,45 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         internal static string GetFullName(AppFriend app, Type type)
         {
-            TargetTypeAttribute attr = GetTargetTypeAttribute(type);
+            Type coreType = type;
+            if (coreType.IsByRef)
+            {
+                coreType = coreType.GetElementType();
+            }
+
+            TargetTypeAttribute attr = GetTargetTypeAttribute(coreType);
+
+            string typeName = string.Empty;
             if (attr == null)
             {
-                Type coreType = type;
-                if (coreType.IsByRef)
+                if (coreType.IsGenericType)
                 {
-                    coreType = coreType.GetElementType();
+                    List<string> genericArguments = new List<string>();
+                    foreach (var element in coreType.GetGenericArguments())
+                    {
+                        string innerType = GetFullName(app, element);
+                        if (string.IsNullOrEmpty(innerType))
+                        {
+                            return string.Empty;
+                        }
+                        genericArguments.Add(innerType);
+                    }
+                    typeName = MakeGenericTypeFullName(app, coreType.GetGenericTypeDefinition().FullName, genericArguments.ToArray());
                 }
-                return type.FullName;
+                else
+                {
+                    typeName = coreType.FullName;
+                }
             }
             else
             {
-                return GetFullNameFromAttr(app, type, attr) + (type.IsByRef ? "&" : string.Empty);
+                typeName = GetFullNameFromAttr(app, coreType, attr);
             }
+            if (string.IsNullOrEmpty(typeName))
+            {
+                return string.Empty;
+            }
+            return typeName + (type.IsByRef ? "&" : string.Empty);
         }
 
         private static string GetFullNameFromAttr(AppFriend app, Type type, TargetTypeAttribute attr)
@@ -109,8 +134,14 @@ namespace VSHTC.Friendly.PinInterface.Inside
             {
                 genericArguments["[]"](i, typeFinder["GetType"](genericArgumentsFullName[i]));
             }
-            AppVar type = genericType["MakeGenericType"](genericArguments);
-            return (string)type["FullName"]().Core;
+            try
+            {
+                AppVar type = genericType["MakeGenericType"](genericArguments);
+                return (string)type["FullName"]().Core;
+            }
+            catch (FriendlyOperationException) { }
+            return string.Empty;
+       
         }
 
         static TargetTypeAttribute GetTargetTypeAttribute(Type interfaceType)
