@@ -141,15 +141,6 @@ namespace Test
         }
 
         [TestMethod]
-        public void GetValue()
-        {
-            AppVar appVar = _app.Type<Target>()(3);
-            var target = PinHelper.Pin<Target_.Instance>(appVar);
-            appVar = PinHelper.GetAppVar(target);
-            Assert.AreEqual(3, PinHelper.GetValue<Target>(target).A);
-        }
-
-        [TestMethod]
         public void PinStaticException()
         {
             TestUtility.TestExceptionMessage(() => { PinHelper.Pin<TargetNoAttr_.Static>(_app); },
@@ -163,14 +154,6 @@ namespace Test
             TestUtility.TestExceptionMessage(() => { PinHelper.PinConstructor<TargetNoAttr_.Constructor>(_app); },
                 "Not found target type.\r\nOrder by TargetTypeAttribute,Or Use other Pin method which can specify the target type.",
                 "対象の型を見つけることができませんでした。\r\nTargetTypeAttributeで指定するか、対象の型を指定できるPinメソッドを使用してください。");
-        }
-
-        [TestMethod]
-        public void GetValueInvalidObject()
-        {
-            TestUtility.TestExceptionMessage(() => { PinHelper.GetValue<object>(new object()); },
-                "The object is not proxy created by PinInterface.",
-                "指定のオブジェクトは、PinInterfaceで作成したProxyではありません。");
         }
 
         [TestMethod]

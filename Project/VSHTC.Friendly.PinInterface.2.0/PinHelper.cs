@@ -241,31 +241,6 @@ namespace VSHTC.Friendly.PinInterface
         
 #if ENG
         /// <summary>
-        /// Get copy of object.
-        /// </summary>
-        /// <typeparam name="T">Type of object.</typeparam>
-        /// <param name="pinnedInterface">Interface.</param>
-        /// <returns>Copy of object.</returns>
-#else
-        /// <summary>
-        /// 対象のオブジェクトのコピーを取得します。
-        /// </summary>
-        /// <typeparam name="T">オブジェクトの型</typeparam>
-        /// <param name="pinnedInterface">インターフェイス。</param>
-        /// <returns>オブジェクトのコピー。</returns>
-#endif
-        public static T GetValue<T>(object pinnedInterface)
-        {
-            var appVar = GetAppVar(pinnedInterface);
-            if (appVar == null)
-            {
-                throw new NotSupportedException(Resources.ErrorNotProxy);
-            }
-            return (T)appVar.Core;
-        }
-
-#if ENG
-        /// <summary>
         /// A next call is made asynchronous. 
         /// </summary>
         /// <param name="pinnedInterface">Interface.</param>
