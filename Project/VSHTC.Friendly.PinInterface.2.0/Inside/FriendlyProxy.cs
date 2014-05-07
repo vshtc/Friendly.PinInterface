@@ -51,15 +51,11 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             string invokeName = FriendlyInvokeSpec.GetInvokeName(method);
             AppVar returnedAppVal = null;
-            try
-            {
-                returnedAppVal = Invoke(method, invokeName, args.InvokeArguments, _asyncNext, _operationTypeInfoNext);
-            }
-            finally
-            {
-                _asyncNext = null;
-                _operationTypeInfoNext = null;
-            }
+            var tempAsync = _asyncNext;
+            var tempOpe = _operationTypeInfoNext;
+            _asyncNext = null;
+            _operationTypeInfoNext = null;
+            returnedAppVal = Invoke(method, invokeName, args.InvokeArguments, tempAsync, tempOpe);
 
             //Resolve return value and ref out arguments.
             object objReturn = ReturnResolver.Resolve(isAsync, returnedAppVal, method.ReturnParameter);
