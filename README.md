@@ -63,6 +63,11 @@ void Demo()
   }
 }
 ```
+============================
+Download form nuget.  
+https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
+
+============================
 WPFDataGrid, WPFButton  
 https://github.com/Roommetro/Friendly.WPFStandardControls/blob/master/README.md
 
