@@ -24,14 +24,42 @@ interface IWindow
   bool Activate();
 }
 
-void Test
+void Demo()
 {
   var process = Process.GetProcessesByName("WPFTarget")[0];  
   using (var app = new WindowsAppFriend(process))  
   {  
       AppVar src = app.Type(typeof(Application)).Current.MainWindow;
-      IWindow main = src.Pin<IWindow>();
+      var main = src.Pin<IWindow>();
       main.Topmost = true;
+  }
+}
+```
+
+```cs
+/*operation target.
+public class MainWindow : Window
+{
+	DataGrid _grid;
+	Button _button;
+}*/
+
+// wrapper class that the constructor argument is AppVar only.
+interface IMainWindow
+{
+	WPFDataGrid _grid { get; }
+	WPFButtonBase _button { get; }
+}
+
+void Demo()
+{
+  var process = Process.GetProcessesByName("WPFTarget")[0];  
+  using (var app = new WindowsAppFriend(process))  
+  {  
+      AppVar src = app.Type(typeof(Application)).Current.MainWindow;
+      var main = src.Pin<IMainWindow>();
+      main._grid.EmulateChangeCellText(0, 0, "abc");
+      main._button.EmulateClick();
   }
 }
 ```
