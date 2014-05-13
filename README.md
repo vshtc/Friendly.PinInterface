@@ -9,7 +9,7 @@ http://www.english.codeer.co.jp/test-automation/friendly-fundamental
 
 =====================
 Friendly use dynamic.  
-And can't use IntelliSense.  
+Therefore, User can't use IntelliSense.  
 PinInterface pins it by order interface.  
 Since the user can use intellisense, He doesn't stray any longer.   
 
@@ -30,7 +30,7 @@ void Test
   using (var app = new WindowsAppFriend(process))  
   {  
       AppVar src = app.Type(typeof(Application)).Current.MainWindow;
-      IWindow main = src.Pin<>(IWindow);
+      IWindow main = src.Pin<IWindow>();
       main.Topmost = true;
   }
 }
