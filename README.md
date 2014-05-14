@@ -57,7 +57,7 @@ void DemoPinInstanceInterface()
 }
 ```
 
-TargetTypeAttribute
+* TargetTypeAttribute
 ```cs
 
 [TargetType("System.Windows.Application")]
@@ -76,7 +76,6 @@ void DemoPinStaticInterface()
 }
 ```
 
-============================
 * wrapper class that the constructor argument is AppVar only.
 ```cs
 /*operation target.
@@ -104,6 +103,26 @@ void Demo()
   }
 }
 ```
+
+* Map AppVar.
+```cs
+interface IWindow
+{
+  AppVar OwnedWindows { get; }
+}
+
+void DemoPinInstanceInterface()
+{
+  var process = Process.GetProcessesByName("WPFTarget")[0];  
+  using (var app = new WindowsAppFriend(process))  
+  {  
+      AppVar src = app.Type(typeof(Application)).Current.MainWindow;
+      var main = src.Pin<IWindow>();
+      AppVar owner = main.OwnedWindows;
+  }
+}
+```
+
 ============================
 Download form nuget.  
 https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
