@@ -111,6 +111,44 @@ void DemoPinInstanceInterface()
 }
 ```
 
+Constrcutor
+```cs
+/*operation target.
+namespace Target
+{
+    public class Data
+    {
+        public int Core { get; set; }
+        public Data() { }
+        public Data(int core)
+        {
+            Core = core;
+        }
+    }
+}*/
+
+interface IData
+{
+    int Core { get; set; }
+}
+
+interface IDataConstructor
+{
+    IData New();
+    IData New(int core);
+}
+
+void DemoPinStaticInterface()
+{
+    var process = Process.GetProcessesByName("WPFTarget")[0];  
+    using (var app = new WindowsAppFriend(process))  
+    {  
+        var constructor = app.PinConstructor<IDataConstructor>("Target.Data");
+        var data = constructor.New(3);
+    }
+}
+```
+
 TargetTypeAttribute
 ```cs
 [TargetType("System.Windows.Application")]
@@ -119,12 +157,21 @@ interface IApplicationStatic
     IApplication Current { get; }
 }
 
+[TargetType("Target.Data")]
+interface IDataConstructor
+{
+    IData New();
+    IData New(int core);
+}
+
 void DemoPinStaticInterface()
 {
     var process = Process.GetProcessesByName("WPFTarget")[0];  
     using (var app = new WindowsAppFriend(process))  
     {  
         var application = app.Pin<IApplicationStatic>();
+        var constructor = app.PinConstructor<IDataConstructor>();
+        var data = constructor.New(3);
     }
 }
 ```
@@ -177,7 +224,7 @@ void DemoPinInstanceInterface()
 }
 ```
 
-Others.
+Other helper methods.
 ```cs
 interface IWindow
 {
