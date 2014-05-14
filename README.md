@@ -72,7 +72,6 @@ void DemoPinStaticInterface()
   using (var app = new WindowsAppFriend(process))  
   {  
       var application = app.Pin<IApplicationStatic>();
-      application.Current.MainWindow.Topmost = true;
   }
 }
 ```
