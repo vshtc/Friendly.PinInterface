@@ -16,12 +16,12 @@ Since the user can use intellisense, He doesn't stray any longer.
 ============================
 * Map same signature interface.
 ```cs
-public interface IApplicationStatic
+interface IApplicationStatic
 {
   IApplication Current { get; }
 }
 
-public interface IApplication
+interface IApplication
 {
   IWindow MainWindow { get; set; }
 }
@@ -57,7 +57,27 @@ void DemoPinInstanceInterface()
 }
 ```
 
+TargetTypeAttribute
+```cs
 
+[TargetType("System.Windows.Application")]
+interface IApplicationStatic
+{
+  IApplication Current { get; }
+}
+
+void DemoPinStaticInterface()
+{
+  var process = Process.GetProcessesByName("WPFTarget")[0];  
+  using (var app = new WindowsAppFriend(process))  
+  {  
+      var application = app.Pin<IApplicationStatic>();
+      application.Current.MainWindow.Topmost = true;
+  }
+}
+```
+
+============================
 * wrapper class that the constructor argument is AppVar only.
 ```cs
 /*operation target.
