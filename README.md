@@ -63,6 +63,7 @@ namespace VSHTC.Friendly.PinInterface
 
 ============================
 * Sample
+
 Map same signature interface.
 ```cs
 interface IApplicationStatic
