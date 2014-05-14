@@ -156,9 +156,8 @@ void Demo()
     }
 }
 ```
-  WPFDataGrid, WPFButton  
-  https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
-  
+(WPFDataGrid, WPFButton https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/)  
+    
 Map AppVar.
 ```cs
 interface IWindow
