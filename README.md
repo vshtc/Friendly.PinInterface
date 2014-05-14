@@ -176,3 +176,32 @@ void DemoPinInstanceInterface()
     }
 }
 ```
+
+Others.
+```cs
+interface IWindow
+{
+    bool Activate();
+}
+
+void DemoPinInstanceInterface()
+{
+    var process = Process.GetProcessesByName("WPFTarget")[0];  
+    using (var app = new WindowsAppFriend(process))  
+    {  
+        AppVar src = app.Type(typeof(Application)).Current.MainWindow;
+        var main = src.Pin<IWindow>();
+        
+        //async
+        PinHelper.AsyncNext(main);
+        main.Activate();
+        
+        //OperationTypeInfo
+        PinHelper.OperationTypeInfoNext(main);
+        main.Activate();
+        
+        //Get core.
+        src = PinHelper.GetAppVar(main);
+    }
+}
+```
