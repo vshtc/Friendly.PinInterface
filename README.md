@@ -13,8 +13,9 @@ Therefore, User can't use IntelliSense.
 PinInterface pins it by order interface.  
 Since the user can use intellisense, He doesn't stray any longer.   
 
+============================
+* Map same signature interface.
 ```cs  
-//Map same signature interface.
 interface IWindow
 {
   double Top { get; set; }
@@ -36,6 +37,8 @@ void Demo()
 }
 ```
 
+
+* wrapper class that the constructor argument is AppVar only.
 ```cs
 /*operation target.
 public class MainWindow : Window
@@ -44,7 +47,6 @@ public class MainWindow : Window
 	Button _button;
 }*/
 
-// wrapper class that the constructor argument is AppVar only.
 interface IMainWindow
 {
 	WPFDataGrid _grid { get; }
