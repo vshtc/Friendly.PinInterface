@@ -14,6 +14,10 @@ PinInterface pins it by order interface.
 Since the user can use intellisense, He doesn't stray any longer.   
 
 ============================
+Download form nuget.  
+https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
+
+============================
 * PinInterface API.
 ```cs
 namespace VSHTC.Friendly.PinInterface
@@ -152,7 +156,9 @@ void Demo()
     }
 }
 ```
-
+  WPFDataGrid, WPFButton  
+  https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
+  
 Map AppVar.
 ```cs
 interface IWindow
@@ -171,12 +177,3 @@ void DemoPinInstanceInterface()
     }
 }
 ```
-
-============================
-Download form nuget.  
-https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
-
-============================
-WPFDataGrid, WPFButton  
-https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/
-
