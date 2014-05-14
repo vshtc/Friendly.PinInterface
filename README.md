@@ -15,7 +15,17 @@ Since the user can use intellisense, He doesn't stray any longer.
 
 ============================
 * Map same signature interface.
-```cs  
+```cs
+public interface IApplicationStatic
+{
+  IApplication Current { get; }
+}
+
+public interface IApplication
+{
+  IWindow MainWindow { get; set; }
+}
+
 interface IWindow
 {
   double Top { get; set; }
@@ -25,7 +35,17 @@ interface IWindow
   bool Activate();
 }
 
-void Demo()
+void DemoPinStaticInterface()
+{
+  var process = Process.GetProcessesByName("WPFTarget")[0];  
+  using (var app = new WindowsAppFriend(process))  
+  {  
+      var application = app.Pin<IApplicationStatic>(typeof(Application));
+      application.Current.MainWindow.Topmost = true;
+  }
+}
+
+void DemoPinInstanceInterface()
 {
   var process = Process.GetProcessesByName("WPFTarget")[0];  
   using (var app = new WindowsAppFriend(process))  
