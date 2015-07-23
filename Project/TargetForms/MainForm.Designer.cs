@@ -1,6 +1,6 @@
 ﻿namespace TargetForms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this._textBox = new System.Windows.Forms.TextBox();
+            this._web = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
-            // _textBox
+            // _web
             // 
-            this._textBox.Location = new System.Drawing.Point(31, 27);
-            this._textBox.Name = "_textBox";
-            this._textBox.Size = new System.Drawing.Size(100, 19);
-            this._textBox.TabIndex = 0;
+            this._web.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._web.Location = new System.Drawing.Point(0, 0);
+            this._web.MinimumSize = new System.Drawing.Size(20, 20);
+            this._web.Name = "_web";
+            this._web.Size = new System.Drawing.Size(284, 261);
+            this._web.TabIndex = 0;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this._textBox);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Controls.Add(this._web);
+            this.Name = "MainForm";
+            this.Text = "Main";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox _textBox;
-
+        private System.Windows.Forms.WebBrowser _web;
     }
 }
 
