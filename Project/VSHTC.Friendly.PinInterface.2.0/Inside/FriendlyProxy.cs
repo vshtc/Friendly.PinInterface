@@ -38,10 +38,10 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
             if (_operationTypeInfoNext == null)
             {
-                if (_isAutoOperationTypeInfoNext)
+                if (_isAutoOperationTypeInfoNext || IsNeedAutoOperationTypeInfo)
                 {
                     _isAutoOperationTypeInfoNext = false;
-                    _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(), method);
+                    _operationTypeInfoNext = TargetTypeUtility.TryCreateOperationTypeInfo(App, GetTargetTypeFullName(method), method);
                     if (_operationTypeInfoNext == null)
                     {
                         throw new NotSupportedException(Resources.ErrorGuessOperationTypeInfo);
@@ -78,7 +78,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
             _asyncNext = asyncNext;
         }
 
-        protected abstract string GetTargetTypeFullName();
+        protected virtual bool IsNeedAutoOperationTypeInfo { get { return false; } }
+        protected abstract string GetTargetTypeFullName(MethodInfo method);
         protected abstract AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo info);
     }
 }

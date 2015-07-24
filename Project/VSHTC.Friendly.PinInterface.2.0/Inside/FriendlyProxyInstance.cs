@@ -11,6 +11,8 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         public AppVar AppVar { get; private set; }
 
+        protected override bool IsNeedAutoOperationTypeInfo { get { return _isComObject; } }
+     
         public FriendlyProxyInstance(AppVar appVar)
             : base(appVar.App) 
         {
@@ -20,25 +22,12 @@ namespace VSHTC.Friendly.PinInterface.Inside
 
         protected override AppVar Invoke(MethodInfo method, string name, object[] args, Async async, OperationTypeInfo typeInfo)
         {
-            if (_isComObject && typeInfo == null)
-            {
-                var argTypes = new List<string>();
-                foreach (var e in method.GetParameters())
-                {
-                    argTypes.Add(e.ParameterType.FullName);
-                }
-                typeInfo = new OperationTypeInfo(method.DeclaringType.FullName, argTypes.ToArray());
-                return FriendlyInvokeSpec.GetFriendlyOperation(AppVar, name, async, typeInfo)(args);
-            }
-            else
-            {
-                return FriendlyInvokeSpec.GetFriendlyOperation(AppVar, name, async, typeInfo)(args);
-            }
+            return FriendlyInvokeSpec.GetFriendlyOperation(AppVar, name, async, typeInfo)(args);
         }
 
-        protected override string GetTargetTypeFullName()
+        protected override string GetTargetTypeFullName(MethodInfo method)
         {
-            return TargetTypeUtility.GetFullName(App, typeof(TInterface));
+            return _isComObject ? method.DeclaringType.FullName : TargetTypeUtility.GetFullName(App, typeof(TInterface));
         }
 
         public Async AsyncNext()
