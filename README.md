@@ -5,19 +5,21 @@ You must learn Friendly first.
 Because this library is built on Friendly Layer.  
 But, it is very easy.  
 
-http://www.english.codeer.co.jp/test-automation/friendly-fundamental  
+https://github.com/Codeer-Software/Friendly.Windows
 
-=====================
+## Getting Started
+Install Friendly.PinInterface from NuGet
+
+    PM> Install-Package VSHTC.Friendly.PinInterface
+https://www.nuget.org/packages/VSHTC.Friendly.PinInterface/
+
+***
 Friendly use dynamic.  
 Therefore, User can't use IntelliSense.  
 PinInterface pins it by order interface.  
 Since the user can use intellisense, He doesn't stray any longer.   
 
-============================
-Download form nuget.  
-https://www.nuget.org/packages/RM.Friendly.WPFStandardControls/  
-
-============================
+***
 * PinInterface API.
 ```cs
 namespace VSHTC.Friendly.PinInterface
@@ -65,7 +67,7 @@ namespace VSHTC.Friendly.PinInterface
 
 ```
 
-============================
+***
 * Sample
 
 Map same signature interface.
